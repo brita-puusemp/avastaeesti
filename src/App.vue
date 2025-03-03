@@ -37,12 +37,12 @@
         <div class="row justify-content-center">
         <div class="col col-4">
         <div class="input-group mb-3">
-          <span class="input-group-text" id="basic-addon1">Kasutajanimi</span>
-          <input type="text" class="form-control">
+          <span  class="input-group-text" id="basic-addon1">Kasutajanimi</span>
+          <input v-model="username" type="text" class="form-control">
         </div>
         <div class="input-group mb-3">
-          <span class="input-group-text" id="basic-addon1">Parool</span>
-          <input type="password" class="form-control">
+          <span  class="input-group-text" id="basic-addon1">Parool</span>
+          <input v-model="password" type="password" class="form-control">
         </div>
         </div>
         </div>
@@ -59,11 +59,20 @@
 
 
 <script>
+import axios from "axios";
+import LoginService from "@/service/LoginService";
+
 export default {
   data() {
     return {
       isLoggedIn: false,
-      isUser: true
+      isUser: false,
+      username: '',
+      password: '',
+      loginResponse: {
+        userId: 0,
+        roleName: ''
+      }
     }
   },
   methods: {
@@ -73,6 +82,29 @@ export default {
       this.isLoggedIn = userId !== null
       let roleName = sessionStorage.getItem('roleName')
       this.isUser = roleName != null && 'user' === roleName
+    },
+
+
+    handleLoginResponse(response) {
+      this.loginResponse = response.data;
+
+    },
+
+    handleLoginErrorResponse(error) {
+      return this.someDataBlockErrorResponseObject = error.response.data;
+    }, sendLoginResponse() {
+      LoginService.getLogin(this.username, this.password)
+          .then(response => this.handleLoginResponse(response))
+          .catch(error => this.handleLoginErrorResponse(error))
+    },
+
+    login() {
+      if (this.username.length > 0 && this.password.length > 0) {
+          this.sendLogiResponse();
+
+
+      }
+
     },
 
   }
