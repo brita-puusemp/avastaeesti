@@ -45,6 +45,7 @@ import HttpStatusCodes from "@/errors/HttpStatusCodes";
 import BusinessErrors from "@/errors/BusinessErrors";
 import AlertDanger from "@/components/alert/AlertDanger.vue";
 
+
 export default {
   components: {AlertDanger},
   data() {
