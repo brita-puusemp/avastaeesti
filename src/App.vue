@@ -1,30 +1,80 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+
+  <template v-if="isLoggedIn">
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+      <a class="navbar-brand" >Avasta Eestimaad</a>
+<!--      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>-->
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-link active" aria-current="page" href="#"><font-awesome-icon :icon="['fas', 'house']" /></a>
+          <a class="nav-link" href="#"><font-awesome-icon :icon="['fas', 'plus']" /></a>
+          <a class="nav-link" href="#">KÕIK MÄNGUD</a>
+        </div>
+          <div class="navbar-nav ms-auto">
+            <template v-if="isUser">
+          <a class="nav-link" href="#"><font-awesome-icon :icon="['far', 'star']" /></a>
+            </template>
+          <a class="nav-link" href="#"><font-awesome-icon :icon="['far', 'circle-user']" /></a>
+          <a class="nav-link" href="#">Logi välja</a>
+            </div>
+      </div>
+    </div>
   </nav>
-  <router-view/>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+  <template v-if="!isLoggedIn">
+  <div class="container text-center">
+    <div class="row">
+      <div class="col">
+        <h1>Avasta Eestimaad</h1>
+        <button >Kuidas mängida?</button>
 
-nav {
-  padding: 30px;
-}
+        <h3>Sisene kasutajaga</h3>
 
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
+        <div class="row justify-content-center">
+        <div class="col col-4">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1">Kasutajanimi</span>
+          <input type="text" class="form-control">
+        </div>
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1">Parool</span>
+          <input type="password" class="form-control">
+        </div>
+        </div>
+        </div>
 
-nav a.router-link-exact-active {
-  color: #42b983;
+        <button >Loo kasutaja</button>
+        <button type="button" class="btn btn-success ms-5">LOGI SISSE</button>
+
+      </div>
+
+    </div>
+  </div>
+</template>
+</template>
+
+
+<script>
+export default {
+  data() {
+    return {
+      isLoggedIn: false,
+      isUser: true
+    }
+  },
+  methods: {
+
+    showNavMenu() {
+      let userId = sessionStorage.getItem('userId')
+      this.isLoggedIn = userId !== null
+      let roleName = sessionStorage.getItem('roleName')
+      this.isUser = roleName != null && 'user' === roleName
+    },
+
+  }
 }
-</style>
+</script>
