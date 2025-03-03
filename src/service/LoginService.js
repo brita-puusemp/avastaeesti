@@ -1,9 +1,10 @@
 import axios from "axios";
 
 export default {
-    getLogin(username, password) {
+    sendLoginRequest(username, password) {
         return axios.get('/login', {
-                params: {
+            headers: {Accept: 'application/json'},
+            params: {
                     username: username,
                     password: password
                 }
@@ -11,3 +12,4 @@ export default {
         );
     },
 }
+

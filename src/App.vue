@@ -1,5 +1,5 @@
 <template>
-
+  <nav><router-link to="/login">Login</router-link></nav>
   <template v-if="isLoggedIn">
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
@@ -25,36 +25,7 @@
   </nav>
 </template>
 
-  <template v-if="!isLoggedIn">
-  <div class="container text-center">
-    <div class="row">
-      <div class="col">
-        <h1>Avasta Eestimaad</h1>
-        <button >Kuidas mängida?</button>
-
-        <h3>Sisene kasutajaga</h3>
-
-        <div class="row justify-content-center">
-        <div class="col col-4">
-        <div class="input-group mb-3">
-          <span  class="input-group-text" id="basic-addon1">Kasutajanimi</span>
-          <input v-model="username" type="text" class="form-control">
-        </div>
-        <div class="input-group mb-3">
-          <span  class="input-group-text" id="basic-addon1">Parool</span>
-          <input v-model="password" type="password" class="form-control">
-        </div>
-        </div>
-        </div>
-
-        <button >Loo kasutaja</button>
-        <button @click="login" type="button" class="btn btn-success ms-5">LOGI SISSE</button>
-
-      </div>
-
-    </div>
-  </div>
-</template>
+  <router-view @event-show-nav-menu="showNavMenu"/>
 </template>
 
 
@@ -67,12 +38,6 @@ export default {
     return {
       isLoggedIn: false,
       isUser: false,
-      username: '',
-      password: '',
-      loginResponse: {
-        userId: 0,
-        roleName: ''
-      }
     }
   },
   methods: {
@@ -82,38 +47,7 @@ export default {
       this.isLoggedIn = userId !== null
       let roleName = sessionStorage.getItem('roleName')
       this.isUser = roleName != null && 'user' === roleName
-    },
-
-
-    handleLoginResponse(response) {
-      this.loginResponse = response.data;
-      sessionStorage.setItem('userId', this.loginResponse.userId)
-      sessionStorage.setItem('roleName', this.loginResponse.roleName)
-      this.showNavMenu()
-
-
-    },
-    handleLoginErrorResponse(error) {
-      return this.someDataBlockErrorResponseObject = error.response.data;
-    },
-    sendLoginResponse() {
-      LoginService.getLogin(this.username, this.password)
-          .then(response => this.handleLoginResponse(response))
-          .catch(error => this.handleLoginErrorResponse(error))
-    },
-
-    login() {
-      if (this.username.length > 0 && this.password.length > 0) {
-          this.sendLoginResponse();
-
-
-      }
-
-    },
-
-  },
-  mounted() {
-    this.showNavMenu();
-  },
+    }
+  }
 }
 </script>
