@@ -48,7 +48,7 @@
         </div>
 
         <button >Loo kasutaja</button>
-        <button type="button" class="btn btn-success ms-5">LOGI SISSE</button>
+        <button @click="login" type="button" class="btn btn-success ms-5">LOGI SISSE</button>
 
       </div>
 
@@ -87,12 +87,16 @@ export default {
 
     handleLoginResponse(response) {
       this.loginResponse = response.data;
+      sessionStorage.setItem('userId', this.loginResponse.userId)
+      sessionStorage.setItem('roleName', this.loginResponse.roleName)
+      this.showNavMenu()
+
 
     },
-
     handleLoginErrorResponse(error) {
       return this.someDataBlockErrorResponseObject = error.response.data;
-    }, sendLoginResponse() {
+    },
+    sendLoginResponse() {
       LoginService.getLogin(this.username, this.password)
           .then(response => this.handleLoginResponse(response))
           .catch(error => this.handleLoginErrorResponse(error))
@@ -100,13 +104,16 @@ export default {
 
     login() {
       if (this.username.length > 0 && this.password.length > 0) {
-          this.sendLogiResponse();
+          this.sendLoginResponse();
 
 
       }
 
     },
 
-  }
+  },
+  mounted() {
+    this.showNavMenu();
+  },
 }
 </script>
