@@ -86,7 +86,8 @@ export default {
     },
 
     isIncorrectCredentials() {
-      return BusinessErrors.CODE_USERNAME_EXISTS === this.errorResponse.errorCode;
+      // todo: siin on buggi  ei jõua "or" lõppu.
+      return BusinessErrors.CODE_EMAIL_EXISTS=this.errorResponse.errorCode || BusinessErrors.CODE_USERNAME_EXISTS === this.errorResponse.errorCode;
     },
 
     handleIncorrectCredentials() {
