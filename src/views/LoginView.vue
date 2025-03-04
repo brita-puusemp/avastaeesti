@@ -31,7 +31,7 @@
             </div>
           </div>
 
-          <button >Loo kasutaja</button>
+          <router-link to="/register">Loo kasutaja</router-link>
           <button @click="login" type="submit" class="btn btn-success ms-5">LOGI SISSE</button>
 
         </div>
@@ -126,7 +126,6 @@ export default {
       }
 
     },
-
     closeModal() {
       this.modalIsOpen = false
     },
