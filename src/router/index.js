@@ -4,6 +4,7 @@ import LoginView from "@/views/LoginView.vue";
 import UserHomeView from "@/views/UserHomeView.vue";
 import ErrorView from "@/views/ErrorView.vue";
 import RegisterView from "@/views/RegisterView.vue";
+import GameView from "@/views/GameView.vue";
 
 const routes = [
   {
@@ -30,6 +31,11 @@ const routes = [
     path: '/register',
     name: 'register',
     component: RegisterView
+  },
+  {
+    path: '/game',
+    name: 'game',
+    component: GameView
   },
   {
     path: '/about',
