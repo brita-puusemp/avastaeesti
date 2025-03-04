@@ -31,6 +31,16 @@ const routes = [
     name: 'register',
     component: RegisterView
   },
+    {
+        path: '/newLocation',
+        name: 'newLocation',
+        component: NewLocationView
+    },
+    {
+        path: '/adminHome',
+        name: 'adminHome',
+        component: AdminHomeView
+    },
   {
     path: '/about',
     name: 'about',
