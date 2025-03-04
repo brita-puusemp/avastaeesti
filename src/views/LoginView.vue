@@ -1,5 +1,5 @@
 
-<template v-if="!isLoggedIn">
+<template>
 
     <div class="container text-center">
       <div class="row justify-content-center">

@@ -6,6 +6,6 @@ export default {
      },
 
     navigateToErrorView() {
-         router.push({name: 'error'})
+         // router.push({name: 'error'})
     },
  }
