@@ -1,6 +1,10 @@
 
 <template>
 
+  <InstructionsModal :modal-is-open="modalIsOpen"
+                     @event-close-modal="closeModal
+"/>
+
     <div class="container text-center">
       <div class="row justify-content-center">
         <div class="col col-8">
@@ -10,7 +14,7 @@
       <div class="row">
         <div class="col">
           <h1>Avasta Eestimaad</h1>
-          <button >Kuidas mängida?</button>
+          <button @click="openInstructionsModal" >Kuidas mängida?</button>
 
           <h3>Sisene kasutajaga</h3>
 
@@ -44,12 +48,14 @@ import NavigationService from "@/service/NavigationService";
 import HttpStatusCodes from "@/errors/HttpStatusCodes";
 import BusinessErrors from "@/errors/BusinessErrors";
 import AlertDanger from "@/components/alert/AlertDanger.vue";
+import InstructionsModal from "@/components/modal/InstructionsModal.vue";
 
 
 export default {
-  components: {AlertDanger},
+  components: {InstructionsModal, AlertDanger},
   data() {
     return {
+      modalIsOpen: false,
       username: '',
       password: '',
       message: '',
@@ -64,6 +70,10 @@ export default {
     }
   },
   methods: {
+
+    openInstructionsModal() {
+      this.modalIsOpen = true
+    },
 
     handleLoginResponse(response) {
       this.loginResponse = response.data;
@@ -115,6 +125,10 @@ export default {
         this.alertMissingFields();
       }
 
+    },
+
+    closeModal() {
+      this.modalIsOpen = false
     },
 
   },
