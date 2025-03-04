@@ -21,6 +21,9 @@
             <span class="input-group-text">KORDA PAROOLI</span>
             <input type="password" class="form-control">
           </div>
+
+          <router-link to="/login">Tagasi</router-link>
+          <button @click="createUser" type="submit" class="btn btn-success ms-5">Loo kasutaja</button>
         </div>
       </div>
     </div>
