@@ -58,6 +58,10 @@ export default {
   methods: {
     openModal() {
       this.modalIsOpen = true
+    },
+
+    closeModal() {
+      this.modalIsOpen = false
     }
   }
 }
