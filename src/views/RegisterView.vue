@@ -15,10 +15,10 @@
             <span class="input-group-text">KASUTAJANIMI</span>
             <input v-model="newUser.username" type="text" class="form-control">
           </div>
-<!--todo: parool peab võrduma korda parool + ui visble/not visble nupp-->
+          <!--todo: parool peab võrduma korda parool + ui visble/not visble nupp-->
           <div class="input-group mb-3">
             <span class="input-group-text">PAROOL</span>
-            <input v-model="newUser.password" type="password" class="form-control" >
+            <input v-model="newUser.password" type="password" class="form-control">
           </div>
           <div class="input-group mb-3">
             <span class="input-group-text">KORDA PAROOLI</span>
@@ -37,7 +37,6 @@
 <script>
 import UserService from "@/service/UserService";
 import NavigationService from "@/service/NavigationService";
-import HttpStatusCodes from "@/errors/HttpStatusCodes";
 import BusinessErrors from "@/errors/BusinessErrors";
 import AlertDanger from "@/components/alert/AlertDanger.vue";
 
@@ -47,15 +46,11 @@ export default {
   data() {
     return {
       message: '',
-    newUser: {
-      email: "",
-      username: "",
-      password: "",
-      passwordRepeat: ""
-    },
-      loginResponse: {
-        userId: 0,
-        roleName: ''
+      newUser: {
+        email: "",
+        username: "",
+        password: "",
+        passwordRepeat: ""
       },
       errorResponse: {
         message: '',
@@ -66,22 +61,14 @@ export default {
   methods: {
 
 
-    handleRegistrationResponse(response) {
-      this.loginResponse = response.data;
-      sessionStorage.setItem('userId', this.loginResponse.userId)
-      sessionStorage.setItem('roleName', this.loginResponse.roleName)
+    handleRegistrationResponse() {
       this.$emit('event-show-nav-menu')
       NavigationService.navigateToUserHomeView()
     },
 
     handleRegistrationErrorResponse(error) {
       this.errorResponse = error.response.data;
-
-
-
-      if (this.isIncorrectUsername()) {
-        this.handleIncorrectCredentials();
-      } else if (this.isIncorrectEmail()) {
+      if (this.isIncorrectUsername() || this.isIncorrectEmail()) {
         this.handleIncorrectCredentials();
       } else {
         NavigationService.navigateToErrorView()
@@ -93,7 +80,6 @@ export default {
     },
 
     isIncorrectEmail() {
-      // todo: siin on buggi  ei jõua "or" lõppu.
       return BusinessErrors.CODE_EMAIL_EXISTS === this.errorResponse.errorCode;
     },
 
@@ -102,22 +88,27 @@ export default {
       setTimeout(this.resetAlertMessage, 4000);
     },
 
-    sendPostRequest() {
+    sendCreateNewUserRequest() {
       UserService.sendPostRegisterRequest(this.newUser)
-          .then(response => this.handleRegistrationResponse(response))
+          .then(() => this.handleRegistrationResponse())
           .catch(error => this.handleRegistrationErrorResponse(error))
     },
 
-    createNewUser() {
-      if (this.newUser.username.length > 0
+    allFieldsCorrect() {
+      return this.newUser.username.length > 0
           && this.newUser.password.length > 0
           && this.newUser.password === this.newUser.passwordRepeat
-          && this.newUser.email.length > 0) {
-        this.sendPostRequest();
+          && this.newUser.email.length > 0;
+    },
+
+    createNewUser() {
+      if (this.allFieldsCorrect()) {
+        this.sendCreateNewUserRequest();
       } else {
         this.alertMissingFields()
       }
     },
+
     resetAlertMessage() {
       this.message = ''
     },

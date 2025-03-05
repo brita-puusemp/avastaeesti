@@ -1,5 +1,4 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import {createRouter, createWebHashHistory} from 'vue-router'
 import LoginView from "@/views/LoginView.vue";
 import UserHomeView from "@/views/UserHomeView.vue";
 import ErrorView from "@/views/ErrorView.vue";
@@ -12,48 +11,44 @@ import NewGameView from "@/views/NewGameView.vue";
 const routes = [
     {
         path: '/',
-        redirect: '/login',
-    },
-    {
-        path: '/login',
-        name: 'login',
+        name: 'loginRoute',
         component: LoginView
     },
     {
         path: '/home',
-        name: 'userHome',
+        name: 'userHomeRoute',
         component: UserHomeView
     },
     {
         path: '/error',
-        name: 'error',
+        name: 'errorRoute',
         component: ErrorView
     },
     {
         path: '/register',
-        name: 'register',
+        name: 'registerRoute',
         component: RegisterView
     },
     {
-        path: '/newLocation',
-        name: 'newLocation',
+        path: '/location',
+        name: 'newLocationRoute',
         component: NewLocationView
     },
     {
-        path: '/newGame',
-        name: 'newGame',
-        component: NewGameView
-    },
-    {
-        path: '/adminHome',
-        name: 'adminHome',
+        path: '/home-admin',
+        name: 'adminHomeRoute',
         component: AdminHomeView
     },
     {
         path: '/game',
         name: 'game',
         component: GameView
-    }
+    },
+    {
+        path: '/game-new',
+        name: 'newGameRoute',
+        component: NewGameView
+    },
 
 ]
 

@@ -47,76 +47,76 @@
 
 <script>
 
-import newLocationService from "@/service/NewLocationService"
 import AlertDanger from "@/components/alert/AlertDanger.vue"
 import NavigationService from "@/service/NavigationService"
 import ImageInput from "@/components/image/ImageInput.vue";
 import LocationImage from "@/components/image/LocationImage.vue";
+import LocationService from "@/service/LocationService";
 
 export default {
- name: 'NewLocationView',
- components: {LocationImage, ImageInput, AlertDanger},
- data() {
-   return {
-     message: '',
-     newLocation: {
-       locationName: '',
-       // kas siin väikesetähega vist name ja siis meetodi sees ka parandus
-       longitude: '',
-       lattitude: '',
-       clue: '',
-       imageData: '',
-       // picture
-     },
-     locationResponse: {
-       locationId: 0,
-     }
-   }
- },
- methods: {
+  name: 'NewLocationView',
+  components: {LocationImage, ImageInput, AlertDanger},
+  data() {
+    return {
+      message: '',
+      newLocation: {
+        locationName: '',
+        // kas siin väikesetähega vist name ja siis meetodi sees ka parandus
+        longitude: '',
+        lattitude: '',
+        clue: '',
+        imageData: '',
+        // picture
+      },
+      locationResponse: {
+        locationId: 0,
+      }
+    }
+  },
+  methods: {
 
-   setNewLocationImageData(imageData) {
-     console.log("OLEN SIIN")
-     this.newLocation.imageData = imageData
-   },
+    setNewLocationImageData(imageData) {
+      console.log("OLEN SIIN")
+      this.newLocation.imageData = imageData
+    },
 
 
-   createNewLocation() {
-     if (this.newLocation.locationName.length > 0
-         && this.newLocation.longitude.length > 0
-         && this.newLocation.lattitude.length > 0
-         && this.newLocation.clue.length > 0
-     ){
-       this.sendNewLocationPostRequest()
-     } else {
-       this.alertMissingFields()
-     }
-   },
+    createNewLocation() {
+      if (this.newLocation.locationName.length > 0
+          && this.newLocation.longitude.length > 0
+          && this.newLocation.lattitude.length > 0
+          && this.newLocation.clue.length > 0
+      ) {
+        this.sendNewLocationPostRequest()
+      } else {
+        this.alertMissingFields()
+      }
+    },
 
-   sendNewLocationPostRequest() {
-     newLocationService.sendNewLocationPostRequest(this.newLocation)
-         .then(response => this.handleNewLocationResponse(response))
-         .catch(error => this.handleNewLocationErrorResponse(error))
-   },
+    sendNewLocationPostRequest() {
+      LocationService.sendNewLocationPostRequest(this.newLocation)
+          .then(response => this.handleNewLocationResponse(response))
+          .catch(error => this.handleNewLocationErrorResponse(error))
+    },
 
-   handleNewLocationResponse(response) {
-     this.newLocation = response.data;
-     sessionStorage.setItem('locationId', this.newLocation.locationId)
-     this.$emit('event-show-nav-menu')
-     NavigationService.navigateToAdminView()
-   },
+    handleNewLocationResponse(response) {
+      this.newLocation = response.data;
+      sessionStorage.setItem('locationId', this.newLocation.locationId)
+      this.$emit('event-show-nav-menu')
+      NavigationService.navigateToAdminView()
+    },
 
-   handleNewLocationErrorResponse(error) {
-     this.newLocation = error.response.data;
-     // kas peaks siin mingeid välju kontrollima.. (sama nimega/koordinaatidega võib ju olla..teise nurga alt pilt, teine vihje lihtsalt)
-     NavigationService.navigateToErrorView()
-   },
+    handleNewLocationErrorResponse(error) {
+      this.newLocation = error.response.data;
+      // kas peaks siin mingeid välju kontrollima.. (sama nimega/koordinaatidega võib ju olla..teise nurga alt pilt, teine vihje lihtsalt)
+      NavigationService.navigateToErrorView()
+    },
 
-   alertMissingFields() {
-     this.message = 'Kontrolli andmeid'
-     setTimeout(this.resetAlertMessage, 4000)
-   }
+    alertMissingFields() {
+      this.message = 'Kontrolli andmeid'
+      setTimeout(this.resetAlertMessage, 4000)
+    }
 
- }
+  }
 }
 </script>
