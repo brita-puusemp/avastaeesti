@@ -1,4 +1,7 @@
 <template>
+
+  <MapModal :modal-is-open="modalIsOpen"
+            @event-close-modal="closeModal"/>
   <div class="container text-center">
     <div class="row justify-content-center">
       <!-- Buttons for the rounds -->
@@ -26,17 +29,36 @@
       </div>
     </div>
 
-
     <div class="row mt-3 justify-content-center">
       <div class="col-auto">
         <img src="../assets/images/pexels-raulling-30949011.jpg" class="img-fluid w-50 d-block mx-auto" alt="image">
       </div>
     </div>
 
-
     <div class="text-center mt-3">
       <button type="submit" class="btn btn-secondary mx-2">VÕTA VIHJE</button>
-      <button type="submit" class="btn btn-success mx-2">AVA KAARDIL</button>
+      <button @click="openModal" type="submit" class="btn btn-success mx-2">AVA KAARDIL</button>
     </div>
   </div>
 </template>
+
+<script>
+
+import MapModal from "@/components/modal/MapModal.vue";
+
+
+export default {
+  name: 'GameView',
+  components: {MapModal},
+  data() {
+    return {
+      modalIsOpen: false,
+    }
+  },
+  methods: {
+    openModal() {
+      this.modalIsOpen = true
+    }
+  }
+}
+</script>
