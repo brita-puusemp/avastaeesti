@@ -25,7 +25,7 @@
             <input v-model="newUser.passwordRepeat" type="password" class="form-control">
           </div>
 
-          <router-link to="/login">Tagasi</router-link>
+          <button @click="goBack">Tagasi</button>
           <button @click="createNewUser" type="submit" class="btn btn-success ms-5">Loo kasutaja</button>
         </div>
       </div>
@@ -60,6 +60,9 @@ export default {
   },
   methods: {
 
+    goBack() {
+      this.$router.go(-1)
+    },
 
     handleRegistrationResponse() {
       this.$emit('event-show-nav-menu')

@@ -4,9 +4,9 @@
       <div class="col">
         <h3>Mängu andmed</h3>
         <div class="input-group flex-nowrap mb-3">
-        <span class="input-group-text" id="addon-wrapping">Mängu nimi</span>
-        <input type="text" class="form-control">
-      </div>
+          <span class="input-group-text" id="addon-wrapping">Mängu nimi</span>
+          <input type="text" class="form-control">
+        </div>
 
         <div class="input-group mb-3">
           <span class="input-group-text" id="addon-wrapping">Koha vihje</span>
@@ -18,7 +18,7 @@
           <input type="text" class="form-control">
         </div>
 
-        <LocationsDropdown :questions="questions" />
+        <LocationsDropdown :questions="questions"/>
 
       </div>
       <div class="col">
@@ -31,9 +31,9 @@
 
 
 <script>
-import NewLocationService from "@/service/NewLocationService";
 import NavigationService from "@/service/NavigationService";
 import LocationsDropdown from "@/components/location/LocationsDropdown.vue";
+import LocationService from "@/service/LocationService";
 
 export default {
   name: "NewGameView",
@@ -54,15 +54,14 @@ export default {
   methods: {
 
     sendlocation() {
-      NewLocationService.sendNewLocationPostRequest()
-          .then(response => this.handleGetLocationsresponse(response))
-          .catch(() => NavigationService.navigateToErrorView() );
+      LocationService.sendGetLocationsRequest()
+          .then(response => this.handleGetLocationsResponse(response))
+          .catch(() => NavigationService.navigateToErrorView());
     },
 
-    handleGetLocationsresponse(response) {
+    handleGetLocationsResponse(response) {
       return this.questions = response.data;
     },
-
 
 
   },
