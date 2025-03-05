@@ -2,7 +2,7 @@
   <div
       ref="mapContainer"
       class="map-container"
-      :style="{ width: width || '80%', height: height || '600 px' }"
+      :style="{ width: width || '60%', height: height || '600 px' }"
   ></div>
 </template>
 
@@ -14,8 +14,8 @@ import markerShadow from 'leaflet/dist/images/marker-shadow.png'
 
 export default {
   props: {
-    center: { type: Array, default: () => [0, 0] },
-    zoom: { type: Number, default: 13 },
+    center: { type: Array, default: () => [58.2806, 25.4856] },
+    zoom: { type: Number, default: 7.4 },
     markers: {
       type: Array,
       default: () => []
