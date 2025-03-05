@@ -66,7 +66,7 @@ export default {
 
     handleRegistrationResponse() {
       this.$emit('event-show-nav-menu')
-      NavigationService.navigateToUserHomeView()
+      NavigationService.navigateToLoginView()
     },
 
     handleRegistrationErrorResponse(error) {
@@ -112,13 +112,13 @@ export default {
       }
     },
 
-    resetAlertMessage() {
-      this.message = ''
-    },
     alertMissingFields() {
       this.message = 'Kontrolli andmeid'
       setTimeout(this.resetAlertMessage, 4000)
-    }
+    },
+    resetAlertMessage() {
+      this.message = ''
+    },
 
   }
 }
