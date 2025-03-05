@@ -11,8 +11,7 @@ import AdminHomeView from "@/views/AdminHomeView.vue";
 const routes = [
     {
         path: '/',
-        name: 'home',
-        component: HomeView
+        redirect: '/login',
     },
     {
         path: '/login',

@@ -52,6 +52,7 @@ import InstructionsModal from "@/components/modal/InstructionsModal.vue";
 
 
 export default {
+  name: 'LoginView',
   components: {InstructionsModal, AlertDanger},
   data() {
     return {

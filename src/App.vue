@@ -1,5 +1,5 @@
 <template>
-  <nav><router-link to="/login">Login</router-link></nav>
+
   <template v-if="isLoggedIn">
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
@@ -9,7 +9,7 @@
       </button>-->
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-          <a class="nav-link active" aria-current="page" href="#"><font-awesome-icon :icon="['fas', 'house']" /></a>
+          <a class="nav-link active" aria-current="page" href="#/home"><font-awesome-icon :icon="['fas', 'house']" /></a>
           <a class="nav-link" href="#"><font-awesome-icon :icon="['fas', 'plus']" /></a>
           <a class="nav-link" href="#">KÕIK MÄNGUD</a>
         </div>
@@ -18,7 +18,7 @@
           <a class="nav-link" href="#"><font-awesome-icon :icon="['far', 'star']" /></a>
             </template>
           <a class="nav-link" href="#"><font-awesome-icon :icon="['far', 'circle-user']" /></a>
-          <a class="nav-link" href="#">Logi välja</a>
+          <a @click="logOut" class="nav-link" href="#/login">Logi välja</a>
             </div>
       </div>
     </div>
@@ -47,6 +47,10 @@ export default {
       this.isLoggedIn = userId !== null
       let roleName = sessionStorage.getItem('roleName')
       this.isUser = roleName != null && 'user' === roleName
+    },
+
+    logOut() {
+      this.isLoggedIn = false
     }
   }
 }

@@ -78,16 +78,23 @@ export default {
       this.errorResponse = error.response.data;
 
 
-      if (this.isIncorrectCredentials()) {
+
+      if (this.isIncorrectUsername()) {
+        this.handleIncorrectCredentials();
+      } else if (this.isIncorrectEmail()) {
         this.handleIncorrectCredentials();
       } else {
         NavigationService.navigateToErrorView()
       }
     },
 
-    isIncorrectCredentials() {
+    isIncorrectUsername() {
+      return BusinessErrors.CODE_USERNAME_EXISTS === this.errorResponse.errorCode;
+    },
+
+    isIncorrectEmail() {
       // todo: siin on buggi  ei jõua "or" lõppu.
-      return BusinessErrors.CODE_EMAIL_EXISTS=this.errorResponse.errorCode || BusinessErrors.CODE_USERNAME_EXISTS === this.errorResponse.errorCode;
+      return BusinessErrors.CODE_EMAIL_EXISTS === this.errorResponse.errorCode;
     },
 
     handleIncorrectCredentials() {
