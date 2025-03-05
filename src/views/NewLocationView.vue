@@ -29,12 +29,11 @@
 
           <div class="input-group mb-4">
             <label class="input-group-text" for="imageInput">Lisa pilt</label>
-            <input type="file" class="form-control" id="imageInput" accept="image/*">
+            <ImageInput @event-new-image-selected="setNewLocationImageData"/>
           </div>
 
           <div>
-            <img id="imagePreview" :src="defaultImage" class="img-thumbnail"
-                 style="max-width: 450px; max-height: 450px">
+            <LocationImage :image-data="newLocation.imageData"/>
           </div>
 
           <router-link to="/newLocation">Tühista</router-link>
@@ -51,20 +50,22 @@
 import newLocationService from "@/service/NewLocationService"
 import AlertDanger from "@/components/alert/AlertDanger.vue"
 import NavigationService from "@/service/NavigationService"
+import ImageInput from "@/components/image/ImageInput.vue";
+import LocationImage from "@/components/image/LocationImage.vue";
 
 export default {
  name: 'NewLocationView',
- components: {AlertDanger},
+ components: {LocationImage, ImageInput, AlertDanger},
  data() {
    return {
-     defaultImage: require('@/assets/defaultImage.jpg'),
      message: '',
-     NewLocation: {
-       locationname: '',
+     newLocation: {
+       locationName: '',
        // kas siin väikesetähega vist name ja siis meetodi sees ka parandus
        longitude: '',
        lattitude: '',
        clue: '',
+       imageData: '',
        // picture
      },
      locationResponse: {
@@ -73,8 +74,15 @@ export default {
    }
  },
  methods: {
+
+   setNewLocationImageData(imageData) {
+     console.log("OLEN SIIN")
+     this.newLocation.imageData = imageData
+   },
+
+
    createNewLocation() {
-     if (this.newLocation.locationname.length > 0
+     if (this.newLocation.locationName.length > 0
          && this.newLocation.longitude.length > 0
          && this.newLocation.lattitude.length > 0
          && this.newLocation.clue.length > 0

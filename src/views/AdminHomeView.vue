@@ -17,5 +17,7 @@
   </div>
 </template>
 <script>
-
+export default {
+  name: 'AdminHomeView'
+}
 </script>
