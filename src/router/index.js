@@ -7,6 +7,7 @@ import RegisterView from "@/views/RegisterView.vue";
 import GameView from "@/views/GameView.vue";
 import NewLocationView from "@/views/NewLocationView.vue";
 import AdminHomeView from "@/views/AdminHomeView.vue";
+import MapTestView from "@/views/MapTestView.vue";
 
 const routes = [
     {
@@ -42,6 +43,11 @@ const routes = [
         path: '/adminHome',
         name: 'adminHome',
         component: AdminHomeView
+    },
+    {
+        path: '/mapTest',
+        name: 'mapTest',
+        component: MapTestView
     },
     {
         path: '/game',
