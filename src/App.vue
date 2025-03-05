@@ -10,7 +10,7 @@
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
           <a class="nav-link active" aria-current="page" href="#/home"><font-awesome-icon :icon="['fas', 'house']" /></a>
-          <a class="nav-link" href="#"><font-awesome-icon :icon="['fas', 'plus']" /></a>
+          <a class="nav-link" href="#/newGame"><font-awesome-icon :icon="['fas', 'plus']" /></a>
           <a class="nav-link" href="#">KÕIK MÄNGUD</a>
         </div>
           <div class="navbar-nav ms-auto">

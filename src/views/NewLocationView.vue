@@ -7,7 +7,7 @@
         <div class="col col-7">
           <h3>Asukoha andmed</h3>
           <div class="input-group flex-nowrap mb-3">
-            <span class="input-group-text" id="addon-wrapping">Sisesta asukoha nimi</span>
+            <span class="input-group-text" id="addon-wrapping">Asukoha nimi</span>
             <input type="text" class="form-control">
           </div>
 
@@ -23,7 +23,7 @@
           </div>
 
           <div class="input-group mb-3">
-            <span class="input-group-text" id="addon-wrapping">Sisesta pildi vihje</span>
+            <span class="input-group-text" id="addon-wrapping">Koha vihje</span>
             <textarea class="form-control"></textarea>
           </div>
 
