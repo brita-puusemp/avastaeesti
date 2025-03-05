@@ -18,7 +18,10 @@
           <input type="text" class="form-control">
         </div>
 
-        <LocationsDropdown :questions="questions"/>
+        <LocationsDropdown :questions="questions" :selected-location-id="gameQuestions.questionId"
+                           @event-new-location-selected="setGameQuestionQuestionId"
+
+        />
 
       </div>
       <div class="col">
@@ -46,8 +49,11 @@ export default {
           locationName: '',
 
         }
-      ]
-
+      ],
+      gameQuestions: {
+        questionId: 0,
+        gameId: 0
+      }
     }
   },
 
@@ -61,6 +67,9 @@ export default {
 
     handleGetLocationsResponse(response) {
       return this.questions = response.data;
+    },
+    setGameQuestionQuestionId(selectedLocationId) {
+      this.gameQuestions.questionId = selectedLocationId
     },
 
 
