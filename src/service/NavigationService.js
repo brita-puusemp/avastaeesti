@@ -8,5 +8,8 @@ export default {
     navigateToErrorView() {
          // router.push({name: 'error'})
     },
+    navigateToAdminView() {
+        router.push({name: 'adminHome'})
+    },
 
  }

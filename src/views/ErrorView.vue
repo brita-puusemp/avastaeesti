@@ -1,8 +1,10 @@
 <template>
 <h1>error view</h1>
 </template>
-<script setup>
-
+<script>
+export default {
+  name: 'ErrorView'
+}
 </script>
 
 
