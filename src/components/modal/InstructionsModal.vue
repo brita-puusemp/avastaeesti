@@ -5,6 +5,7 @@
     <template #title>
       MÄNGU JUHEND
     </template>
+
     <template #body>
 <!--todo: Mängu juhend uuesti kirjutada. -->
       Iga mänguga on sul võimalus arvata, kus asuvad need 5 ilusat paika Eestimaal. Iga pildi arvamiseks on sul 2 minutit.
