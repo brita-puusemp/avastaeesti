@@ -7,41 +7,38 @@ import RegisterView from "@/views/RegisterView.vue";
 import GameView from "@/views/GameView.vue";
 import NewLocationView from "@/views/NewLocationView.vue";
 import AdminHomeView from "@/views/AdminHomeView.vue";
+import NewGameView from "@/views/NewGameView.vue";
 import MapTestView from "@/views/MapTestView.vue";
 
 const routes = [
     {
         path: '/',
-        redirect: '/login',
-    },
-    {
-        path: '/login',
-        name: 'login',
+        name: 'loginRoute',
         component: LoginView
     },
     {
         path: '/home',
-        name: 'userHome',
+        name: 'userHomeRoute',
         component: UserHomeView
     },
     {
         path: '/error',
-        name: 'error',
+        name: 'errorRoute',
         component: ErrorView
     },
     {
         path: '/register',
-        name: 'register',
+        name: 'registerRoute',
         component: RegisterView
     },
     {
-        path: '/newLocation',
-        name: 'newLocation',
+        path: '/location',
+        name: 'newLocationRoute',
         component: NewLocationView
     },
     {
-        path: '/adminHome',
-        name: 'adminHome',
+        path: '/home-admin',
+        name: 'adminHomeRoute',
         component: AdminHomeView
     },
     {
@@ -53,7 +50,12 @@ const routes = [
         path: '/game',
         name: 'game',
         component: GameView
-    }
+    },
+    {
+        path: '/game-new',
+        name: 'newGameRoute',
+        component: NewGameView
+    },
 
 ]
 

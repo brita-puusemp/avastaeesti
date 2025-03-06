@@ -10,7 +10,7 @@
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
           <a class="nav-link active" aria-current="page" href="#/home"><font-awesome-icon :icon="['fas', 'house']" /></a>
-          <a class="nav-link" href="#"><font-awesome-icon :icon="['fas', 'plus']" /></a>
+          <a class="nav-link" href="#/game-new"><font-awesome-icon :icon="['fas', 'plus']" /></a>
           <a class="nav-link" href="#">KÕIK MÄNGUD</a>
         </div>
           <div class="navbar-nav ms-auto">
@@ -18,7 +18,7 @@
           <a class="nav-link" href="#"><font-awesome-icon :icon="['far', 'star']" /></a>
             </template>
           <a class="nav-link" href="#"><font-awesome-icon :icon="['far', 'circle-user']" /></a>
-          <a @click="logOut" class="nav-link" href="#/login">Logi välja</a>
+          <a @click="logOut" class="nav-link" href="#/">Logi välja</a>
             </div>
       </div>
     </div>
