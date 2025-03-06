@@ -63,7 +63,8 @@ export default {
     return {
       isEdit: false,
       questionId: 0,
-      message: '',
+      successMessage: '',
+      errorMessage: '',
       location: {
         locationName: '',
         longitude: '',
@@ -86,41 +87,40 @@ export default {
         this.alertMissingFields()
       }
     },
+
     saveLocation() {
       //   todo: saada put sõnum andes kaasa requestion parameetrina questionId, requestBodyna dataploki locationon objekt.
       if (this.allFieldsCorrect()) {
-
-      }else{
+        this.updateLocation()
+      } else {
         this.alertMissingFields()
       }
     },
-
-
-    handleUpdateLocationRequest(response) {
-   this.location = response.data;
-    },
-    handleUpdateLocationErrorResponse(error) {
-     this.location = error.response.data;
-    },
-
-    updateLocation() {
-      LocationService.sendPutLocationRequest(location,questionId)
-          .then(response => this.handleUpdateLocationRequest(response))
-          .catch(error => this.handleUpdateLocationErrorResponse(error))
-    },
-
 
     allFieldsCorrect() {
       return this.location.locationName.length > 0
           && this.location.longitude.length > 0
           && this.location.lattitude.length > 0
           && this.location.clue.length > 0
-          && this.location.imageData.length > 0;
+          && this.location.imageData.length > 0
+    },
+
+    updateLocation() {
+      LocationService.sendPutLocationRequest(this.location, this.questionId)
+          .then(response => this.handleUpdateLocationRequest(response))
+          .catch(()=> NavigationService.navigateToErrorView())
+    },
+
+    handleUpdateLocationRequest(response) {
+      this.successMessage = 'Asukoha info on edukalt muudetud'
+      setTimeout(this.resetAllMessages, 4000)
+
     },
 
     setNewLocationImageData(imageData) {
       this.location.imageData = imageData
     },
+
     sendCreateNewLocationRequest() {
       LocationService.sendNewLocationPostRequest(this.location)
           .then(() => this.handleNewLocationResponse())
@@ -130,7 +130,7 @@ export default {
       this.errorResponse = error.response.data
       if (BusinessErrors.CODE_LOCATION_EXISTS === this.errorResponse.errorCode) {
         this.message = this.errorResponse.message
-        setTimeout(this.resetAlertMessage, 4000)
+        setTimeout(this.resetAllMessages, 4000)
       } else {
         NavigationService.navigateToErrorView()
       }
@@ -142,10 +142,12 @@ export default {
 
     alertMissingFields() {
       this.message = 'Kontrolli andmeid'
-      setTimeout(this.resetAlertMessage, 4000)
+      setTimeout(this.resetAllMessages, 4000)
     },
-    resetAlertMessage() {
-      this.message = ''
+    resetAllMessages() {
+      this.errorMessage = ''
+      this.successMessage = ''
+
     },
     handleIsEdit() {
       let questionId = Number(this.$route.query.questionId);
@@ -157,7 +159,6 @@ export default {
     }
 
   },
-
   beforeMount() {
     this.handleIsEdit()
   }
