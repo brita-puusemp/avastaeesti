@@ -4,6 +4,7 @@
     <img v-else :src="imageData" class="img-thumbnail" alt="Asukoha pilt">
   </div>
 </template>
+
 <script>
 export default {
   name: 'LocationImage',

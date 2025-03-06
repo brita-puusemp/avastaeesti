@@ -4,7 +4,7 @@ import UserHomeView from "@/views/UserHomeView.vue";
 import ErrorView from "@/views/ErrorView.vue";
 import RegisterView from "@/views/RegisterView.vue";
 import GameView from "@/views/GameView.vue";
-import NewLocationView from "@/views/NewLocationView.vue";
+import LocationView from "@/views/LocationView.vue";
 import AdminHomeView from "@/views/AdminHomeView.vue";
 import NewGameView from "@/views/NewGameView.vue";
 
@@ -31,8 +31,8 @@ const routes = [
     },
     {
         path: '/location',
-        name: 'newLocationRoute',
-        component: NewLocationView
+        name: 'locationRoute',
+        component: LocationView
     },
     {
         path: '/home-admin',

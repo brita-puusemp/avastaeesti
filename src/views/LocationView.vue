@@ -8,23 +8,23 @@
           <h3>Asukoha andmed</h3>
           <div class="input-group flex-nowrap mb-3">
             <span class="input-group-text" id="addon-wrapping">Asukoha nimi</span>
-            <input v-model="newLocation.locationName" type="text" class="form-control">
+            <input v-model="location.locationName" type="text" class="form-control">
           </div>
 
           <div class="d-flex gap-4 mb-3">
             <div class="input-group flex-nowrap">
               <span class="input-group-text" id="addon-wrapping">Asukoha pikkuskraad</span>
-              <input v-model="newLocation.longitude" type="text" class="form-control">
+              <input v-model="location.longitude" type="text" class="form-control">
             </div>
             <div class="input-group flex-nowrap">
               <span class="input-group-text" id="addon-wrapping">Asukoha laiuskraad</span>
-              <input v-model="newLocation.lattitude" type="text" class="form-control">
+              <input v-model="location.lattitude" type="text" class="form-control">
             </div>
           </div>
 
           <div class="input-group mb-3">
             <span class="input-group-text" id="addon-wrapping">Koha vihje</span>
-            <textarea v-model="newLocation.clue" class="form-control"></textarea>
+            <textarea v-model="location.clue" class="form-control"></textarea>
           </div>
 
           <div class="input-group mb-4">
@@ -33,11 +33,13 @@
           </div>
 
           <div>
-            <LocationImage :image-data="newLocation.imageData"/>
+            <LocationImage :image-data="location.imageData"/>
           </div>
-
+          <!--todo: et andmed tühjaks läheksid ka, kui tühista nuppu vajutad, et saaks uuesti sisestama hakata-->
           <router-link to="/location">Tühista</router-link>
-          <button @click="createNewLocation" type="submit" class="btn btn-success ms-5">KINNITA</button>
+          <button v-if="isEdit" @click="saveLocation" type="submit" class="btn btn-success ms-5">SALVESTA</button>
+          <button v-else @click="createNewLocation" type="submit" class="btn btn-success ms-5">LISA ASUKOHT</button>
+
         </div>
       </div>
     </div>
@@ -55,12 +57,14 @@ import LocationService from "@/service/LocationService";
 import BusinessErrors from "@/errors/BusinessErrors";
 
 export default {
-  name: 'NewLocationView',
+  name: 'LocationView',
   components: {LocationImage, ImageInput, AlertDanger},
   data() {
     return {
+      isEdit: false,
+      questionId: 0,
       message: '',
-      newLocation: {
+      location: {
         locationName: '',
         longitude: '',
         lattitude: '',
@@ -82,28 +86,52 @@ export default {
         this.alertMissingFields()
       }
     },
+    saveLocation() {
+      //   todo: saada put sõnum andes kaasa requestion parameetrina questionId, requestBodyna dataploki locationon objekt.
+      if (this.allFieldsCorrect()) {
+
+      }else{
+        this.alertMissingFields()
+      }
+    },
+
+
+    handleUpdateLocationRequest(response) {
+   this.location = response.data;
+    },
+    handleUpdateLocationErrorResponse(error) {
+     this.location = error.response.data;
+    },
+
+    updateLocation() {
+      LocationService.sendPutLocationRequest(location,questionId)
+          .then(response => this.handleUpdateLocationRequest(response))
+          .catch(error => this.handleUpdateLocationErrorResponse(error))
+    },
+
+
     allFieldsCorrect() {
-      return this.newLocation.locationName.length > 0
-          && this.newLocation.longitude.length > 0
-          && this.newLocation.lattitude.length > 0
-          && this.newLocation.clue.length > 0
-          && this.newLocation.imageData.length > 0;
+      return this.location.locationName.length > 0
+          && this.location.longitude.length > 0
+          && this.location.lattitude.length > 0
+          && this.location.clue.length > 0
+          && this.location.imageData.length > 0;
     },
 
     setNewLocationImageData(imageData) {
-      this.newLocation.imageData = imageData
+      this.location.imageData = imageData
     },
     sendCreateNewLocationRequest() {
-      LocationService.sendNewLocationPostRequest(this.newLocation)
-          .then(()=> this.handleNewLocationResponse())
-          .catch(error=>this.handleNewErrorResponse(error))
+      LocationService.sendNewLocationPostRequest(this.location)
+          .then(() => this.handleNewLocationResponse())
+          .catch(error => this.handleNewErrorResponse(error))
     },
-    handleNewErrorResponse(error){
+    handleNewErrorResponse(error) {
       this.errorResponse = error.response.data
-      if (BusinessErrors.CODE_LOCATION_EXISTS === this.errorResponse.errorCode){
+      if (BusinessErrors.CODE_LOCATION_EXISTS === this.errorResponse.errorCode) {
         this.message = this.errorResponse.message
         setTimeout(this.resetAlertMessage, 4000)
-      }else{
+      } else {
         NavigationService.navigateToErrorView()
       }
     },
@@ -118,7 +146,21 @@ export default {
     },
     resetAlertMessage() {
       this.message = ''
+    },
+    handleIsEdit() {
+      let questionId = Number(this.$route.query.questionId);
+      this.isEdit = !isNaN(questionId); // true if questionId is a number, false otherwise
+      if (this.isEdit) {
+        this.questionId = questionId
+      }
+      //   todo: kui isEdit on true, siis too ära asukohaandmed get sõnumiga, kasutades QeustionId´d. tulemus panna dataplokki location objekti sisse.
     }
-}
+
+  },
+
+  beforeMount() {
+    this.handleIsEdit()
+  }
+
 }
 </script>
