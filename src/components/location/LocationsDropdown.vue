@@ -1,27 +1,47 @@
 
 <template>
-  <select :value="selectedLocationId"  @click="addLocationToGame" class="form-select">
-    <option selected value=0>Kõik kohad</option>
-    <option v-for="question in questions" :value="question.questionId">{{question.locationName}}</option>
+  <select
+      :value="selectedLocationsId"
+      @change="addLocationToGame"
+      class="form-select"
+      multiple
+
+  >
+    <option disabled selected value=0>Kõik kohad</option>
+    <option
+        v-for="question in questions"
+        :key="question.id"
+        :value="question.id"
+    >
+      {{ question.locationName }}
+    </option>
   </select>
 
-</template>
+</template>:key="question.questionId"
 
 <script>
 export default {
   name: 'LocationsDropdown',
   props: {
-    questions: {},
-    selectedLocationId: {
-      type: Number,
-      default: 0
+    questions: {
+      type: Array,
+      required: true
+    },
+    selectedLocationsId: { // Muuda tüübiks Array
+      type: Array,
+      default: () => []
     }
-
   },
   methods: {
     addLocationToGame(event) {
-      this.$emit('event-new-location-selected', Number(event.target.value))
-    },
+      // Teisenda valitud ID-d numbriteks ja filtreeri kehtetud väärtused
+      const selectedValues = Array.from(event.target.selectedOptions, option => {
+        const value = Number(option.value);
+        return isNaN(value) ? null : value;
+      }).filter(value => value !== null);
+      console.log("Dropdowni valikud:", selectedValues); // Kontrolli, kas ID-d on õiged
+      this.$emit('event-new-location-selected', selectedValues); // Saada massiiv
+    }
   }
 }
 </script>

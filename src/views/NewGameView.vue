@@ -18,8 +18,10 @@
           <input type="text" class="form-control">
         </div>
 
-        <LocationsDropdown :questions="questions" :selected-location-id="gameQuestions.questionId"
-                           @event-new-location-selected="setGameQuestionQuestionId"
+        <LocationsDropdown
+            :questions="questions"
+            :selected-locations-id="gameQuestions.questionId"
+            @event-new-location-selected="setGameQuestionQuestionId"
 
         />
 
@@ -43,16 +45,10 @@ export default {
   components: {LocationsDropdown},
   data() {
     return {
-      questions: [
-        {
-          questionId: 0,
-          locationName: '',
-
-        }
-      ],
+      questions: [],
       gameQuestions: {
-        questionId: 0,
-        gameId: 0
+        gameId: 0,
+        questionId: [],
       }
     }
   },
@@ -68,8 +64,9 @@ export default {
     handleGetLocationsResponse(response) {
       return this.questions = response.data;
     },
-    setGameQuestionQuestionId(selectedLocationId) {
-      this.gameQuestions.questionId = selectedLocationId
+    setGameQuestionQuestionId(selectedLocationsId) {
+      this.gameQuestions.questionId = selectedLocationsId
+      console.log("Valitud ID-d:", selectedLocationsId);
     },
 
 
