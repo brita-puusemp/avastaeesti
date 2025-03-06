@@ -18,7 +18,7 @@
     </option>
   </select>
 
-</template>:key="question.questionId"
+</template>
 
 <script>
 export default {
@@ -35,7 +35,7 @@ export default {
   },
   methods: {
     addLocationToGame(event) {
-      // Teisenda valitud ID-d numbriteks ja filtreeri kehtetud väärtused
+      // Teisendab valitud ID-d numbriteks ja filtreerib kehtetud väärtused
       const selectedValues = Array.from(event.target.selectedOptions, option => {
         const value = Number(option.value);
         return isNaN(value) ? null : value;
