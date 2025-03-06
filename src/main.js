@@ -4,6 +4,9 @@ import router from './router'
 import VueAxios from "vue-axios";
 import axios from "axios";
 
+// leaflet css
+import 'leaflet/dist/leaflet.css'
+
 import '@/assets/css/style.css' // kui on oma style.css fail
 // bootstrap
 import "bootstrap/dist/css/bootstrap.min.css"

@@ -8,20 +8,17 @@
 
 <script>
 import L from 'leaflet'
-import 'leaflet/dist/leaflet.css'
-import markerIcon from 'leaflet/dist/images/marker-icon.png'
-import markerShadow from 'leaflet/dist/images/marker-shadow.png'
+
 
 export default {
   props: {
     center: { type: Array, default: () => [58.2806, 25.4856] },
     zoom: { type: Number, default: 7.4 },
     markers: {
-      type: Array,
-      default: () => []
+
+
     },
-    width: { type: String, default: '' },
-    height: { type: String, default: '' }
+
   },
   methods: {
     initializeMap() {
@@ -31,36 +28,27 @@ export default {
         maxZoom: 19
       }).addTo(this.map)
 
-      this.addMarkers()
+      this.addCircleMarker();
     },
 
-    addMarkers() {
-      const customIcon = L.icon({
-        iconUrl: markerIcon,
-        shadowUrl: markerShadow,
-        iconSize: [25, 41],
-        iconAnchor: [12, 41],
-        popupAnchor: [1, -34],
-        shadowSize: [41, 41]
-      });
+    addCircleMarker() {
+      if (!this.map) return;
 
-      for (const marker of this.markers) {
-        if (marker.latitude === 0 && marker.longitude === 0) continue;
-        L.marker([marker.latitude, marker.longitude], { icon: customIcon })
-            .addTo(this.map);
-      }
+      L.circle([58.2806, 25.4856], { // Paide, Estonia
+        color: 'red',
+        fillColor: '#f03',
+        fillOpacity: 0.5,
+        radius: 10000
+      }).addTo(this.map);
     }
   },
+
 
   mounted() {
     this.initializeMap()
   },
 
-  watch: {
-    markers() {
-      this.addMarkers();  // Add only when markers exist
-    }
-  }
+
 }
 </script>
 

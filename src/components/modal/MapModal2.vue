@@ -1,31 +1,43 @@
 <template>
+
   <Modal :modal-is-open="modalIsOpen" @event-close-modal="$emit('event-close-modal')">
-<!--    <template #body>-->
-<!--      <div-->
-<!--          ref="mapContainer"-->
-<!--          class="map-container"-->
-<!--          :style="{ width: '100%', height: '500px' }"-->
-<!--      ></div>-->
-<!--    </template>-->
+
+    <template #body>
+      <p>Place the pin by clicking on the map</p>
+      <div
+          ref="mapContainer"
+          class="map-container"
+          :style="{ width: width || '90%', height: height || '600 px' }"
+      ></div>
+    </template>
+
   </Modal>
+
 </template>
 
 <script>
-import L from 'leaflet'
-import 'leaflet/dist/leaflet.css'
 import Modal from "@/components/modal/Modal.vue";
-
+import L from 'leaflet'
 
 export default {
+  name: 'MapModal2',
   components: {Modal},
   props: {
     modalIsOpen: Boolean,
     center: {type: Array, default: () => [58.2806, 25.4856]},
     zoom: {type: Number, default: 7.4},
-    markers: {},
-
+  },
+  watch:{
+    modalIsOpen(newValue) {
+      if (newValue) {
+        this.$nextTick(() => {
+          this.initializeMap();
+        });
+      }
+    },
   },
   methods: {
+
     initializeMap() {
       this.map = L.map(this.$refs.mapContainer).setView(this.center, this.zoom)
 
@@ -46,16 +58,10 @@ export default {
         radius: 10000
       }).addTo(this.map);
     }
-  },
-
-
-  mounted() {
-    this.initializeMap()
-  },
-
-
+  }
 }
 </script>
+
 
 <style scoped>
 .map-container {

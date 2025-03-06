@@ -1,7 +1,11 @@
 <template>
 
-  <MapModal :modal-is-open="modalIsOpen"
-            @event-close-modal="closeModal"/>
+  <MapModal2 :modal-is-open="modalIsOpen"
+             @event-close-modal="closeModal"
+  />
+
+<!--  <MapModal :modal-is-open="modalIsOpen"-->
+<!--            @event-close-modal="closeModal"/>-->
   <div class="container text-center">
     <div class="row justify-content-center">
       <!-- Buttons for the rounds -->
@@ -39,7 +43,7 @@
 
     <div class="text-center mt-3">
       <button type="submit" class="btn btn-secondary mx-2">VÕTA VIHJE</button>
-      <button type="submit" class="btn btn-success mx-2">AVA KAARDIL</button>
+      <button @click="openModal" type="submit" class="btn btn-success mx-2">AVA KAARDIL</button>
     </div>
   </div>
 </template>
@@ -47,11 +51,12 @@
 <script>
 
 import MapModal from "@/components/modal/MapModal.vue";
+import MapModal2 from "@/components/modal/MapModal2.vue";
 
 
 export default {
   name: 'GameView',
-  components: {MapModal},
+  components: {MapModal2, MapModal},
   data() {
     return {
       modalIsOpen: false,
