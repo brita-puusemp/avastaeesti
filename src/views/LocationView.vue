@@ -1,11 +1,13 @@
 <template>
   <div>
-    <AlertDanger :message="message"/>
     <div class="container text-center">
 
       <div class="row justify-content-center">
         <div class="col col-7">
-          <h3>Asukoha andmed</h3>
+          <h3 v-if="isEdit">Muuda asukoha andmeid</h3>
+          <h3 v-else>Lisa asukoha andmed</h3>
+          <AlertDanger :message="errorMessage"/>
+          <AlertSuccess :message="successMessage"/>
           <div class="input-group flex-nowrap mb-3">
             <span class="input-group-text" id="addon-wrapping">Asukoha nimi</span>
             <input v-model="location.locationName" type="text" class="form-control">
@@ -55,14 +57,22 @@ import ImageInput from "@/components/image/ImageInput.vue";
 import LocationImage from "@/components/image/LocationImage.vue";
 import LocationService from "@/service/LocationService";
 import BusinessErrors from "@/errors/BusinessErrors";
+import AlertSuccess from "@/components/alert/AlertSuccess.vue";
+
 
 export default {
   name: 'LocationView',
-  components: {LocationImage, ImageInput, AlertDanger},
+  components: {LocationImage, ImageInput, AlertDanger, AlertSuccess},
   data() {
     return {
       isEdit: false,
       questionId: 0,
+      questions: [
+        {
+          questionId: 0,
+          locationName: '',
+        }
+      ],
       successMessage: '',
       errorMessage: '',
       location: {
@@ -108,10 +118,10 @@ export default {
     updateLocation() {
       LocationService.sendPutLocationRequest(this.location, this.questionId)
           .then(response => this.handleUpdateLocationRequest(response))
-          .catch(()=> NavigationService.navigateToErrorView())
+          .catch(() => NavigationService.navigateToErrorView())
     },
-
-    handleUpdateLocationRequest(response) {
+    // todo: ei tule edukas message
+    handleUpdateLocationRequest() {
       this.successMessage = 'Asukoha info on edukalt muudetud'
       setTimeout(this.resetAllMessages, 4000)
 
@@ -129,7 +139,7 @@ export default {
     handleNewErrorResponse(error) {
       this.errorResponse = error.response.data
       if (BusinessErrors.CODE_LOCATION_EXISTS === this.errorResponse.errorCode) {
-        this.message = this.errorResponse.message
+        this.errorMessage = this.errorResponse.message
         setTimeout(this.resetAllMessages, 4000)
       } else {
         NavigationService.navigateToErrorView()
@@ -141,14 +151,15 @@ export default {
     },
 
     alertMissingFields() {
-      this.message = 'Kontrolli andmeid'
+      this.errorMessage = 'Kontrolli andmeid'
       setTimeout(this.resetAllMessages, 4000)
     },
+
     resetAllMessages() {
       this.errorMessage = ''
       this.successMessage = ''
-
     },
+
     handleIsEdit() {
       let questionId = Number(this.$route.query.questionId);
       this.isEdit = !isNaN(questionId); // true if questionId is a number, false otherwise
@@ -156,11 +167,23 @@ export default {
         this.questionId = questionId
       }
       //   todo: kui isEdit on true, siis too ära asukohaandmed get sõnumiga, kasutades QeustionId´d. tulemus panna dataplokki location objekti sisse.
-    }
+    },
+
+    getLocations() {
+      LocationService.sendGetLocationsRequest()
+          .then(response => this.handleGetLocationsResponse(response))
+          .catch(() => NavigationService.navigateToErrorView());
+    },
+    handleGetLocationsResponse(response) {
+      this.questions = response.data;
+    },
 
   },
+
   beforeMount() {
     this.handleIsEdit()
+    this.getLocations()
+
   }
 
 }
