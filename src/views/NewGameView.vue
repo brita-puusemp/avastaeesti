@@ -5,27 +5,25 @@
         <h3>Mängu andmed</h3>
         <div class="input-group flex-nowrap mb-3">
           <span class="input-group-text" id="addon-wrapping">Mängu nimi</span>
-          <input type="text" class="form-control">
+          <input v-model="newGame.gameName" type="text" class="form-control">
         </div>
 
         <div class="input-group mb-3">
-          <span class="input-group-text" id="addon-wrapping">Koha vihje</span>
-          <textarea class="form-control"></textarea>
+          <span class="input-group-text" id="addon-wrapping">Mängu kirjeldus</span>
+          <textarea v-model="newGame.description" class="form-control"></textarea>
         </div>
 
         <div class="input-group flex-nowrap mb-3">
           <span class="input-group-text" id="addon-wrapping">Aega vastamiseks (min)</span>
-          <input type="text" class="form-control">
+          <input v-model="newGame.timePerQuestion" type="text" class="form-control">
         </div>
 
-        <LocationsDropdown :questions="questions" :selected-location-id="gameQuestions.questionId"
-                           @event-new-location-selected="setGameQuestionQuestionId"
 
-        />
+        <button @click="createNewGame" type="submit">Lisa küsimused</button>
 
       </div>
       <div class="col">
-        Column
+        <button @click="createNewGame" type="submit" class="btn btn-success ms-5">KINNITA</button>
       </div>
 
     </div>
@@ -35,47 +33,50 @@
 
 <script>
 import NavigationService from "@/service/NavigationService";
-import LocationsDropdown from "@/components/location/LocationsDropdown.vue";
-import LocationService from "@/service/LocationService";
+import GameService from "@/service/GameService";
 
 export default {
-  name: "NewGameView",
-  components: {LocationsDropdown},
+  gameName: "NewGameView",
   data() {
     return {
-      questions: [
-        {
-          questionId: 0,
-          locationName: '',
-
-        }
-      ],
-      gameQuestions: {
-        questionId: 0,
-        gameId: 0
+      newGame: {
+        userId: sessionStorage.getItem('userId'),
+        gameName: '',
+        description: '',
+        timePerQuestion: 0
       }
+
     }
   },
 
   methods: {
 
-    sendlocation() {
-      LocationService.sendGetLocationsRequest()
-          .then(response => this.handleGetLocationsResponse(response))
-          .catch(() => NavigationService.navigateToErrorView());
+
+    handleCreateNewGameResponse(response) {
+      let gameId = response.data;
+      NavigationService.navigateToGameQuestionView(gameId)
     },
 
-    handleGetLocationsResponse(response) {
-      return this.questions = response.data;
-    },
-    setGameQuestionQuestionId(selectedLocationId) {
-      this.gameQuestions.questionId = selectedLocationId
+    handleNewGameInfo() {
+      GameService.sendCreateNewGameRequest(this.newGame)
+          .then(response => this.handleCreateNewGameResponse(response))
+          .catch(() => NavigationService.navigateToErrorView())
     },
 
+    createNewGame() {
+      if (this.allFieldsCorrect()) {
+        this.handleNewGameInfo()
+      } else {
+        NavigationService.navigateToErrorView()
+      }
 
-  },
-  beforeMount() {
-    this.sendlocation()
+    },
+    allFieldsCorrect() {
+      return this.newGame.gameName.length > 0
+          && this.newGame.description.length > 0
+          && this.newGame.timePerQuestion.length > 0
+    },
+
   }
 }
 </script>
