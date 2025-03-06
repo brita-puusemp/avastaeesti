@@ -2,10 +2,9 @@
 
   <MapModal2 :modal-is-open="modalIsOpen"
              @event-close-modal="closeModal"
+             @location-clicked="handleLocationClick"
   />
 
-<!--  <MapModal :modal-is-open="modalIsOpen"-->
-<!--            @event-close-modal="closeModal"/>-->
   <div class="container text-center">
     <div class="row justify-content-center">
       <!-- Buttons for the rounds -->
@@ -50,25 +49,30 @@
 
 <script>
 
-import MapModal from "@/components/modal/MapModal.vue";
-import MapModal2 from "@/components/modal/MapModal2.vue";
 
+import MapModal from "@/components/modal/MapModal.vue";
 
 export default {
   name: 'GameView',
-  components: {MapModal2, MapModal},
+  components: { MapModal2: MapModal },
   data() {
     return {
       modalIsOpen: false,
-    }
+      clickedLocation: null, // Initialize as null
+    };
   },
   methods: {
     openModal() {
-      this.modalIsOpen = true
+      this.modalIsOpen = true;
     },
 
     closeModal() {
-      this.modalIsOpen = false
+      this.modalIsOpen = false;
+    },
+
+    handleLocationClick(location) {
+      this.clickedLocation = location;
+      console.log(`Chosen Location: ${location.lat}, ${location.lng}`);
     }
   }
 }
