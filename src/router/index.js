@@ -1,4 +1,4 @@
-import {createRouter, createWebHashHistory} from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import LoginView from "@/views/LoginView.vue";
 import UserHomeView from "@/views/UserHomeView.vue";
 import ErrorView from "@/views/ErrorView.vue";
@@ -41,7 +41,7 @@ const routes = [
     },
     {
         path: '/game',
-        name: 'game',
+        name: 'gameRoute',
         component: GameView
     },
     {
