@@ -2,7 +2,7 @@ import router from "@/router";
 
 export default {
     navigateToUserHomeView() {
-        router.push({name: 'userHomeRoute'})
+        router.push({gameName: 'userHomeRoute'})
     },
     // todo: see välja kommenteerida lõpus
     navigateToErrorView() {
@@ -10,10 +10,19 @@ export default {
     },
 
     navigateToAdminView() {
-        router.push({name: 'adminHomeRoute'})
+        router.push({gameName: 'adminHomeRoute'})
     },
 
     navigateToLoginView() {
-        router.push({name: 'loginRoute'})
+        router.push({gameName: 'loginRoute'})
     },
+
+    navigateToGameQuestionView(gameId) {
+        router.push({
+            name: 'gameQuestionsRoute',
+            query: {
+                gameId: gameId
+            }
+        })
+        }
 }

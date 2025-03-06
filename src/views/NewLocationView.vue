@@ -55,7 +55,7 @@ import LocationService from "@/service/LocationService";
 import BusinessErrors from "@/errors/BusinessErrors";
 
 export default {
-  name: 'NewLocationView',
+  gameName: 'NewLocationView',
   components: {LocationImage, ImageInput, AlertDanger},
   data() {
     return {

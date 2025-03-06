@@ -24,7 +24,7 @@ import {defineComponent} from "vue";
 import Modal from "@/components/modal/Modal.vue";
 
 export default {
-  name: 'InstructionsModal',
+  gameName: 'InstructionsModal',
   components: {Modal},
   props: {
     modalIsOpen: Boolean

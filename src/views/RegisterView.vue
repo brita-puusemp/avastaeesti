@@ -41,7 +41,7 @@ import BusinessErrors from "@/errors/BusinessErrors";
 import AlertDanger from "@/components/alert/AlertDanger.vue";
 
 export default {
-  name: 'RegisterView',
+  gameName: 'RegisterView',
   components: {AlertDanger},
   data() {
     return {

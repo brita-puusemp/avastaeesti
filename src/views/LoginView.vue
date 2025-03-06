@@ -51,7 +51,7 @@ import InstructionsModal from "@/components/modal/InstructionsModal.vue";
 
 
 export default {
-  name: 'LoginView',
+  gameName: 'LoginView',
   components: {InstructionsModal, AlertDanger},
   data() {
     return {

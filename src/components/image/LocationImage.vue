@@ -6,7 +6,7 @@
 </template>
 <script>
 export default {
-  name: 'LocationImage',
+  gameName: 'LocationImage',
   props: {
     imageData: String
   }
