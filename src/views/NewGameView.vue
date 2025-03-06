@@ -65,8 +65,9 @@ export default {
       return this.questions = response.data;
     },
     setGameQuestionQuestionId(selectedLocationsId) {
-      this.gameQuestions.questionId = selectedLocationsId
-      console.log("Valitud ID-d:", selectedLocationsId);
+      console.log("Valitud ID-d enne uuendamist:", this.gameQuestions.questionId);
+      this.gameQuestions.questionId = [...selectedLocationsId]
+      console.log("Valitud ID-d pärast uuendamist:", this.gameQuestions.questionId);
     },
 
 

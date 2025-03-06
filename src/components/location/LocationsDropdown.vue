@@ -12,6 +12,7 @@
         v-for="question in questions"
         :key="question.id"
         :value="question.id"
+        :class="{ 'highlighted': selectedLocationsId.includes(question.id) }"
     >
       {{ question.locationName }}
     </option>
@@ -45,3 +46,9 @@ export default {
   }
 }
 </script>
+    <style scoped>
+      .highlighted {
+        background-color: #f0f8ff; /* Hele sinine taust */
+        font-weight: bold; /* Rasvane tekst */
+      }
+    </style>
