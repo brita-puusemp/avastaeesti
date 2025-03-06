@@ -1,4 +1,10 @@
 <template>
+
+  <MapModal2 :modal-is-open="modalIsOpen"
+             @event-close-modal="closeModal"
+             @location-clicked="handleLocationClick"
+  />
+
   <div class="container text-center">
     <div class="row justify-content-center">
       <!-- Buttons for the rounds -->
@@ -36,13 +42,38 @@
 
     <div class="text-center mt-3">
       <button type="submit" class="btn btn-secondary mx-2">VÕTA VIHJE</button>
-      <button type="submit" class="btn btn-success mx-2">AVA KAARDIL</button>
+      <button @click="openModal" type="submit" class="btn btn-success mx-2">AVA KAARDIL</button>
     </div>
   </div>
 </template>
 
 <script>
+
+
+import MapModal from "@/components/modal/MapModal.vue";
+
 export default {
-  name: 'GameView'
+  name: 'GameView',
+  components: { MapModal2: MapModal },
+  data() {
+    return {
+      modalIsOpen: false,
+      clickedLocation: null, // Initialize as null
+    };
+  },
+  methods: {
+    openModal() {
+      this.modalIsOpen = true;
+    },
+
+    closeModal() {
+      this.modalIsOpen = false;
+    },
+
+    handleLocationClick(location) {
+      this.clickedLocation = location;
+      console.log(`Chosen Location: ${location.lat}, ${location.lng}`);
+    }
+  }
 }
 </script>
