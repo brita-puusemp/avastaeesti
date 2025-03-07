@@ -15,7 +15,7 @@
 
         <div class="input-group flex-nowrap mb-3">
           <span class="input-group-text" id="addon-wrapping">Aega vastamiseks (min)</span>
-          <input v-model="newGame.timePerQuestion" type="text" class="form-control">
+          <input v-model="newGame.timePerLocation" type="text" class="form-control">
         </div>
 
 
@@ -74,7 +74,7 @@ export default {
     allFieldsCorrect() {
       return this.newGame.gameName.length > 0
           && this.newGame.description.length > 0
-          && this.newGame.timePerQuestion.length > 0
+          && this.newGame.timePerLocation.length > 0
     },
 
   }

@@ -8,12 +8,12 @@
   >
     <option disabled selected value=0>Kõik kohad</option>
     <option
-        v-for="question in questions"
-        :key="question.id"
-        :value="question.id"
-        :class="{ 'highlighted': selectedLocationId === question.id  }"
+        v-for="location in locations"
+        :key="location.locationId"
+        :value="location.locationId"
+        :class="{ 'highlighted': selectedLocationId === location.locationId  }"
     >
-      {{ question.locationName }}
+      {{ location.locationName }}
     </option>
   </select>
 
@@ -23,7 +23,7 @@
 export default {
   gameName: 'LocationsDropdown',
   props: {
-    questions: {
+    locations: {
       type: Array,
       required: true
     },

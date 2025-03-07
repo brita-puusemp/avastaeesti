@@ -61,7 +61,7 @@ import AlertSuccess from "@/components/alert/AlertSuccess.vue";
 
 
 export default {
-  name: 'LocationView',
+  locationName: 'LocationView',
   components: {LocationImage, ImageInput, AlertDanger, AlertSuccess},
   data() {
     return {

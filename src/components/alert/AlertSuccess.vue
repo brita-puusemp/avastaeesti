@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: "AlertSuccess",
+  locationName: "AlertSuccess",
   props: {
     message: String
   }
