@@ -9,6 +9,24 @@ export default {
         return axios.get('/locations');
     },
 
+    sendPutLocationRequest(location, locationId) {
+        return axios.put('/location', location, {
+                params: {
+                    locationId: locationId
+                }
+            }
+        )
+    },
+
+    sendGetLocationRequest(locationId) {
+        return axios.get('/location', {
+                params: {
+                    locationId: locationId,
+                }
+            }
+        )
+
+    },
     sendGetLocationPreviewRequest(locationId) {
         return axios.get('/location-preview', {
                 params: {
@@ -18,15 +36,6 @@ export default {
             }
         )
     },
-
-    sendPutLocationRequest(location, questionId) {
-        return axios.put('/location',location, {
-                params: {
-                    location: location,
-                    questionId: questionId
-                }
-            }
-        )
-    },
-
 }
+
+

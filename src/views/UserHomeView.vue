@@ -46,7 +46,7 @@
 
 <script>
 export default {
-  gameName: 'UserHomeView'
+  name: 'UserHomeView'
 }
 </script>
 

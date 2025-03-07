@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  gameName: 'ImageInput',
+  name: 'ImageInput',
   data() {
     return {
       imageDataBase64: String
