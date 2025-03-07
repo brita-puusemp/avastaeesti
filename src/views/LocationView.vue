@@ -147,6 +147,7 @@ export default {
       }
     },
 
+    // todo: ei näita asukoht lisatud
     handleNewLocationResponse() {
       this.successMessage = 'Asukoht lisatud'
       NavigationService.navigateToAdminView()
@@ -169,7 +170,7 @@ export default {
         this.locationId = locationId
         this.getLocation(locationId)
       }
-      //   todo: kui isEdit on true, siis too ära asukohaandmed get sõnumiga, kasutades QeustionId´d. tulemus panna dataplokki location objekti sisse.
+      //   todo: kui isEdit on true, siis too ära asukohaandmed get sõnumiga, kasutades locationId´d. tulemus panna dataplokki location objekti sisse.
     },
 
     getLocation(locationId) {
