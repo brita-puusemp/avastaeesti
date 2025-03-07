@@ -7,7 +7,7 @@
 
 <script>
 export default {
-  gameName: 'LocationImage',
+  name: 'LocationImage',
   props: {
     imageData: String
   }

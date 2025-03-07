@@ -49,7 +49,7 @@ import LocationService from "@/service/LocationService";
 import NavigationService from "@/service/NavigationService";
 
 export default {
-  gameName: 'gameQuestionsView',
+  name: 'gameQuestionsView',
   components: {LocationsDropdown},
   data() {
     return {

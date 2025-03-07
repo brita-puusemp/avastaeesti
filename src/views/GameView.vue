@@ -53,7 +53,7 @@
 import MapModal from "@/components/modal/MapModal.vue";
 
 export default {
-  gameName: 'GameView',
+  name: 'GameView',
   components: { MapModal2: MapModal },
   data() {
     return {

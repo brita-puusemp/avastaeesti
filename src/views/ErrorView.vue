@@ -3,7 +3,7 @@
 </template>
 <script>
 export default {
-  gameName: 'ErrorView'
+  name: 'ErrorView'
 }
 </script>
 

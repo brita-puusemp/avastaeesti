@@ -36,7 +36,7 @@ import NavigationService from "@/service/NavigationService";
 import GameService from "@/service/GameService";
 
 export default {
-  gameName: "NewGameView",
+  name: "NewGameView",
   data() {
     return {
       newGame: {

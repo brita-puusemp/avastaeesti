@@ -18,6 +18,6 @@
 </template>
 <script>
 export default {
-  gameName: 'AdminHomeView'
+  name: 'AdminHomeView'
 }
 </script>

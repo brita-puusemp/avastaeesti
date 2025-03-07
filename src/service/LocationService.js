@@ -9,14 +9,25 @@ export default {
         return axios.get('/locations');
     },
 
-    sendPutLocationRequest(location, questionId) {
-        return axios.put('/location',location, {
+    sendPutLocationRequest(location, locationId) {
+        return axios.put('/location', location, {
                 params: {
                     location: location,
-                    questionId: questionId
+                    locationId: locationId
                 }
             }
         )
     },
 
+    sendGetLocationRequest(locationId) {
+        return axios.get('/location', {
+                params: {
+                    locationId: locationId,
+                }
+            }
+        )
+
+    }
 }
+
+

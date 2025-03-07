@@ -40,7 +40,7 @@
           <!--todo: et andmed tühjaks läheksid ka, kui tühista nuppu vajutad, et saaks uuesti sisestama hakata-->
           <router-link to="/location">Tühista</router-link>
           <button v-if="isEdit" @click="saveLocation" type="submit" class="btn btn-success ms-5">SALVESTA</button>
-          <button v-else @click="createNewLocation" type="submit" class="btn btn-success ms-5">LISA ASUKOHT</button>
+          <button v-else @click="addNewLocation" type="submit" class="btn btn-success ms-5">LISA ASUKOHT</button>
 
         </div>
       </div>
@@ -56,6 +56,7 @@ import NavigationService from "@/service/NavigationService"
 import ImageInput from "@/components/image/ImageInput.vue";
 import LocationImage from "@/components/image/LocationImage.vue";
 import LocationService from "@/service/LocationService";
+import locationService from "@/service/LocationService";
 import BusinessErrors from "@/errors/BusinessErrors";
 import AlertSuccess from "@/components/alert/AlertSuccess.vue";
 
@@ -66,10 +67,10 @@ export default {
   data() {
     return {
       isEdit: false,
-      questionId: 0,
-      questions: [
+      locationId: 0,
+      locations: [
         {
-          questionId: 0,
+          locationId: 0,
           locationName: '',
         }
       ],
@@ -89,7 +90,7 @@ export default {
     }
   },
   methods: {
-    createNewLocation() {
+    addNewLocation() {
       if (this.allFieldsCorrect()) {
         this.sendCreateNewLocationRequest()
       } else {
@@ -97,8 +98,19 @@ export default {
       }
     },
 
+    sendCreateNewLocationRequest() {
+      LocationService.sendNewLocationPostRequest(this.location)
+          .then(() => this.handleNewLocationResponse())
+          .catch(error => this.handleNewErrorResponse(error))
+    },
+
+    updateLocation() {
+      LocationService.sendPutLocationRequest(this.location, this.locationId)
+          .then(response => this.handleUpdateLocationRequest(response))
+          .catch(() => NavigationService.navigateToErrorView())
+    },
+
     saveLocation() {
-      //   todo: saada put sõnum andes kaasa requestion parameetrina questionId, requestBodyna dataploki locationon objekt.
       if (this.allFieldsCorrect()) {
         this.updateLocation()
       } else {
@@ -114,11 +126,6 @@ export default {
           && this.location.imageData.length > 0
     },
 
-    updateLocation() {
-      LocationService.sendPutLocationRequest(this.location, this.questionId)
-          .then(response => this.handleUpdateLocationRequest(response))
-          .catch(() => NavigationService.navigateToErrorView())
-    },
     // todo: ei tule edukas message
     handleUpdateLocationRequest() {
       this.successMessage = 'Asukoha info on edukalt muudetud'
@@ -130,11 +137,6 @@ export default {
       this.location.imageData = imageData
     },
 
-    sendCreateNewLocationRequest() {
-      LocationService.sendNewLocationPostRequest(this.location)
-          .then(() => this.handleNewLocationResponse())
-          .catch(error => this.handleNewErrorResponse(error))
-    },
     handleNewErrorResponse(error) {
       this.errorResponse = error.response.data
       if (BusinessErrors.CODE_LOCATION_EXISTS === this.errorResponse.errorCode) {
@@ -144,8 +146,9 @@ export default {
         NavigationService.navigateToErrorView()
       }
     },
-    // todo: ei lähe admin lehele edasi
+
     handleNewLocationResponse() {
+      this.successMessage = 'Asukoht lisatud'
       NavigationService.navigateToAdminView()
     },
 
@@ -160,30 +163,33 @@ export default {
     },
 
     handleIsEdit() {
-      let questionId = Number(this.$route.query.questionId);
-      this.isEdit = !isNaN(questionId); // true if questionId is a number, false otherwise
+      let locationId = Number(this.$route.query.locationId);
+      this.isEdit = !isNaN(locationId); // true if questionId is a number, false otherwise
       if (this.isEdit) {
-        this.questionId = questionId
+        this.locationId = locationId
+        this.getLocation(locationId)
       }
       //   todo: kui isEdit on true, siis too ära asukohaandmed get sõnumiga, kasutades QeustionId´d. tulemus panna dataplokki location objekti sisse.
     },
 
-    getLocations() {
-      LocationService.sendGetLocationsRequest()
-          .then(response => this.handleGetLocationsResponse(response))
-          .catch(() => NavigationService.navigateToErrorView());
+    getLocation(locationId) {
+      locationService.sendGetLocationRequest(locationId)
+          .then(response => this.handleGetLocationRequest(response))
+          .catch(() => NavigationService.navigateToErrorView(error))
+
     },
-    handleGetLocationsResponse(response) {
-      this.questions = response.data;
+
+    handleGetLocationRequest(response) {
+      this.location = response.data;
     },
 
   },
 
   beforeMount() {
     this.handleIsEdit()
-    this.getLocations()
 
   }
 
 }
+
 </script>
