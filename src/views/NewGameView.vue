@@ -43,7 +43,7 @@ export default {
         userId: sessionStorage.getItem('userId'),
         gameName: '',
         description: '',
-        timePerQuestion: 0
+        timePerLocation: 0
       }
 
     }

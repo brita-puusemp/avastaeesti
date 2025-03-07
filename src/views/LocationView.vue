@@ -16,11 +16,11 @@
           <div class="d-flex gap-4 mb-3">
             <div class="input-group flex-nowrap">
               <span class="input-group-text" id="addon-wrapping">Asukoha pikkuskraad</span>
-              <input v-model="location.longitude" type="text" class="form-control">
+              <input v-model="location.longitude" type="number" class="form-control">
             </div>
             <div class="input-group flex-nowrap">
               <span class="input-group-text" id="addon-wrapping">Asukoha laiuskraad</span>
-              <input v-model="location.latitude" type="text" class="form-control">
+              <input v-model="location.latitude" type="number" class="form-control">
             </div>
           </div>
 
@@ -77,8 +77,8 @@ export default {
       errorMessage: '',
       location: {
         locationName: '',
-        longitude: 0,
-        latitude: 0,
+        longitude: null,
+        latitude: null,
         clue: '',
         imageData: '',
       },
@@ -91,8 +91,6 @@ export default {
   methods: {
     createNewLocation() {
       if (this.allFieldsCorrect()) {
-        this.location.latitude = Number(this.location.latitude)
-        this.location.longitude = Number(this.location.longitude)
         this.sendCreateNewLocationRequest()
       } else {
         this.alertMissingFields()
@@ -110,8 +108,8 @@ export default {
 
     allFieldsCorrect() {
       return this.location.locationName.length > 0
-          && this.location.longitude.length > 0
-          && this.location.latitude.length > 0
+          && this.location.longitude !== null
+          && this.location.latitude !== null
           && this.location.clue.length > 0
           && this.location.imageData.length > 0
     },
