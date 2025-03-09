@@ -51,6 +51,7 @@
 
 
 import MapModal from "@/components/modal/MapModal.vue";
+import L from "leaflet";
 
 export default {
   name: 'GameView',
@@ -58,7 +59,11 @@ export default {
   data() {
     return {
       modalIsOpen: false,
-      clickedLocation: null, // Initialize as null
+      clickedLocation: null,
+      correct_latitude: 58.2806,
+      correct_longitude: 25.4856,
+      allowedDistanceInMeters: 10000,
+      answerIsCorrect: false
     };
   },
   methods: {
@@ -73,6 +78,21 @@ export default {
     handleLocationClick(location) {
       this.clickedLocation = location;
       console.log(`Chosen Location: ${location.lat}, ${location.lng}`);
+      this.calculateDistance(location);
+    },
+
+    calculateDistance(clickedLocation) {
+      const correctLatLng = L.latLng(this.correct_latitude, this.correct_longitude);
+      const clickedLatLng = L.latLng(clickedLocation.lat, clickedLocation.lng);
+      const distance = correctLatLng.distanceTo(clickedLatLng);
+      console.log(distance);
+      console.log(this.allowedDistanceInMeters);
+
+      if (distance <= this.allowedDistanceInMeters) {
+        this.answerIsCorrect = true;
+      } else {
+        this.answerIsCorrect = false;
+      }
     }
   }
 }
