@@ -3,22 +3,28 @@
     <div class="container text-center">
       <div class="row">
         <div class="col">
-          <h3>Asukohtade nimekiri</h3>
+          <h3>ASUKOHAD</h3>
         </div>
       </div>
 
       <div class="container text-center">
-        <div class="col col-6">
+        <div class="col-4">
           <AlertDanger :message="errorMessage"/>
-          <AlertDanger :message="successMessage"/>
+          <AlertSuccess :message="successMessage"/>
         </div>
 
       </div>
 
       <div class="row mt-4 justify-content-center">
-        <div class="col col-6">
-          <LocationsTable :locations="locations" :is-admin="isAdmin"
-                          @event-location-deleted="handleLocationDeleted"
+        <div class="col col-10">
+          <LocationsTable :locations="locations" :location-id="locationId"
+                          @event-open-modal="openLocationModal"
+          />
+          <ViewLocationModal :modal-is-open="modalIsOpen" :is-delete="isDelete" :location="location"
+                             :location-id="locationId"
+                             @event-close-modal="closeModal"
+                             @event-location-deleted="handleLocationDeleted"
+
           />
         </div>
       </div>
@@ -35,16 +41,20 @@ import locationService from "@/service/LocationService";
 import httpStatusCodes from "@/errors/HttpStatusCodes";
 import businessErrors from "@/errors/BusinessErrors";
 import NavigationService from "@/service/NavigationService";
+import ViewLocationModal from "@/components/modal/ViewLocationModal.vue";
 
 export default {
   name: 'AdminHomeView',
-  components: {LocationsTable, AlertDanger, AlertSuccess,},
+  components: {ViewLocationModal, LocationsTable, AlertDanger, AlertSuccess,},
   data() {
     return {
       isAdmin: false,
+      modalIsOpen: false,
+      isDelete: false,
+      location: {},
+      locationId: 0,
       errorMessage: '',
       successMessage: '',
-      //todo: kas siin pikalt või ikkagi ainult locationName ja id?
       locations: [
         {
           locationId: 0,
@@ -104,9 +114,21 @@ export default {
       setTimeout(this.resetAllMessages, 4000)
     },
 
+    openLocationModal() {
+      this.locationId = locationId
+      this.modalIsOpen = true
+      this.isDelete = false
+      this.location = this.locations.find(loc => loc.locationId === locationId)
+    },
+
     resetAllMessages() {
       this.errorMessage = ''
       this.successMessage = ''
+    },
+
+    closeModal() {
+      this.modalIsOpen = false
+      this.isDelete = false
     }
   },
 

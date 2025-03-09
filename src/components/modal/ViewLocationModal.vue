@@ -1,8 +1,8 @@
 <template>
-  <Modal :modal-is-open="modalIsOpen" @event-close.modal="$emit('event-close-modal')">
+  <Modal :modal-is-open="modalIsOpen" :is-delete="isDelete" @event-close-modal="$emit('event-close-modal')">
     <template #title>
       <div v-if="isDelete">
-        Kas sa soovid kustuta asukohta{{ location.locationName }}?
+        Kas sa soovid kustuta asukohta: {{ location.locationName }}?
       </div>
       <div v-else>
         {{ location.locationName }}
@@ -18,7 +18,7 @@
     </template>
 
     <template #footer>
-      <button v-if="isDelete" @click="deleteLocation" type="button" class="btn btn-secondary me-2">KUSTUTA</button>
+      <button v-if="isDelete" @click="deleteLocation" type="button" class="btn btn-btn-danger">KUSTUTA</button>
     </template>
 
   </Modal>
@@ -37,6 +37,7 @@ export default {
     modalIsOpen: Boolean,
     isDelete: Boolean,
     location: {},
+    locationId: '',
   },
 
   methods: {
@@ -49,8 +50,12 @@ export default {
 
     handleDeleteLocationResponse() {
       this.$emit('event-location-deleted')
-      this.$emit('event-close-modal')
+      this.closeModal()
     },
+
+    closeModal() {
+      this.$emit('event-close-modal')
+    }
   }
 }
 </script>

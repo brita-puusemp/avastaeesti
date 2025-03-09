@@ -38,7 +38,6 @@ export default {
         )
     },
 
-    // todo: ma ei ole selels urlis kindel, kas home-admin hoopis?
     sendDeleteLocationRequest(locationId) {
         return axios.delete('/home-admin', {
                 params: {

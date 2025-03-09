@@ -3,37 +3,26 @@
     <ViewLocationModal :modal-is-open="modalIsOpen" :location="location" :is-delete="isDelete"
                        @event-close-modal="closeViewLocationModal"
                        @event-location-deleted="$emit('event-location-deleted')"
-
     />
     <table class="table">
       <thead>
       <tr>
-        <!--      todo: kas siin saaks genereerida JKN?-->
-        <th scope="row">Järjekorranumber</th>
-        <th scope="col">ASUKOHA NIMI</th>
-        <!--        todo: vaata üle, kas see muuda/kustuta ikka jääb-->
-        <th scope="col">Muuda/Kustuta</th>
-
-        <th v-if="isAdmin" scope="col"></th>
+        <th scope="col">Järjekorranumber</th>
+        <th scope="col">Asukoha nimi</th>
+        <th scope="col">Muuda või kustuta</th>
       </tr>
       </thead>
-
       <tbody>
-
-
-      <tr v-for="location in locations" :key="location.locationId">
-        <th scope="row">{{ location.locationName }}</th>
-      </tr>
-
-      <tr>
-        <td v-if="isAdmin">
+      <tr v-for="(location, index) in locations" :key="location.locationId">
+        <td>{{ index + 1 }}</td>
+        <td>{{ location.locationName }}</td>
+        <td>
           <font-awesome-icon icon="pen-to-square" @click="navigateToLocationView(location.locationId)"
                              class="cursor-pointer me-3"/>
           <font-awesome-icon icon="trash" @click="openViewLocationModalWithDelete(location.locationId)"
                              class="cursor-pointer"/>
         </td>
       </tr>
-
       </tbody>
     </table>
   </div>
@@ -51,12 +40,12 @@ export default {
   props: {
     isAdmin: Boolean,
     locations: [{}],
-    //todo: kas lodations{} või location [ja sisu ka? ja datasse hoopis]
   },
+
   data() {
     return {
-      modalIsOpen: false,
       isDelete: false,
+      modalIsOpen: false,
       location: {
         locationName: '',
         longitude: null,
@@ -66,6 +55,7 @@ export default {
       }
     }
   },
+
   methods: {
 
     closeViewLocationModal() {
@@ -84,12 +74,9 @@ export default {
 
     openViewLocationModal(locationId) {
       locationService.sendGetLocationRequest(locationId)
-          .then(response => this.handleGetLocationRequest(response))
+          .then(response => this.location = response.data,
+              this.modalIsOpen = true)
           .catch(() => NavigationService.navigateToErrorView())
-    },
-
-    handleGetLocationRequest(response) {
-      this.location = response.data
     }
   }
 }

@@ -37,9 +37,7 @@
           <div class="d-flex justify-content-center">
             <LocationImage :image-data="location.imageData" style="width: 500px; height: 500px;"/>
           </div>
-          <!--todo: kuhu viib tühista nupp, kui addnew ja edit vaates see sama viide-->
-<!--          <router-link to="/location">Tühista</router-link>-->
-          <button @click="goBack">Tühista/tagasi</button>
+          <button @click="goBack">Nimekirja juurde</button>
           <button v-if="isEdit" @click="saveLocation" type="submit" class="btn btn-success ms-5">SALVESTA</button>
           <button v-else @click="addNewLocation" type="submit" class="btn btn-success ms-5">LISA ASUKOHT</button>
 
