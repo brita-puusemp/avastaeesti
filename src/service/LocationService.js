@@ -27,11 +27,22 @@ export default {
         )
 
     },
+
     sendGetLocationPreviewRequest(locationId) {
         return axios.get('/location-preview', {
                 params: {
                     locationId: locationId
 
+                }
+            }
+        )
+    },
+
+    // todo: ma ei ole selels urlis kindel, kas home-admin hoopis?
+    sendDeleteLocationRequest(locationId) {
+        return axios.delete('/home-admin', {
+                params: {
+                    locationId: locationId
                 }
             }
         )

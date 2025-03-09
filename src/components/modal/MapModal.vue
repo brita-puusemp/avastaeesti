@@ -26,7 +26,7 @@ L.Icon.Default.mergeOptions({
 
 
 export default {
-  gameName: 'MapModal2',
+  name: 'MapModal2',
   components: { Modal },
   props: {
     modalIsOpen: Boolean,
