@@ -41,7 +41,7 @@
 
 
     <div class="text-center mt-3">
-      <button type="submit" class="btn btn-secondary mx-2">VÕTA VIHJE</button>
+      <button @click="openModal" type="submit" class="btn btn-secondary mx-2">VÕTA VIHJE</button>
       <button @click="openModal" type="submit" class="btn btn-success mx-2">AVA KAARDIL</button>
     </div>
   </div>
@@ -51,11 +51,13 @@
 
 
 import MapModal from "@/components/modal/MapModal.vue";
+import GetHintModal from "@/components/modal/GetHintModal.vue";
 import L from "leaflet";
+
 
 export default {
   name: 'GameView',
-  components: { MapModal2: MapModal },
+  components: { MapModal2: MapModal, GetHintModal },
   data() {
     return {
       modalIsOpen: false,
