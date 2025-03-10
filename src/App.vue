@@ -15,7 +15,7 @@
             <a class="nav-link" href="#/game-new">
               <font-awesome-icon :icon="['fas', 'plus']"/>
             </a>
-            <a class="nav-link" href="#">KÕIK MÄNGUD</a>
+            <a class="nav-link" href="#/games">KÕIK MÄNGUD</a>
           </div>
           <div class="navbar-nav ms-auto">
             <template v-if="isUser">

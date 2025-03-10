@@ -43,5 +43,15 @@ export default {
                 gameId: gameId
             }
         })
-    }
+    },
+
+    navigateToGameView(gameId) {
+        router.push({
+            name: 'gameRoute',
+            query: {
+                gameId: gameId
+            }
+        })
+
+    },
 }
