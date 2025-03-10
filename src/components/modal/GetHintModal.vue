@@ -1,17 +1,16 @@
 <template>
 
 
-    <Modal :hint-modal-is-open="hintModalIsOpen" @event-close-modal="$emit('event-close-modal')" >
+    <Modal :hint-modal-is-open="hintModalIsOpen"
+           :hint="hint"
+           @event-close-modal="$emit('event-close-modal')" >
 
       <template #title>
         VIHJE
       </template>
 
       <template #body>
-        <!--todo: Mängu juhend uuesti kirjutada. -->
-        Iga mänguga on sul võimalus arvata, kus asuvad need 5 ilusat paika Eestimaal. Iga pildi arvamiseks on sul 2 minutit.
-
-        Saad salvestada asukohti ka oma lemmikutesse.
+        {{hint}}
       </template>
 
     </Modal>
@@ -23,11 +22,12 @@
 import Modal from "@/components/modal/Modal.vue";
 
 export default {
-  name: 'GetHintModal' ,
+  name: 'GetHintModal',
   components: {Modal},
   props: {
-    hintModalIsOpen: Boolean
-  }
+    hintModalIsOpen: Boolean,
+    hint: String
+  },
 }
 </script>
 

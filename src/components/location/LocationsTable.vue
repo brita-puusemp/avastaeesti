@@ -29,7 +29,6 @@
 
 import NavigationService from "@/service/NavigationService";
 import ViewLocationModal from "@/components/modal/ViewLocationModal.vue";
-import locationService from "@/service/LocationService";
 
 export default {
   name: 'LocationsTable',

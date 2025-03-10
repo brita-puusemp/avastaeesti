@@ -37,7 +37,7 @@
           <div class="d-flex justify-content-center">
             <LocationImage :image-data="location.imageData" style="width: 500px; height: 500px;"/>
           </div>
-          <button @click="goBack">Nimekirja juurde</button>
+          <button @click="goBack" type="button" class="btn btn-light">Nimekirja juurde</button>
           <button v-if="isEdit" @click="saveLocation" type="submit" class="btn btn-success ms-5">SALVESTA</button>
           <button v-else @click="addNewLocation" type="submit" class="btn btn-success ms-5">LISA ASUKOHT</button>
 
@@ -98,9 +98,9 @@ export default {
 
     // todo ei anna edukat asukoht lisatud, läks home-admin lehele.
     handleNewLocationResponse() {
-      this.successMessage = 'Asukoht lisatud'
-      setTimeout(this.resetAllMessages, 4000)
-      NavigationService.navigateToAdminView()
+      sessionStorage.setItem('successMessage', 'Asukoht lisatud')
+      // setTimeout(this.resetAllMessages, 4000,)
+      NavigationService.navigateToAdminHomeView()
     },
 
     handleNewErrorResponse(error) {

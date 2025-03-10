@@ -13,7 +13,7 @@ export default {
         // router.push({name: 'errorRoute'})
     },
 
-    navigateToAdminView() {
+    navigateToAdminHomeView() {
         router.push({
                 name: 'adminHomeRoute'
             }
