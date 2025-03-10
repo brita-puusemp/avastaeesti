@@ -21,7 +21,7 @@
 
 <script>
 export default {
-  gameName: 'LocationsDropdown',
+  name: 'LocationsDropdown',
   props: {
     locations: {
       type: Array,

@@ -76,7 +76,6 @@ export default {
           && this.newGame.description.length > 0
           && this.newGame.timePerLocation.length > 0
     },
-
   }
 }
 </script>
