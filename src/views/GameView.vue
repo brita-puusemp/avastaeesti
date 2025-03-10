@@ -5,6 +5,7 @@
              @location-clicked="handleLocationClick"/>
 
   <GetHintModal :hint-modal-is-open="hintModalIsOpen"
+                :hint="hint"
                 @event-close-modal="closeHintModal" />
 
 
@@ -58,25 +59,22 @@
 
 import MapModal from "@/components/modal/MapModal.vue";
 import GetHintModal from "@/components/modal/GetHintModal.vue";
+import GetHintService from "@/service/GetHintService";
 import L from "leaflet";
 
 
 export default {
   name: 'GameView',
-  /*computed: {
-    getHintModal() {
-      return getHintModal
-    }
-  },*/
   components: {MapModal, GetHintModal },
   data() {
     return {
       modalIsOpen: false,
       hintModalIsOpen: false,
       clickedLocation: null,
+      id: 3,
       correct_latitude: 58.2806,
       correct_longitude: 25.4856,
-
+      hint: "Hint pole saadaval :(",
       allowedDistanceInMeters: 10000,
       answerIsCorrect: false
     };
@@ -112,8 +110,22 @@ export default {
       console.log(this.allowedDistanceInMeters);
 
       this.answerIsCorrect = distance <= this.allowedDistanceInMeters;
-    }
+    },
+
+    async fetchHint() {
+      try {
+        const response = await GetHintService.sendGetHintRequest(this.id);
+        this.hint = response.data;
+      } catch (error) {
+        console.error("Error fetching hint:", error);
+        this.hint = "Viga vihje laadimisel"; // Fallback hint in case of error
+      }
+    },
+  },
+  mounted() {
+    this.fetchHint();
   }
 }
+
 </script>
 
