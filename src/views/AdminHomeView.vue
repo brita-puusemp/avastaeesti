@@ -17,14 +17,8 @@
 
       <div class="row mt-4 justify-content-center">
         <div class="col col-10">
-          <LocationsTable :locations="locations" :location-id="locationId"
-                          @event-open-modal="openLocationModal"
-          />
-          <ViewLocationModal :modal-is-open="modalIsOpen" :is-delete="isDelete" :location="location"
-                             :location-id="locationId"
-                             @event-close-modal="closeModal"
-                             @event-location-deleted="handleLocationDeleted"
-
+          <LocationsTable :locations="locations"
+                          @event-location-deleted="handleLocationDeleted"
           />
         </div>
       </div>
@@ -41,18 +35,16 @@ import locationService from "@/service/LocationService";
 import httpStatusCodes from "@/errors/HttpStatusCodes";
 import businessErrors from "@/errors/BusinessErrors";
 import NavigationService from "@/service/NavigationService";
-import ViewLocationModal from "@/components/modal/ViewLocationModal.vue";
 
 export default {
   name: 'AdminHomeView',
-  components: {ViewLocationModal, LocationsTable, AlertDanger, AlertSuccess,},
+  components: {LocationsTable, AlertDanger, AlertSuccess,},
   data() {
     return {
       isAdmin: false,
       modalIsOpen: false,
       isDelete: false,
       location: {},
-      locationId: 0,
       errorMessage: '',
       successMessage: '',
       locations: [
@@ -114,22 +106,11 @@ export default {
       setTimeout(this.resetAllMessages, 4000)
     },
 
-    openLocationModal() {
-      this.locationId = locationId
-      this.modalIsOpen = true
-      this.isDelete = false
-      this.location = this.locations.find(loc => loc.locationId === locationId)
-    },
-
     resetAllMessages() {
       this.errorMessage = ''
       this.successMessage = ''
     },
 
-    closeModal() {
-      this.modalIsOpen = false
-      this.isDelete = false
-    }
   },
 
   beforeMount() {

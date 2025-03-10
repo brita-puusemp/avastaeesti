@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ViewLocationModal :modal-is-open="modalIsOpen" :location="location" :is-delete="isDelete"
+    <ViewLocationModal :modal-is-open="modalIsOpen" :location="location" :is-delete="true" :location-id="locationId"
                        @event-close-modal="closeViewLocationModal"
                        @event-location-deleted="$emit('event-location-deleted')"
     />
@@ -19,7 +19,7 @@
         <td>
           <font-awesome-icon icon="pen-to-square" @click="navigateToLocationView(location.locationId)"
                              class="cursor-pointer me-3"/>
-          <font-awesome-icon icon="trash" @click="openViewLocationModalWithDelete(location.locationId)"
+          <font-awesome-icon icon="trash" @click="getLocationAndOpenLocationModalWithDelete(location.locationId)"
                              class="cursor-pointer"/>
         </td>
       </tr>
@@ -38,14 +38,13 @@ export default {
   name: 'LocationsTable',
   components: {ViewLocationModal},
   props: {
-    isAdmin: Boolean,
-    locations: [{}],
+    locations: [{}]
   },
 
   data() {
     return {
-      isDelete: false,
       modalIsOpen: false,
+      locationId: 0,
       location: {
         locationName: '',
         longitude: null,
@@ -58,26 +57,28 @@ export default {
 
   methods: {
 
-    closeViewLocationModal() {
-      this.modalIsOpen = false
-      this.isDelete = false
-    },
-
     navigateToLocationView(locationId) {
       NavigationService.navigateToLocationView(locationId)
     },
 
-    openViewLocationModalWithDelete(locationId) {
-      this.isDelete = true
-      this.openViewLocationModal(locationId)
+    getLocationAndOpenLocationModalWithDelete(locationId) {
+      this.locationId = locationId
+      locationService.sendGetLocationRequest(this.locationId)
+          .then(response => {
+            this.handleGetLocationResponse(response);
+          })
+          .catch(() => NavigationService.navigateToErrorView())
     },
 
-    openViewLocationModal(locationId) {
-      locationService.sendGetLocationRequest(locationId)
-          .then(response => this.location = response.data,
-              this.modalIsOpen = true)
-          .catch(() => NavigationService.navigateToErrorView())
-    }
+    handleGetLocationResponse(response) {
+      this.location = response.data
+      this.modalIsOpen = true
+    },
+
+    closeViewLocationModal() {
+      this.modalIsOpen = false
+    },
+
   }
 }
 </script>

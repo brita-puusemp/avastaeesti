@@ -37,13 +37,13 @@ export default {
     modalIsOpen: Boolean,
     isDelete: Boolean,
     location: {},
-    locationId: '',
+    locationId: Number,
   },
 
   methods: {
 
     deleteLocation() {
-      locationService.sendDeleteLocationRequest(this.location.locationId)
+      locationService.sendDeleteLocationRequest(this.locationId)
           .then(() => this.handleDeleteLocationResponse())
           .catch(() => NavigationService.navigateToErrorView())
     },
