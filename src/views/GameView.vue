@@ -1,8 +1,9 @@
 <template>
 
-  <MapModal :modal-is-open="modalIsOpen"
-             @event-close-modal="closeModal"
-             @location-clicked="handleLocationClick"/>
+  <MapModal   :modal-is-open="modalIsOpen"
+              @event-close-modal="closeModal"
+              @increment-id="incrementId"
+              @location-clicked="handleLocationClick"/>
 
   <GetHintModal :hint-modal-is-open="hintModalIsOpen"
                 :hint="hint"
@@ -72,8 +73,8 @@ export default {
       hintModalIsOpen: false,
       clickedLocation: null,
       id: 3,
-      correct_latitude: 58.2806,
-      correct_longitude: 25.4856,
+      correct_latitude: 58.835353046883235,
+      correct_longitude: 25.356445312500004,
       hint: "Hint pole saadaval :(",
       allowedDistanceInMeters: 10000,
       answerIsCorrect: false
@@ -110,6 +111,10 @@ export default {
       console.log(this.allowedDistanceInMeters);
 
       this.answerIsCorrect = distance <= this.allowedDistanceInMeters;
+    },
+
+    incrementId() {
+      this.id += 1;
     },
 
     async fetchHint() {

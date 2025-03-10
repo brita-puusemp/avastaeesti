@@ -13,6 +13,11 @@
         {{hint}}
       </template>
 
+      <template #footer>
+        <router-link to="/game" @click.native="$emit('event-close-modal')">Tagasi pildile</router-link>
+        <button @click="login" type="submit" class="btn btn-success ms-5">AVA KAARDI</button>
+      </template>
+
     </Modal>
 
 
