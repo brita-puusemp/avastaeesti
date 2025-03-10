@@ -1,5 +1,9 @@
 <template>
   <div>
+    <ViewLocationModal :modal-is-open="modalIsOpen" :location="location" :is-delete="true"
+                       @event-location-deleted="deleteLocation"
+                       @event-close-modal="closeModal"
+    />
     <div class="container text-center">
       <div class="row">
         <div class="col">
@@ -18,7 +22,7 @@
       <div class="row mt-4 justify-content-center">
         <div class="col col-10">
           <LocationsTable :locations="locations"
-                          @event-location-deleted="handleLocationDeleted"
+                          @event-start-delete-location-process="startDeleteLocationProcess"
           />
         </div>
       </div>
@@ -31,28 +35,38 @@
 import AlertSuccess from "@/components/alert/AlertSuccess.vue";
 import AlertDanger from "@/components/alert/AlertDanger.vue";
 import LocationsTable from "@/components/location/LocationsTable.vue";
-import locationService from "@/service/LocationService";
+import LocationService from "@/service/LocationService";
 import httpStatusCodes from "@/errors/HttpStatusCodes";
 import businessErrors from "@/errors/BusinessErrors";
 import NavigationService from "@/service/NavigationService";
+import ViewLocationModal from "@/components/modal/ViewLocationModal.vue";
 
 export default {
   name: 'AdminHomeView',
-  components: {LocationsTable, AlertDanger, AlertSuccess,},
+  components: {ViewLocationModal, LocationsTable, AlertDanger, AlertSuccess,},
   data() {
     return {
       isAdmin: false,
       modalIsOpen: false,
       isDelete: false,
-      location: {},
       errorMessage: '',
       successMessage: '',
+      selectedLocationId: '',
+      location: {
+        locationName: '',
+        longitude: null,
+        latitude: null,
+        clue: '',
+        imageData: '',
+      },
+
       locations: [
         {
           locationId: 0,
           locationName: '',
         }
       ],
+
       errorResponse: {
         message: '',
         errorCode: 0
@@ -62,13 +76,44 @@ export default {
 
   methods: {
 
+    closeModal() {
+      this.modalIsOpen = false
+    },
+
+    startDeleteLocationProcess(locationId) {
+      this.selectedLocationId = locationId
+      LocationService.sendGetLocationRequest(this.selectedLocationId)
+          .then(response => {
+            this.handleGetLocationResponse(response);
+          })
+          .catch(() => NavigationService.navigateToErrorView())
+    },
+
+
+    handleGetLocationResponse(response) {
+      this.location = response.data
+      this.modalIsOpen = true
+    },
+
+
+    deleteLocation() {
+      LocationService.sendDeleteLocationRequest(this.selectedLocationId)
+          .then(() => this.handleDeleteLocationResponse())
+    },
+
+    handleDeleteLocationResponse() {
+      this.getLocations()
+      this.successMessage = "Asukoht on edukalt kustutatud"
+      setTimeout(this.resetAllMessages, 4000)
+    },
+
     validateIsAdmin() {
       const roleName = sessionStorage.getItem('roleName')
       this.isAdmin = roleName != null && roleName === 'admin'
     },
 
     getLocations() {
-      locationService.sendGetLocationsRequest()
+      LocationService.sendGetLocationsRequest()
           .then(response => this.handleGetLocationsResponse(response))
           .catch(error => this.handleGetLocationsErrorResponse(error))
     },
@@ -100,11 +145,6 @@ export default {
       this.errorMessage = this.errorResponse.message
     },
 
-    handleLocationDeleted() {
-      this.getLocations();
-      this.successMessage = 'Asukoht on edukalt kustutatud'
-      setTimeout(this.resetAllMessages, 4000)
-    },
 
     resetAllMessages() {
       this.errorMessage = ''

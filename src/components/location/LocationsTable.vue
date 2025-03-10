@@ -1,9 +1,6 @@
 <template>
   <div>
-    <ViewLocationModal :modal-is-open="modalIsOpen" :location="location" :is-delete="true" :location-id="locationId"
-                       @event-close-modal="closeViewLocationModal"
-                       @event-location-deleted="$emit('event-location-deleted')"
-    />
+
     <table class="table">
       <thead>
       <tr>
@@ -19,7 +16,7 @@
         <td>
           <font-awesome-icon icon="pen-to-square" @click="navigateToLocationView(location.locationId)"
                              class="cursor-pointer me-3"/>
-          <font-awesome-icon icon="trash" @click="getLocationAndOpenLocationModalWithDelete(location.locationId)"
+          <font-awesome-icon icon="trash" @click="startDeleteLocationProcess(location.locationId)"
                              class="cursor-pointer"/>
         </td>
       </tr>
@@ -43,41 +40,19 @@ export default {
 
   data() {
     return {
-      modalIsOpen: false,
-      locationId: 0,
-      location: {
-        locationName: '',
-        longitude: null,
-        latitude: null,
-        clue: '',
-        imageData: '',
-      }
+      modalIsOpen: false
     }
   },
-
   methods: {
 
     navigateToLocationView(locationId) {
       NavigationService.navigateToLocationView(locationId)
     },
 
-    getLocationAndOpenLocationModalWithDelete(locationId) {
-      this.locationId = locationId
-      locationService.sendGetLocationRequest(this.locationId)
-          .then(response => {
-            this.handleGetLocationResponse(response);
-          })
-          .catch(() => NavigationService.navigateToErrorView())
+    startDeleteLocationProcess(locationId) {
+      this.$emit('event-start-delete-location-process', locationId)
     },
 
-    handleGetLocationResponse(response) {
-      this.location = response.data
-      this.modalIsOpen = true
-    },
-
-    closeViewLocationModal() {
-      this.modalIsOpen = false
-    },
 
   }
 }

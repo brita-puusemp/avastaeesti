@@ -27,8 +27,6 @@
 <script>
 import Modal from "@/components/modal/Modal.vue";
 import LocationImage from "@/components/image/LocationImage.vue";
-import locationService from "@/service/LocationService";
-import NavigationService from "@/service/NavigationService";
 
 export default {
   name: "ViewLocationModal",
@@ -36,19 +34,12 @@ export default {
   props: {
     modalIsOpen: Boolean,
     isDelete: Boolean,
-    location: {},
-    locationId: Number,
+    location: {}
   },
 
   methods: {
 
     deleteLocation() {
-      locationService.sendDeleteLocationRequest(this.locationId)
-          .then(() => this.handleDeleteLocationResponse())
-          .catch(() => NavigationService.navigateToErrorView())
-    },
-
-    handleDeleteLocationResponse() {
       this.$emit('event-location-deleted')
       this.closeModal()
     },
