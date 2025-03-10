@@ -27,11 +27,21 @@ export default {
         )
 
     },
+
     sendGetLocationPreviewRequest(locationId) {
         return axios.get('/location-preview', {
                 params: {
                     locationId: locationId
 
+                }
+            }
+        )
+    },
+
+    sendDeleteLocationRequest(locationId) {
+        return axios.delete('/home-admin', {
+                params: {
+                    locationId: locationId
                 }
             }
         )

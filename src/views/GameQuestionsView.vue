@@ -37,7 +37,7 @@
       </div>
 
       <div class="col">
-        <button @click="saveNewGame" type="submit" class="btn btn-success">LOO MÄNG</button>
+        <button @click="createNewGameLocations" type="submit" class="btn btn-success">LOO MÄNG</button>
       </div>
 
     </div>
@@ -49,13 +49,15 @@ import LocationsDropdown from "@/components/location/LocationsDropdown.vue";
 import LocationService from "@/service/LocationService";
 import NavigationService from "@/service/NavigationService";
 import GameService from "@/service/GameService";
+import axios from "axios";
+import {useRoute} from "vue-router";
 
 export default {
   name: 'gameQuestionsView',
   components: {LocationsDropdown},
   data() {
     return {
-      gameId: 0,
+      gameId: Number(useRoute().query.gameId),
       locationPreviews: [],
       selectedLocationId: 0,
       locations: [],
@@ -63,20 +65,30 @@ export default {
         locationId: 0,
         locationName: '',
         imageData: ''
+      },
+      gameData: {
+        gameId: Number(useRoute().query.gameId),
+        locationIds: [],
       }
     }
   },
   methods: {
 
-    saveNewGame() {
-      const locationIds = this.locationPreviews.map(preview => preview.locationId);
-      const gameData = {
-        gameId: this.gameId,
-        locationIds: locationIds,
-      }
+    createNewGameLocations() {
+      this.gameData.locationIds = this.locationPreviews.map(preview => preview.locationId);
+      this.saveNewGameLocation(this.gameData)
     },
 
-  //todo: save gamelocations
+    saveNewGameLocation(gameData) {
+      GameService.sendSaveGameLocations(gameData)
+          .then(() => this.handleSaveGameLocationsResponse())
+          .catch(() => NavigationService.navigateToErrorView())
+    },
+
+    handleSaveGameLocationsResponse() {
+        this.$router.go(-2)
+
+    },
 
     handleLocationPreviewResponse(response) {
       this.locationPreviews.push({

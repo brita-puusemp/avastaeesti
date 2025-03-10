@@ -5,7 +5,7 @@
       <div
           ref="mapContainer"
           class="map-container"
-          :style="{ width: width || '90%', height: height || '400px' }"
+          :style="{ width: width || '90%', height: height || '600px' }"
       ></div>
     </template>
   </Modal>
@@ -26,7 +26,7 @@ L.Icon.Default.mergeOptions({
 
 
 export default {
-  gameName: 'MapModal',
+  name: 'MapModal2',
   components: { Modal },
   props: {
     modalIsOpen: Boolean,
@@ -37,7 +37,7 @@ export default {
   data() {
     return {
       map: null,
-      marker: null,
+      marker: null, // Store reference to the marker
     };
   },
   watch: {
@@ -52,7 +52,7 @@ export default {
   methods: {
     initializeMap() {
       if (this.map) {
-        this.map.remove();
+        this.map.remove(); // Remove previous map instance if it exists
       }
 
       this.map = L.map(this.$refs.mapContainer).setView(this.center, this.zoom);
@@ -65,7 +65,6 @@ export default {
       this.addMapClickListener(); // Attach click event listener
     },
 
-     // This circle method can be used to visualize the distance of the radius
     addCircleMarker() {
       if (!this.map) return;
 
@@ -83,10 +82,12 @@ export default {
       this.map.on('click', (event) => {
         const { lat, lng } = event.latlng;
 
+        // Remove previous marker if it exists
         if (this.marker) {
           this.map.removeLayer(this.marker);
         }
 
+        // Add new marker
         this.marker = L.marker([lat, lng]).addTo(this.map);
         this.$emit('location-clicked', { lat, lng });
       });

@@ -25,7 +25,7 @@
 
 <script>
 export default {
-  gameName: "Modal",
+  name: "Modal",
   props:{
     modalIsOpen: Boolean,
     hintModalIsOpen: Boolean
