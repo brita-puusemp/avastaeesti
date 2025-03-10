@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Modal -->
-    <div v-if="modalIsOpen" class="modal-overlay">
+    <div v-if="modalIsOpen || hintModalIsOpen" class="modal-overlay">
       <div class="modal-container">
         <div class="modal-content">
           <div class="modal-header">
@@ -27,7 +27,8 @@
 export default {
   gameName: "Modal",
   props:{
-    modalIsOpen: Boolean
+    modalIsOpen: Boolean,
+    hintModalIsOpen: Boolean
   }
 };
 </script>

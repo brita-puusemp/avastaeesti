@@ -3,7 +3,7 @@
   <Modal :modal-is-open="modalIsOpen" @event-close-modal="$emit('event-close-modal')" >
 
     <template #title>
-      MÄNGU JUHEND
+      SIIN ON VIHJE
     </template>
 
     <template #body>
@@ -20,7 +20,6 @@
 
 <script>
 
-import {defineComponent} from "vue";
 import Modal from "@/components/modal/Modal.vue";
 
 export default {

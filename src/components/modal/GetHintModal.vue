@@ -1,10 +1,10 @@
 <template>
-  <template>
 
-    <Modal :modal-is-open="modalIsOpen" @event-close-modal="$emit('event-close-modal')" >
+
+    <Modal :hint-modal-is-open="hintModalIsOpen" @event-close-modal="$emit('event-close-modal')" >
 
       <template #title>
-        MÄNGU JUHEND
+        VIHJE
       </template>
 
       <template #body>
@@ -16,15 +16,18 @@
 
     </Modal>
 
-  </template>
+
 </template>
 
 <script>
 import Modal from "@/components/modal/Modal.vue";
 
 export default {
-  name: "GetHintModal" ,
-  components: {Modal}
+  name: 'GetHintModal' ,
+  components: {Modal},
+  props: {
+    hintModalIsOpen: Boolean
+  }
 }
 </script>
 

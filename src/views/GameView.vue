@@ -1,9 +1,15 @@
 <template>
 
-  <MapModal2 :modal-is-open="modalIsOpen"
+  <MapModal :modal-is-open="modalIsOpen"
              @event-close-modal="closeModal"
-             @location-clicked="handleLocationClick"
-  />
+             @location-clicked="handleLocationClick"/>
+
+  <GetHintModal :hint-modal-is-open="hintModalIsOpen"
+                @event-close-modal="closeHintModal" />
+
+
+
+
 
   <div class="container text-center">
     <div class="row justify-content-center">
@@ -41,7 +47,7 @@
 
 
     <div class="text-center mt-3">
-      <button @click="openModal" type="submit" class="btn btn-secondary mx-2">VÕTA VIHJE</button>
+      <button @click="openHintModal" type="submit" class="btn btn-secondary mx-2">VÕTA VIHJE</button>
       <button @click="openModal" type="submit" class="btn btn-success mx-2">AVA KAARDIL</button>
     </div>
   </div>
@@ -57,13 +63,20 @@ import L from "leaflet";
 
 export default {
   name: 'GameView',
-  components: { MapModal2: MapModal, GetHintModal },
+  /*computed: {
+    getHintModal() {
+      return getHintModal
+    }
+  },*/
+  components: {MapModal, GetHintModal },
   data() {
     return {
       modalIsOpen: false,
+      hintModalIsOpen: false,
       clickedLocation: null,
       correct_latitude: 58.2806,
       correct_longitude: 25.4856,
+
       allowedDistanceInMeters: 10000,
       answerIsCorrect: false
     };
@@ -76,6 +89,14 @@ export default {
     closeModal() {
       this.modalIsOpen = false;
     },
+
+    openHintModal() {
+      this.hintModalIsOpen = true;
+    },
+    closeHintModal() {
+      this.hintModalIsOpen = false;
+    },
+
 
     handleLocationClick(location) {
       this.clickedLocation = location;
@@ -90,11 +111,7 @@ export default {
       console.log(distance);
       console.log(this.allowedDistanceInMeters);
 
-      if (distance <= this.allowedDistanceInMeters) {
-        this.answerIsCorrect = true;
-      } else {
-        this.answerIsCorrect = false;
-      }
+      this.answerIsCorrect = distance <= this.allowedDistanceInMeters;
     }
   }
 }
