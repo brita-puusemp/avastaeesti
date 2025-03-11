@@ -1,14 +1,18 @@
 <template>
 
-  <MapModal :modal-is-open="modalIsOpen"
-             @event-close-modal="closeModal"
-             @location-clicked="handleLocationClick"/>
+  <MapModal   :modal-is-open="mapModalIsOpen"
+              @event-close-modal="closeMapModal"
+              @increment-id="incrementId"
+              @location-clicked="handleLocationClick"/>
 
   <GetHintModal :hint-modal-is-open="hintModalIsOpen"
                 :hint="hint"
-                @event-close-modal="closeHintModal" />
+                @event-close-modal="closeHintModal"
+                @event-open-map-modal-from-hint-modal="openMapModalFromHintModal"
 
+  />
 
+  <GameResultModal :gameresults-modal-is-open="gameResultModalIsOpen"/>
 
 
 
@@ -49,7 +53,7 @@
 
     <div class="text-center mt-3">
       <button @click="openHintModal" type="submit" class="btn btn-secondary mx-2">VÕTA VIHJE</button>
-      <button @click="openModal" type="submit" class="btn btn-success mx-2">AVA KAARDIL</button>
+      <button @click="openMapModal" type="submit" class="btn btn-success mx-2">AVA KAARDIL</button>
     </div>
   </div>
 </template>
@@ -61,37 +65,51 @@ import MapModal from "@/components/modal/MapModal.vue";
 import GetHintModal from "@/components/modal/GetHintModal.vue";
 import GetHintService from "@/service/GetHintService";
 import L from "leaflet";
+import GameResultModal from "@/components/modal/GameResultModal.vue";
 
 
 export default {
   name: 'GameView',
-  components: {MapModal, GetHintModal },
+  components: {GameResultModal, MapModal, GetHintModal },
   data() {
     return {
-      modalIsOpen: false,
+      mapModalIsOpen: false,
       hintModalIsOpen: false,
+      gameResultIsOpen: false,
       clickedLocation: null,
       id: 3,
-      correct_latitude: 58.2806,
-      correct_longitude: 25.4856,
+      correct_latitude: 58.835353046883235,
+      correct_longitude: 25.356445312500004,
       hint: "Hint pole saadaval :(",
       allowedDistanceInMeters: 10000,
       answerIsCorrect: false
     };
   },
   methods: {
-    openModal() {
-      this.modalIsOpen = true;
+    openMapModalFromHintModal() {
+      this.closeHintModal()
+      this.openMapModal()
     },
 
-    closeModal() {
-      this.modalIsOpen = false;
+    openMapModal() {
+      this.mapModalIsOpen = true;
+    },
+
+    closeMapModal() {
+      this.mapModalIsOpen = false;
     },
 
     openHintModal() {
       this.hintModalIsOpen = true;
     },
     closeHintModal() {
+      this.hintModalIsOpen = false;
+    },
+
+    openGameResultModal() {
+      this.hintModalIsOpen = true;
+    },
+    closeGameResultModal() {
       this.hintModalIsOpen = false;
     },
 
@@ -112,6 +130,14 @@ export default {
       this.answerIsCorrect = distance <= this.allowedDistanceInMeters;
     },
 
+    incrementId() {
+      this.id += 1;
+    },
+
+    fetch() {
+
+    },
+
     async fetchHint() {
       try {
         const response = await GetHintService.sendGetHintRequest(this.id);
@@ -123,7 +149,9 @@ export default {
     },
   },
   mounted() {
+
     this.fetchHint();
+
   }
 }
 

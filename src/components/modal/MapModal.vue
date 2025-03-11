@@ -5,8 +5,12 @@
       <div
           ref="mapContainer"
           class="map-container"
-          :style="{ width: width || '90%', height: height || '600px' }"
+          :style="{ width: width || '90%', height: height || '400px' }"
       ></div>
+    </template>
+    <template #footer>
+      <router-link to="/game" @click.native="$emit('event-close-modal')">Tagasi pildile</router-link>
+      <button @click="handleLocationSubmission" type="submit" class="btn btn-success ms-5">KINNITA</button>
     </template>
   </Modal>
 </template>
@@ -30,8 +34,8 @@ export default {
   components: { Modal },
   props: {
     modalIsOpen: Boolean,
-    center: { type: Array, default: () => [58.2806, 25.4856] },
-    zoom: { type: Number, default: 7.4 },
+    center: { type: Array, default: () => [58.909184655697715, 25.455322265625004] },
+    zoom: { type: Number, default: 7 },
     clickedLocation: {}
   },
   data() {
@@ -91,7 +95,14 @@ export default {
         this.marker = L.marker([lat, lng]).addTo(this.map);
         this.$emit('location-clicked', { lat, lng });
       });
+    },
+
+    handleLocationSubmission() {
+      this.$emit('event-close-modal');
+      this.$emit('increment-id');
     }
+
+
   }
 }
 </script>
