@@ -8,6 +8,7 @@ import LocationView from "@/views/LocationView.vue";
 import AdminHomeView from "@/views/AdminHomeView.vue";
 import NewGameView from "@/views/NewGameView.vue";
 import GameQuestionsView from "@/views/GameQuestionsView.vue";
+import AllGamesView from "@/views/AllGamesView.vue";
 
 const routes = [
     {
@@ -54,6 +55,11 @@ const routes = [
         path: '/game-question',
         name: 'gameQuestionsRoute',
         component: GameQuestionsView
+    },
+    {
+        path: '/games',
+        name: 'allGamesRoute',
+        component: AllGamesView
     },
 ]
 

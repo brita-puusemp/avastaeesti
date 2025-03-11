@@ -80,7 +80,11 @@ export default {
       sessionStorage.setItem('userId', this.loginResponse.userId)
       sessionStorage.setItem('roleName', this.loginResponse.roleName)
       this.$emit('event-show-nav-menu')
+      if (this.loginResponse.roleName === 'admin'){
+        NavigationService.navigateToAdminHomeView()
+      }else{
       NavigationService.navigateToUserHomeView()
+      }
     },
 
     isIncorrectCredentials(httpStatusCode) {
@@ -95,7 +99,7 @@ export default {
 
     handleLoginErrorResponse(error) {
       this.errorResponse = error.response.data;
-      let httpStatusCode = error.response.status
+      const httpStatusCode = error.response.status
 
       if (this.isIncorrectCredentials(httpStatusCode)) {
         this.handleIncorrectCredentials();

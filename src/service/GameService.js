@@ -8,4 +8,8 @@ export default {
     sendSaveGameLocations(gameData) {
         return axios.post('/game-save', gameData);
     },
+
+    sendGetGamesRequest() {
+        return axios.get('/games');
+    },
 }

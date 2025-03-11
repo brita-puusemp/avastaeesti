@@ -13,7 +13,7 @@ export default {
         // router.push({name: 'errorRoute'})
     },
 
-    navigateToAdminView() {
+    navigateToAdminHomeView() {
         router.push({
                 name: 'adminHomeRoute'
             }
@@ -43,5 +43,15 @@ export default {
                 gameId: gameId
             }
         })
-    }
+    },
+
+    navigateToGameView(gameId) {
+        router.push({
+            name: 'gameRoute',
+            query: {
+                gameId: gameId
+            }
+        })
+
+    },
 }

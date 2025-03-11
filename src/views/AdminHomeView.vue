@@ -20,7 +20,7 @@
       </div>
 
       <div class="row mt-4 justify-content-center">
-        <div class="col col-10">
+        <div class="col col-8">
           <LocationsTable :locations="locations"
                           @event-start-delete-location-process="startDeleteLocationProcess"
           />
@@ -145,17 +145,22 @@ export default {
       this.errorMessage = this.errorResponse.message
     },
 
-
     resetAllMessages() {
       this.errorMessage = ''
       this.successMessage = ''
     },
 
+    navigateToLocationView(locationId) {
+      NavigationService.navigateToLocationView(locationId)
+    },
   },
+
+
 
   beforeMount() {
     this.validateIsAdmin()
     this.getLocations()
+    // this.successMessage = sessionStorage.getItem('sussessMessage')
   }
 }
 </script>

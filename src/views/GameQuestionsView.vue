@@ -117,6 +117,7 @@ export default {
     handleGetLocationsResponse(response) {
       return this.locations = response.data;
     },
+
     setGameLocationLocationId(selectedLocationId) {
       console.log("Valitud ID-d enne uuendamist:", this.selectedLocationId);
       this.selectedLocationId = selectedLocationId
