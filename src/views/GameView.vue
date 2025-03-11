@@ -7,9 +7,9 @@
 
   <GetHintModal :hint-modal-is-open="hintModalIsOpen"
                 :hint="hint"
-                @event-close-modal="closeHintModal" />
+                @event-close-modal="closeHintModal"/>
 
-
+  <GameResultModal :gameresults-modal-is-open="gameResultModalIsOpen"/>
 
 
 
@@ -62,15 +62,17 @@ import MapModal from "@/components/modal/MapModal.vue";
 import GetHintModal from "@/components/modal/GetHintModal.vue";
 import GetHintService from "@/service/GetHintService";
 import L from "leaflet";
+import GameResultModal from "@/components/modal/GameResultModal.vue";
 
 
 export default {
   name: 'GameView',
-  components: {MapModal, GetHintModal },
+  components: {GameResultModal, MapModal, GetHintModal },
   data() {
     return {
       modalIsOpen: false,
       hintModalIsOpen: false,
+      gameResultIsOpen: false,
       clickedLocation: null,
       id: 3,
       correct_latitude: 58.835353046883235,
@@ -93,6 +95,13 @@ export default {
       this.hintModalIsOpen = true;
     },
     closeHintModal() {
+      this.hintModalIsOpen = false;
+    },
+
+    openGameResultModal() {
+      this.hintModalIsOpen = true;
+    },
+    closeGameResultModal() {
       this.hintModalIsOpen = false;
     },
 
