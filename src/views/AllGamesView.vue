@@ -19,12 +19,12 @@ export default {
   components: {GamesTable},
   data() {
     return  {
-      allGames: {
+      allGames: [{
         gameId: 0,
         gameName: '',
         gameDescription: '',
         totalTopScore: 0
-      }
+      }]
     }
   },
 

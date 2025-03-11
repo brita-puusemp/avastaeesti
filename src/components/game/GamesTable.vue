@@ -38,7 +38,7 @@ export default {
     }
   },
   props: {
-    allGames: [{}]
+    allGames: Array
   }
 
 }
