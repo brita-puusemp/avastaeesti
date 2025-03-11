@@ -2,7 +2,6 @@
 
 
     <Modal :hint-modal-is-open="hintModalIsOpen"
-           :hint="hint"
            @event-close-modal="$emit('event-close-modal')" >
 
       <template #title>
@@ -10,7 +9,7 @@
       </template>
 
       <template #body>
-        {{hint}}
+        {{ hint }}
       </template>
 
       <template #footer>
@@ -31,7 +30,8 @@ export default {
   components: {Modal},
   props: {
     hintModalIsOpen: Boolean,
-    hint: String
+    hint: String,
+
   },
   methods: {
     openMapModal() {

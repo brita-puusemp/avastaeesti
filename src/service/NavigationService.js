@@ -45,11 +45,11 @@ export default {
         })
     },
 
-    navigateToGameView(gameId) {
+    navigateToGameView(randomGameId) {
         router.push({
             name: 'gameRoute',
             query: {
-                gameId: gameId
+                randomGameId: randomGameId
             }
         })
 
