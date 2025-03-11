@@ -1,12 +1,14 @@
 <template>
 
   <MapModal   :modal-is-open="mapModalIsOpen"
+              :locationId="randomLocation.locationId"
               @event-close-modal="closeMapModal"
               @increment-id="incrementId"
               @location-clicked="handleLocationClick"/>
 
   <GetHintModal :hint-modal-is-open="hintModalIsOpen"
                 :hint="randomLocation.clue"
+                :randomGameId="randomGameId"
                 @event-close-modal="closeHintModal"
                 @event-open-map-modal-from-hint-modal="openMapModalFromHintModal"
 
@@ -85,6 +87,7 @@ export default {
         latitude: 0,
         clue: '',
         imageData: '',
+        locationId: 0,
         isGameComplete: true,
         timeStart: ''
       },

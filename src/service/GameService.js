@@ -30,4 +30,10 @@ export default {
             }
         );
     },
+
+    sendPostUserAnswerRequest(userAnswer) {
+        return axios.post('/game/location/result', userAnswer);
+
+    }
+
 }
