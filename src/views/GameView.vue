@@ -1,13 +1,16 @@
 <template>
 
-  <MapModal   :modal-is-open="modalIsOpen"
-              @event-close-modal="closeModal"
+  <MapModal   :modal-is-open="mapModalIsOpen"
+              @event-close-modal="closeMapModal"
               @increment-id="incrementId"
               @location-clicked="handleLocationClick"/>
 
   <GetHintModal :hint-modal-is-open="hintModalIsOpen"
                 :hint="hint"
-                @event-close-modal="closeHintModal"/>
+                @event-close-modal="closeHintModal"
+                @event-open-map-modal-from-hint-modal="openMapModalFromHintModal"
+
+  />
 
   <GameResultModal :gameresults-modal-is-open="gameResultModalIsOpen"/>
 
@@ -50,7 +53,7 @@
 
     <div class="text-center mt-3">
       <button @click="openHintModal" type="submit" class="btn btn-secondary mx-2">VÕTA VIHJE</button>
-      <button @click="openModal" type="submit" class="btn btn-success mx-2">AVA KAARDIL</button>
+      <button @click="openMapModal" type="submit" class="btn btn-success mx-2">AVA KAARDIL</button>
     </div>
   </div>
 </template>
@@ -70,7 +73,7 @@ export default {
   components: {GameResultModal, MapModal, GetHintModal },
   data() {
     return {
-      modalIsOpen: false,
+      mapModalIsOpen: false,
       hintModalIsOpen: false,
       gameResultIsOpen: false,
       clickedLocation: null,
@@ -83,12 +86,17 @@ export default {
     };
   },
   methods: {
-    openModal() {
-      this.modalIsOpen = true;
+    openMapModalFromHintModal() {
+      this.closeHintModal()
+      this.openMapModal()
     },
 
-    closeModal() {
-      this.modalIsOpen = false;
+    openMapModal() {
+      this.mapModalIsOpen = true;
+    },
+
+    closeMapModal() {
+      this.mapModalIsOpen = false;
     },
 
     openHintModal() {
@@ -126,6 +134,10 @@ export default {
       this.id += 1;
     },
 
+    fetch() {
+
+    },
+
     async fetchHint() {
       try {
         const response = await GetHintService.sendGetHintRequest(this.id);
@@ -137,7 +149,9 @@ export default {
     },
   },
   mounted() {
+
     this.fetchHint();
+
   }
 }
 

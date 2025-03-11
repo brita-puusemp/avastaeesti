@@ -15,7 +15,7 @@
 
       <template #footer>
         <router-link to="/game" @click.native="$emit('event-close-modal')">Tagasi pildile</router-link>
-        <button @click="login" type="submit" class="btn btn-success ms-5">AVA KAARDI</button>
+        <button @click="openMapModal" type="submit" class="btn btn-success ms-5">AVA KAARDI</button>
       </template>
 
     </Modal>
@@ -33,6 +33,11 @@ export default {
     hintModalIsOpen: Boolean,
     hint: String
   },
+  methods: {
+    openMapModal() {
+      this.$emit('event-open-map-modal-from-hint-modal')
+    },
+  }
 }
 </script>
 
