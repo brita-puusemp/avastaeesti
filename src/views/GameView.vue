@@ -3,8 +3,8 @@
   <MapModal   :modal-is-open="mapModalIsOpen"
               :locationId="randomLocation.locationId"
               @event-close-modal="closeMapModal"
-              @increment-id="incrementId"
-              @location-clicked="handleLocationClick"/>
+              @event-execute-answering="handleUserAnswer"
+  />
 
   <GetHintModal :hint-modal-is-open="hintModalIsOpen"
                 :hint="randomLocation.clue"
@@ -69,6 +69,7 @@ import L from "leaflet";
 import GameResultModal from "@/components/modal/GameResultModal.vue";
 import {useRoute} from "vue-router";
 import GameService from "@/service/GameService";
+import NavigationService from "@/service/NavigationService";
 
 
 export default {
@@ -79,7 +80,6 @@ export default {
       randomGameId: Number(useRoute().query.randomGameId),
       mapModalIsOpen: false,
       hintModalIsOpen: false,
-      gameResultIsOpen: false,
       clickedLocation: null,
       randomLocation: {
         locationName: '',
@@ -91,14 +91,35 @@ export default {
         isGameComplete: true,
         timeStart: ''
       },
-      /*id: 3,
-      correct_latitude: 58.835353046883235,
-      correct_longitude: 25.356445312500004,
-      allowedDistanceInMeters: 10000,
-      answerIsCorrect: false*/
     };
   },
+
   methods: {
+
+    handleUserAnswer(clickedLocation) {
+      const userAnswer = {
+        randomGameId: this.randomGameId,
+        locationId: this.randomLocation.locationId,
+        clickedLocation: clickedLocation
+      };
+
+      this.sendUserAnswer(userAnswer)
+    },
+
+
+    handleUserAnswerResponse(response) {
+      const userAnswerResult = response.data;
+      NavigationService.navigateToResultView(userAnswerResult, this.randomGameId)
+
+    },
+
+    sendUserAnswer(userAnswer) {
+
+      GameService.sendPostUserAnswerRequest(userAnswer)
+
+          .then(response => this.handleUserAnswerResponse(response))
+          .catch(error => this.someDataBlockErrorResponseObject = error.response.data)
+    },
 
     handleGetRandomGameLocationsResponse(response) {
       return this.randomLocation = response.data;
@@ -131,51 +152,9 @@ export default {
       this.hintModalIsOpen = false;
     },
 
-   /* openGameResultModal() {
-      this.hintModalIsOpen = true;
-    },
-    closeGameResultModal() {
-      this.hintModalIsOpen = false;
-    },*/
-
-
-   /* handleLocationClick(location) {
-      this.clickedLocation = location;
-      console.log(`Chosen Location: ${location.lat}, ${location.lng}`);
-      this.calculateDistance(location);
-    },
-
-    calculateDistance(clickedLocation) {
-      const correctLatLng = L.latLng(this.correct_latitude, this.correct_longitude);
-      const clickedLatLng = L.latLng(clickedLocation.lat, clickedLocation.lng);
-      const distance = correctLatLng.distanceTo(clickedLatLng);
-      console.log(distance);
-      console.log(this.allowedDistanceInMeters);
-
-      this.answerIsCorrect = distance <= this.allowedDistanceInMeters;
-    },
-
-    incrementId() {
-      this.id += 1;
-    },*/
-
-    fetch() {
-
-    },
-
-   /* async fetchHint() {
-      try {
-        const response = await GetHintService.sendGetHintRequest(this.id);
-        this.hint = response.data;
-      } catch (error) {
-        console.error("Error fetching hint:", error);
-        this.hint = "Viga vihje laadimisel"; // Fallback hint in case of error
-      }
-    },*/
   },
   mounted() {
     this.getRandomGameLocations()
-  /*  this.fetchHint();*/
 
   }
 }
