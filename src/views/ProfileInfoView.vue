@@ -67,10 +67,10 @@
 <script>
 
 import NavigationService from "@/service/NavigationService";
-import ProfileService from "@/service/ProfileService";
 import AlertSuccess from "@/components/alert/AlertSuccess.vue";
 import AlertDanger from "@/components/alert/AlertDanger.vue";
 import GameService from "@/service/GameService";
+import UserService from "@/service/UserService";
 
 export default {
   name: "ProfileInfoView",
@@ -97,7 +97,7 @@ export default {
   methods: {
 
     getUser(userId) {
-      ProfileService.sendGetUserInfoRequest(userId)
+      UserService.sendGetUserInfoRequest(userId)
           .then(response => this.handleGetUserRequest(response))
           .catch(() => this.handleGetUserErrorResponse())
     },
@@ -113,7 +113,7 @@ export default {
 
     updateUser() {
       if (this.allFieldsCorrect()) {
-        ProfileService.sendPutUserUpdateRequest(this.user, this.userId)
+        UserService.sendPutUserUpdateRequest(this.user, this.userId)
             .then(response => this.handleUserInfoUpdateRequest(response))
             .catch(() => NavigationService.navigateToErrorView())
       } else {
@@ -127,7 +127,7 @@ export default {
     },
 
     deleteUserInfo() {
-      ProfileService.sendDeleteUserInfoRequest(this.userId)
+      UserService.sendDeleteUserInfoRequest(this.userId)
           .then(response => this.handleDeleteUserInfoRequest(response))
           .catch(() => NavigationService.navigateToErrorView())
     },
