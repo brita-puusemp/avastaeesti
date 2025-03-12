@@ -26,6 +26,7 @@
       </div>
     </div>
 
+    <div id="timer">00:00</div>
 
     <div class="row mt-3 justify-content-center">
       <div class="col-auto">
@@ -72,6 +73,10 @@ export default {
         isGameComplete: '',
         timeStart: ''
       },
+      minutes: 0, // Minutid
+      seconds: 0, // Sekundid
+      timerInterval: null, // Timer'i interval
+      timeoutId: null
     };
   },
 
@@ -83,18 +88,19 @@ export default {
 
   methods: {
 
-    checkIfGameisOver() {
-      if(this.randomLocation.isGameComplete) {
-        NavigationService.navigateToGameOverView(this.randomGameId)
-      }
-    },
-
     handleUserAnswer(clickedLocation, locationId, randomGameId) {
       const userAnswer = {
         randomGameId: randomGameId,
         locationId: locationId,
         clickedLocation: clickedLocation
       };
+
+      if (this.timeoutId) {
+        clearTimeout(this.timeoutId);
+        this.timeoutId = null;
+      }
+
+      // Tühista timeout, kui kasutaja esitab vastuse enne ühe minuti möödumist
       this.sendUserAnswer(userAnswer)
     },
 
@@ -112,7 +118,8 @@ export default {
     },
 
     handleGetRandomGameLocationsResponse(response) {
-      return this.randomLocation = response.data;
+      this.randomLocation = response.data;
+      this.startTimer()
     },
 
     getRandomGameLocations()
@@ -142,12 +149,94 @@ export default {
       this.hintModalIsOpen = false;
     },
 
+    startTimer() {
+      // Peata eelmine timer, kui see on käimas
+      if (this.timerInterval) {
+        clearInterval(this.timerInterval);
+      }
+
+      // Laadi salvestatud aeg localStorage-ist
+      const savedTime = sessionStorage.getItem(`timer_${this.randomGameId}_${this.randomLocation.locationId}`);
+      if (savedTime) {
+        const time = JSON.parse(savedTime);
+        this.minutes = time.minutes;
+        this.seconds = time.seconds;
+      } else {
+        // Lähtesta aeg
+        this.minutes = 0;
+        this.seconds = 0;
+      }
+
+      this.updateTimerDisplay();
+
+      // Käivita uus timer
+      this.timerInterval = setInterval(() => {
+        this.seconds += 1;
+
+        // Kui sekundid jõuavad 60-ni, lisa minut ja nulli sekundid
+        if (this.seconds === 60) {
+          this.minutes += 1;
+          this.seconds = 0;
+        }
+
+        // Salvesta aeg localStorage-i
+        sessionStorage.setItem(`timer_${this.randomGameId}_${this.randomLocation.locationId}`, JSON.stringify({
+          minutes: this.minutes,
+          seconds: this.seconds
+        }));
+
+        // Uuenda timerit kasutajale nähtaval kujul
+        this.updateTimerDisplay();
+      }, 1000); // 1000 ms = 1 sekund
+
+      // Käivita ühe minuti pärast suunamine ResultView-i
+      this.timeoutId = setTimeout(() => {
+        this.handleTimeout();
+      }, 60000); // 60000 ms = 1 minut
+    },
+
+    handleTimeout() {
+      // Loo vale vastus
+      const userAnswer = {
+        randomGameId: this.randomGameId,
+        locationId: this.randomLocation.locationId,
+        clickedLocation: null
+      };
+
+      // Saada vastus serverisse
+      this.sendUserAnswer(userAnswer);
+
+      // Peata timer
+      this.stopTimer();
+    },
+
+    stopTimer() {
+      // Peata timer
+      if (this.timerInterval) {
+        clearInterval(this.timerInterval);
+        this.timerInterval = null;
+      }
+    },
+
+    updateTimerDisplay() {
+      // Vorminda minutid ja sekundid kahekohaliseks (nt 05:09)
+      const formattedMinutes = String(this.minutes).padStart(2, '0');
+      const formattedSeconds = String(this.seconds).padStart(2, '0');
+
+      // Uuenda timerit HTML-is
+      document.getElementById('timer').textContent = `${formattedMinutes}:${formattedSeconds}`;
+    }
+
+
+
   },
   mounted() {
-    this.checkIfGameisOver()
     this.getRandomGameLocations()
 
-
+  },
+  beforeUnmount() {
+    // Peata timer, kui komponent eemaldatakse
+    this.stopTimer();
   }
 }
 

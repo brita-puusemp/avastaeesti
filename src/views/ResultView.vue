@@ -11,7 +11,7 @@
   <div class="container text-center">
     <div class="row">
       <div class="col">
-        <button @click="nextQuestion" type="submit" class="btn btn-success mx-2">JÄRGMINE</button>
+        <button @click="checkIfGameIsCompleteOrGoToNextQuestion" type="submit" class="btn btn-success mx-2">JÄRGMINE</button>
       </div>
     </div>
   </div>
@@ -35,14 +35,20 @@ export default {
         locationIsCorrect: this.$route.query.locationIsCorrect === 'true',
         totalQuestions: this.$route.query.totalQuestions,
         questionsAnswered: this.$route.query.questionsAnswered,
-        randomGameId: this.$route.query.randomGameId
-      }
+      },
+      randomGameId: this.$route.query.randomGameId,
+
+
     }
   },
   methods: {
-    nextQuestion() {
-      let randomGameId = this.userAnswerResult.randomGameId
-      NavigationService.navigateToGameView(randomGameId)
+
+    checkIfGameIsCompleteOrGoToNextQuestion() {
+      if (this.userAnswerResult.questionsAnswered === this.userAnswerResult.totalQuestions) {
+        NavigationService.navigateToGameOverView(this.randomGameId)
+      } else {
+        NavigationService.navigateToGameView(this.randomGameId)
+      }
     },
 
   }
