@@ -9,6 +9,7 @@ import AdminHomeView from "@/views/AdminHomeView.vue";
 import NewGameView from "@/views/NewGameView.vue";
 import GameQuestionsView from "@/views/GameQuestionsView.vue";
 import AllGamesView from "@/views/AllGamesView.vue";
+import FavoritesView from "@/views/FavoritesView.vue";
 
 const routes = [
     {
@@ -60,6 +61,11 @@ const routes = [
         path: '/games',
         name: 'allGamesRoute',
         component: AllGamesView
+    },
+    {
+        path: '/favorites',
+        name: 'favoritesRoute',
+        component: FavoritesView
     },
 ]
 
