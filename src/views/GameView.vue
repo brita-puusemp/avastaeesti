@@ -106,14 +106,6 @@ export default {
       this.hintModalIsOpen = false;
     },
 
-    openGameResultModal() {
-      this.hintModalIsOpen = true;
-    },
-    closeGameResultModal() {
-      this.hintModalIsOpen = false;
-    },
-
-
     handleLocationClick(location) {
       this.clickedLocation = location;
       console.log(`Chosen Location: ${location.lat}, ${location.lng}`);
