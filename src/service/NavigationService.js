@@ -67,4 +67,14 @@ export default {
             }
         })
     },
+
+    navigateToGameOverView(randomGameId) {
+        router.push({
+            name: 'gameOverRoute',
+            query: {
+                randomGameId: randomGameId
+            }
+        })
+
+    },
 }

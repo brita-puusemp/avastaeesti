@@ -22,26 +22,7 @@
     <div class="row justify-content-center">
       <!-- Buttons for the rounds -->
       <div class="col-auto">
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-          <label class="form-check-label" for="inlineRadio1"></label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-          <label class="form-check-label" for="inlineRadio2"></label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">
-          <label class="form-check-label" for="inlineRadio3"></label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio4" value="option4">
-          <label class="form-check-label" for="inlineRadio4"></label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio5" value="option5">
-          <label class="form-check-label" for="inlineRadio5"></label>
-        </div>
+        progress
       </div>
     </div>
 
@@ -88,7 +69,7 @@ export default {
         latitude: 0,
         clue: '',
         imageData: '',
-        isGameComplete: true,
+        isGameComplete: '',
         timeStart: ''
       },
     };
@@ -101,6 +82,12 @@ export default {
   },
 
   methods: {
+
+    checkIfGameisOver() {
+      if(this.randomLocation.isGameComplete) {
+        NavigationService.navigateToGameOverView(this.randomGameId)
+      }
+    },
 
     handleUserAnswer(clickedLocation, locationId, randomGameId) {
       const userAnswer = {
@@ -157,7 +144,9 @@ export default {
 
   },
   mounted() {
+    this.checkIfGameisOver()
     this.getRandomGameLocations()
+
 
   }
 }

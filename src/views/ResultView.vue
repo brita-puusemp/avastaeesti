@@ -44,6 +44,7 @@ export default {
       let randomGameId = this.userAnswerResult.randomGameId
       NavigationService.navigateToGameView(randomGameId)
     },
+
   }
 }
 </script>

@@ -11,6 +11,7 @@ import GameQuestionsView from "@/views/GameQuestionsView.vue";
 import AllGamesView from "@/views/AllGamesView.vue";
 import ResultView from "@/views/ResultView.vue";
 import FavoritesView from "@/views/FavoritesView.vue";
+import GameOverView from "@/views/GameOverView.vue";
 
 const routes = [
     {
@@ -72,6 +73,11 @@ const routes = [
         path: '/favorites',
         name: 'favoritesRoute',
         component: FavoritesView
+    },
+    {
+        path: '/game-over',
+        name: 'gameOverRoute',
+        component: GameOverView
     },
 ]
 
