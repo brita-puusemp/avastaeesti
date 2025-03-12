@@ -12,6 +12,7 @@ import AllGamesView from "@/views/AllGamesView.vue";
 import FavoritesView from "@/views/FavoritesView.vue";
 import ProfileInfoView from "@/views/ProfileInfoView.vue";
 
+
 const routes = [
     {
         path: '/',

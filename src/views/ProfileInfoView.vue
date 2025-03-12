@@ -9,32 +9,38 @@
         <div class="col col-4 text-start">
 
           <div class="input-group mb-3">
+            <span class="input-group-text">Kasutajanimi</span>
             <input v-model="user.username" type="text" class="form-control">
-            <button v-if="isUpdate" @click="updateUser" class="btn btn-outline-secondary" type="button" id="usernama">
-              Salvesta
-            </button>
           </div>
-
           <div class="input-group mb-3">
+            <span class="input-group-text">Parool</span>
             <input v-model="user.password" type="password" class="form-control">
-            <button v-if="isUpdate" @click="updateUser" class="btn btn-outline-secondary" type="button" id="password">
-              Salvesta
-            </button>
-          </div>
+            <span class="input-group-text" @click="initiateShowPassword" style="cursor: pointer;">
+              <i :class="showPassword ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
+              <font-awesome-icon :icon="['fas', 'eye']" />
+            </span>
 
+          </div>
           <div class="input-group mb-3">
+            <span class="input-group-text">Korda parooli</span>
+            <input v-model="user.passwordRepeat" type="password" class="form-control">
+          <span class="input-group-text" @click="initiatePasswordRepeate" style="cursor: pointer;">
+            <i :class="showPasswordRepeat ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
+            <font-awesome-icon :icon="['fas', 'eye']" />
+          </span>
+        </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text">E-mail</span>
             <input v-model="user.email" type="email" class="form-control">
-            <button v-if="isUpdate" @click="updateUser" class="btn btn-outline-secondary" type="button" id="email">
-              Salvesta
-            </button>
           </div>
         </div>
       </div>
       <div v-else>
-        <h2>{{user.username}}</h2>
-        <h2>{{user.email}}</h2>
+        <h4>{{ user.username }}</h4>
+        <h4>{{ user.email }}</h4>
       </div>
       <button v-if="!isUpdate" @click="handleIsUpdate" class="btn btn-outline-secondary">Muuda</button>
+      <button v-if="isUpdate" @click="updateUser" type="button" class=" btn btn-light">Salvesta</button>
       <button @click="deleteUserInfo" type="button" class="btn btn-light">Kustuta konto</button>
     </div>
   </div>
@@ -85,9 +91,12 @@ export default {
       user: {
         username: '',
         password: '',
+        passwordRepeate: '',
         email: '',
       },
       userId: Number(sessionStorage.getItem("userId")),
+      showPassword: false,
+      showPasswordRepeat: false,
       successMessage: '',
       errorMessage: '',
       allGames: [{
@@ -99,7 +108,12 @@ export default {
     }
   },
   methods: {
-
+    initiateShowPassword() {
+      this.showPassword = true
+    },
+    initiatePasswordRepeate() {
+      this.showPasswordRepeat = true
+    },
     getUser(userId) {
       UserService.sendGetUserInfoRequest(userId)
           .then(response => this.handleGetUserRequest(response))
