@@ -18,8 +18,6 @@
 <script>
 import Modal from "@/components/modal/Modal.vue";
 import L from 'leaflet'
-import axios from "axios";
-import GameService from "@/service/GameService";
 
 //marker fixed
 delete L.Icon.Default.prototype._getIconUrl;
@@ -35,8 +33,8 @@ export default {
   name: 'MapModal2',
   components: {Modal},
   props: {
-   /* locationId: Number,
-    randomGameId: Number,*/
+    locationId: Number,
+    randomGameId: Number,
     modalIsOpen: Boolean,
     center: {type: Array, default: () => [58.909184655697715, 25.455322265625004]},
     zoom: {type: Number, default: 7},
@@ -46,7 +44,10 @@ export default {
     return {
       map: null,
       marker: null, // Store reference to the marker
-      clickedLocation: null
+      clickedLocation: {
+        lat: 0,
+        long: 0
+      }
     }
   },
   watch: {
@@ -101,19 +102,18 @@ export default {
         // Add new marker
         this.marker = L.marker([lat, lng]).addTo(this.map);
 
-        this.$emit('event-execute-answering', this.clickedLocation);
+        /*    this.$emit('event-execute-answering', this.clickedLocation);*/
       });
     },
 
-   /* executeAnswering() {
+    executeAnswering() {
       if (this.clickedLocation) {
-        this.$emit('event-execute-answering', this.clickedLocation); // Saadab koordinaadid tagasi
-        this.$emit('event-close-modal')
+        this.$emit('event-execute-answering', this.clickedLocation, this.locationId, this.randomGameId); // Saadab koordinaadid tagasi
       } else {
         alert("Palun valige koht kaardil!");
       }
 
-    },*/
+    },
   }
 }
 </script>

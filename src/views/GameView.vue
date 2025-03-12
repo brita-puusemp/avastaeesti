@@ -1,7 +1,8 @@
 <template>
 
   <MapModal   :modal-is-open="mapModalIsOpen"
-              :locationId="randomLocation.locationId"
+              :location-id="randomLocation.locationId"
+              :random-game-id="randomGameId"
               @event-close-modal="closeMapModal"
               @event-execute-answering="handleUserAnswer"
   />
@@ -80,14 +81,13 @@ export default {
       randomGameId: Number(useRoute().query.randomGameId),
       mapModalIsOpen: false,
       hintModalIsOpen: false,
-      clickedLocation: null,
       randomLocation: {
+        locationId: 0,
         locationName: '',
         longitude: 0,
         latitude: 0,
         clue: '',
         imageData: '',
-        locationId: 0,
         isGameComplete: true,
         timeStart: ''
       },
@@ -102,10 +102,10 @@ export default {
 
   methods: {
 
-    handleUserAnswer(clickedLocation) {
+    handleUserAnswer(clickedLocation, locationId, randomGameId) {
       const userAnswer = {
-        randomGameId: this.randomGameId,
-        locationId: this.randomLocation.locationId,
+        randomGameId: randomGameId,
+        locationId: locationId,
         clickedLocation: clickedLocation
       };
       this.sendUserAnswer(userAnswer)
