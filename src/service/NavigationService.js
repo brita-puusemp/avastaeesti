@@ -55,4 +55,26 @@ export default {
 
     },
 
+    navigateToResultView(userAnswerResult, randomGameId) {
+        router.push({
+            name: 'gameResultsRoute',
+            query: {
+                locationName: userAnswerResult.locationName ,
+                locationIsCorrect: userAnswerResult.locationIsCorrect,
+                totalQuestions: userAnswerResult.totalQuestions,
+                questionsAnswered: userAnswerResult.questionsAnswered,
+                randomGameId: randomGameId
+            }
+        })
+    },
+
+    navigateToGameOverView(randomGameId) {
+        router.push({
+            name: 'gameOverRoute',
+            query: {
+                randomGameId: randomGameId
+            }
+        })
+
+    },
 }

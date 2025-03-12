@@ -1,7 +1,7 @@
 <template>
   <Modal :modal-is-open="modalIsOpen" @event-close-modal="$emit('event-close-modal')">
     <template #body>
-      <p>Place the pin by clicking on the map</p>
+      <h3>VALI ASUKOHT KAARDIL</h3>
       <div
           ref="mapContainer"
           class="map-container"
@@ -10,7 +10,7 @@
     </template>
     <template #footer>
       <router-link to="/game" @click.native="$emit('event-close-modal')">Tagasi pildile</router-link>
-      <button @click="handleLocationSubmission" type="submit" class="btn btn-success ms-5">KINNITA</button>
+      <button @click="executeAnswering" type="submit" class="btn btn-success ms-5">KINNITA</button>
     </template>
   </Modal>
 </template>
@@ -18,8 +18,6 @@
 <script>
 import Modal from "@/components/modal/Modal.vue";
 import L from 'leaflet'
-import axios from "axios";
-import GameService from "@/service/GameService";
 
 //marker fixed
 delete L.Icon.Default.prototype._getIconUrl;
@@ -33,26 +31,24 @@ L.Icon.Default.mergeOptions({
 
 export default {
   name: 'MapModal2',
-  components: { Modal },
+  components: {Modal},
   props: {
     locationId: Number,
     randomGameId: Number,
     modalIsOpen: Boolean,
-    center: { type: Array, default: () => [58.909184655697715, 25.455322265625004] },
-    zoom: { type: Number, default: 7 },
-    clickedLocation: {}
+    center: {type: Array, default: () => [58.909184655697715, 25.455322265625004]},
+    zoom: {type: Number, default: 7},
+
   },
   data() {
     return {
       map: null,
       marker: null, // Store reference to the marker
-    /*  clickedLocation: {},*/
-      userAnswer: {
-        randomGameId: this.randomGameId,
-        locationId: this.locationId,
-        clickedLocation: {}
+      clickedLocation: {
+        lat: 0,
+        long: 0
       }
-    };
+    }
   },
   watch: {
     modalIsOpen(newValue) {
@@ -75,11 +71,11 @@ export default {
         maxZoom: 19
       }).addTo(this.map);
 
-      this.addCircleMarker();
+
       this.addMapClickListener(); // Attach click event listener
     },
 
-    addCircleMarker() {
+    /*addCircleMarker() {
       if (!this.map) return;
 
       L.circle([58.2806, 25.4856], {
@@ -88,14 +84,14 @@ export default {
         fillOpacity: 0.5,
         radius: 10000
       }).addTo(this.map);
-    },
+    },*/
 
     addMapClickListener() {
       if (!this.map) return;
 
       this.map.on('click', (event) => {
-        const { lat, lng } = event.latlng;
-        this.userAnswer.clickedLocation = { lat, lng };
+        const {lat, lng} = event.latlng;
+        this.clickedLocation = {lat, lng};
 
 
         // Remove previous marker if it exists
@@ -105,22 +101,20 @@ export default {
 
         // Add new marker
         this.marker = L.marker([lat, lng]).addTo(this.map);
-        this.$emit('location-clicked', { lat, lng });
+
+        /*    this.$emit('event-execute-answering', this.clickedLocation);*/
       });
     },
 
-  sendUserAnswer() {
+    executeAnswering() {
+      if (this.clickedLocation) {
+        this.$emit('event-execute-answering', this.clickedLocation, this.locationId, this.randomGameId); // Saadab koordinaadid tagasi
+      } else {
+        alert("Palun valige koht kaardil!");
+      }
 
-      GameService.sendPostUserAnswerRequest(this.userAnswer)
-
-          .then(response => {
-        this.someDataBlockResponseObject = response.data
-      }).catch(error => {
-        this.someDataBlockErrorResponseObject = error.response.data
-      })
     },
-
-},
+  }
 }
 </script>
 

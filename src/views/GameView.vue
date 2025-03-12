@@ -1,10 +1,11 @@
 <template>
 
   <MapModal   :modal-is-open="mapModalIsOpen"
-              :locationId="randomLocation.locationId"
+              :location-id="randomLocation.locationId"
+              :random-game-id="randomGameId"
               @event-close-modal="closeMapModal"
-              @increment-id="incrementId"
-              @location-clicked="handleLocationClick"/>
+              @event-execute-answering="handleUserAnswer"
+  />
 
   <GetHintModal :hint-modal-is-open="hintModalIsOpen"
                 :hint="randomLocation.clue"
@@ -21,26 +22,7 @@
     <div class="row justify-content-center">
       <!-- Buttons for the rounds -->
       <div class="col-auto">
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-          <label class="form-check-label" for="inlineRadio1"></label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-          <label class="form-check-label" for="inlineRadio2"></label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">
-          <label class="form-check-label" for="inlineRadio3"></label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio4" value="option4">
-          <label class="form-check-label" for="inlineRadio4"></label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio5" value="option5">
-          <label class="form-check-label" for="inlineRadio5"></label>
-        </div>
+        progress
       </div>
     </div>
 
@@ -69,6 +51,7 @@ import L from "leaflet";
 import GameResultModal from "@/components/modal/GameResultModal.vue";
 import {useRoute} from "vue-router";
 import GameService from "@/service/GameService";
+import NavigationService from "@/service/NavigationService";
 
 
 export default {
@@ -79,26 +62,54 @@ export default {
       randomGameId: Number(useRoute().query.randomGameId),
       mapModalIsOpen: false,
       hintModalIsOpen: false,
-      gameResultIsOpen: false,
-      clickedLocation: null,
       randomLocation: {
+        locationId: 0,
         locationName: '',
         longitude: 0,
         latitude: 0,
         clue: '',
         imageData: '',
-        locationId: 0,
-        isGameComplete: true,
+        isGameComplete: '',
         timeStart: ''
       },
-      /*id: 3,
-      correct_latitude: 58.835353046883235,
-      correct_longitude: 25.356445312500004,
-      allowedDistanceInMeters: 10000,
-      answerIsCorrect: false*/
     };
   },
+
+  beforeRouteUpdate(to, from, next) {
+    this.randomGameId = Number(to.query.randomGameId); // Uuenda randomGameId
+    this.getRandomGameLocations(); // Laadi uued andmed
+    next(); // Jätka navigeerimist
+  },
+
   methods: {
+
+    checkIfGameisOver() {
+      if(this.randomLocation.isGameComplete) {
+        NavigationService.navigateToGameOverView(this.randomGameId)
+      }
+    },
+
+    handleUserAnswer(clickedLocation, locationId, randomGameId) {
+      const userAnswer = {
+        randomGameId: randomGameId,
+        locationId: locationId,
+        clickedLocation: clickedLocation
+      };
+      this.sendUserAnswer(userAnswer)
+    },
+
+
+    handleUserAnswerResponse(response) {
+      const userAnswerResult = response.data;
+      NavigationService.navigateToResultView(userAnswerResult, this.randomGameId)
+
+    },
+
+    sendUserAnswer(userAnswer) {
+      GameService.sendPostUserAnswerRequest(userAnswer)
+          .then(response => this.handleUserAnswerResponse(response))
+          .catch(error => this.someDataBlockErrorResponseObject = error.response.data)
+    },
 
     handleGetRandomGameLocationsResponse(response) {
       return this.randomLocation = response.data;
@@ -131,51 +142,11 @@ export default {
       this.hintModalIsOpen = false;
     },
 
-   /* openGameResultModal() {
-      this.hintModalIsOpen = true;
-    },
-    closeGameResultModal() {
-      this.hintModalIsOpen = false;
-    },*/
-
-
-   /* handleLocationClick(location) {
-      this.clickedLocation = location;
-      console.log(`Chosen Location: ${location.lat}, ${location.lng}`);
-      this.calculateDistance(location);
-    },
-
-    calculateDistance(clickedLocation) {
-      const correctLatLng = L.latLng(this.correct_latitude, this.correct_longitude);
-      const clickedLatLng = L.latLng(clickedLocation.lat, clickedLocation.lng);
-      const distance = correctLatLng.distanceTo(clickedLatLng);
-      console.log(distance);
-      console.log(this.allowedDistanceInMeters);
-
-      this.answerIsCorrect = distance <= this.allowedDistanceInMeters;
-    },
-
-    incrementId() {
-      this.id += 1;
-    },*/
-
-    fetch() {
-
-    },
-
-   /* async fetchHint() {
-      try {
-        const response = await GetHintService.sendGetHintRequest(this.id);
-        this.hint = response.data;
-      } catch (error) {
-        console.error("Error fetching hint:", error);
-        this.hint = "Viga vihje laadimisel"; // Fallback hint in case of error
-      }
-    },*/
   },
   mounted() {
+    this.checkIfGameisOver()
     this.getRandomGameLocations()
-  /*  this.fetchHint();*/
+
 
   }
 }
