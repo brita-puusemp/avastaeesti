@@ -5,7 +5,7 @@
       <h3 v-else>Minu andmed</h3>
       <AlertDanger :message="errorMessage"/>
       <AlertSuccess :message="successMessage"/>
-      <div class="row justify-content-center align-items-start">
+      <div v-if="isUpdate" class="row justify-content-center align-items-start">
         <div class="col col-4 text-start">
 
           <div class="input-group mb-3">
@@ -29,6 +29,10 @@
             </button>
           </div>
         </div>
+      </div>
+      <div v-else>
+        <h2>{{user.username}}</h2>
+        <h2>{{user.email}}</h2>
       </div>
       <button v-if="!isUpdate" @click="handleIsUpdate" class="btn btn-outline-secondary">Muuda</button>
       <button @click="deleteUserInfo" type="button" class="btn btn-light">Kustuta konto</button>
@@ -160,7 +164,7 @@ export default {
 
     // todo minu MÄNGU tabeli teemad
     getGames() {
-      GameService.sendGetGamesRequest()
+      GameService.sendGetUserGames(this.userId)
           .then(response => this.handleGetGamesResponse(response))
           .catch(() => NavigationService.navigateToErrorView());
     },
