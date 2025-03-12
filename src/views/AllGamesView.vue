@@ -31,7 +31,7 @@ export default {
   methods: {
 
     handleGetGamesResponse(response) {
-      return this.allGames = response.data;
+      this.allGames = response.data;
     },
 
 
