@@ -89,12 +89,10 @@ export default {
           .catch(() => NavigationService.navigateToErrorView())
     },
 
-
     handleGetLocationResponse(response) {
       this.location = response.data
       this.modalIsOpen = true
     },
-
 
     deleteLocation() {
       LocationService.sendDeleteLocationRequest(this.selectedLocationId)
@@ -149,13 +147,11 @@ export default {
       this.errorMessage = ''
       this.successMessage = ''
     },
-
-    navigateToLocationView(locationId) {
-      NavigationService.navigateToLocationView(locationId)
-    },
+    //
+    // navigateToLocationView(locationId) {
+    //   NavigationService.navigateToLocationView(locationId)
+    // },
   },
-
-
 
   beforeMount() {
     this.validateIsAdmin()

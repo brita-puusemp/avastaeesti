@@ -52,14 +52,14 @@
 
           <template v-if="isUser">
             <!--              todo: siin tuleb /profile-user route õigeks muuta -->
-            <router-link class="nav-link" to="/profile-user">
+            <router-link class="nav-link" to="/profile">
               <font-awesome-icon :icon="['far', 'circle-user']"/>
             </router-link>
           </template>
 
           <template v-else-if="isAdmin">
             <!--              todo: siin tuleb /profile-admin route õigeks muuta -->
-            <router-link class="nav-link" to="/profile-admin">
+            <router-link class="nav-link" to="/profile">
               <font-awesome-icon :icon="['far', 'circle-user']"/>
             </router-link>
           </template>

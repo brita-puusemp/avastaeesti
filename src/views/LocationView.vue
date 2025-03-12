@@ -96,10 +96,10 @@ export default {
           .catch(error => this.handleNewErrorResponse(error))
     },
 
-    // todo ei anna edukat asukoht lisatud, läks home-admin lehele.
+    // todo ei anna edukat asukoht lisatud, läks kohe home-admin lehele.
     handleNewLocationResponse() {
       sessionStorage.setItem('successMessage', 'Asukoht lisatud')
-      // setTimeout(this.resetAllMessages, 4000,)
+      // setTimeout(this.resetAllMessages, 4000,) see siin ei tööta
       NavigationService.navigateToAdminHomeView()
     },
 
