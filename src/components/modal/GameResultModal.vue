@@ -11,8 +11,8 @@
     </template>
 
     <template #footer>
-      <router-link to="/game" @click.native="$emit('event-close-modal')">Tagasi pildile</router-link>
-      <button @click="login" type="submit" class="btn btn-success ms-5">AVA KAARDI</button>
+      <router-link to="/game" @click.native="$emit('event-close-modal')">Loobu mängust</router-link>
+      <button @click="login" type="submit" class="btn btn-success ms-5">JÄRGMINE</button>
     </template>
 
   </Modal>
@@ -26,8 +26,15 @@ export default {
   components: {Modal},
   props: {
     hintModalIsOpen: Boolean,
-    hint: String
   },
+
+  methods: {
+    openGameResultModal() {
+      this.$emit('event-open-result-modal-from-map-modal')
+    },
+}
+
+
 }
 </script>
 
