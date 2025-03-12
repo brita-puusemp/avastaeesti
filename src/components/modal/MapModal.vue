@@ -1,7 +1,7 @@
 <template>
   <Modal :modal-is-open="modalIsOpen" @event-close-modal="$emit('event-close-modal')">
     <template #body>
-      <p>Place the pin by clicking on the map</p>
+      <h3>VALI ASUKOHT KAARDIL</h3>
       <div
           ref="mapContainer"
           class="map-container"
@@ -46,7 +46,7 @@ export default {
     return {
       map: null,
       marker: null, // Store reference to the marker
-      clickedLocation: {}
+      clickedLocation: null
     }
   },
   watch: {
@@ -100,11 +100,12 @@ export default {
 
         // Add new marker
         this.marker = L.marker([lat, lng]).addTo(this.map);
-        this.$emit('location-clicked', {lat, lng});
+
+        this.$emit('event-execute-answering', this.clickedLocation);
       });
     },
 
-    executeAnswering() {
+   /* executeAnswering() {
       if (this.clickedLocation) {
         this.$emit('event-execute-answering', this.clickedLocation); // Saadab koordinaadid tagasi
         this.$emit('event-close-modal')
@@ -112,7 +113,7 @@ export default {
         alert("Palun valige koht kaardil!");
       }
 
-    },
+    },*/
   }
 }
 </script>

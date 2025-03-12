@@ -94,6 +94,12 @@ export default {
     };
   },
 
+  beforeRouteUpdate(to, from, next) {
+    this.randomGameId = Number(to.query.randomGameId); // Uuenda randomGameId
+    this.getRandomGameLocations(); // Laadi uued andmed
+    next(); // Jätka navigeerimist
+  },
+
   methods: {
 
     handleUserAnswer(clickedLocation) {
@@ -102,7 +108,6 @@ export default {
         locationId: this.randomLocation.locationId,
         clickedLocation: clickedLocation
       };
-
       this.sendUserAnswer(userAnswer)
     },
 
@@ -114,9 +119,7 @@ export default {
     },
 
     sendUserAnswer(userAnswer) {
-
       GameService.sendPostUserAnswerRequest(userAnswer)
-
           .then(response => this.handleUserAnswerResponse(response))
           .catch(error => this.someDataBlockErrorResponseObject = error.response.data)
     },
