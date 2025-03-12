@@ -3,8 +3,6 @@
     <div class="col">
       <h3 v-if="isUpdate">Muuda oma andmeid</h3>
       <h3 v-else>Minu andmed</h3>
-      <AlertDanger :message="errorMessage"/>
-      <AlertSuccess :message="successMessage"/>
       <div v-if="isUpdate" class="row justify-content-center align-items-start">
         <div class="col col-4 text-start">
 
@@ -14,21 +12,19 @@
           </div>
           <div class="input-group mb-3">
             <span class="input-group-text">Parool</span>
-            <input v-model="user.password" type="password" class="form-control">
+            <input v-model="user.password" :type="showPassword ? 'text' : 'password'" class="form-control">
             <span class="input-group-text" @click="initiateShowPassword" style="cursor: pointer;">
-              <i :class="showPassword ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
-              <font-awesome-icon :icon="['fas', 'eye']" />
+             <font-awesome-icon :icon="['fas', 'eye']"/>
             </span>
 
           </div>
           <div class="input-group mb-3">
             <span class="input-group-text">Korda parooli</span>
-            <input v-model="user.passwordRepeat" type="password" class="form-control">
-          <span class="input-group-text" @click="initiatePasswordRepeate" style="cursor: pointer;">
-            <i :class="showPasswordRepeat ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
-            <font-awesome-icon :icon="['fas', 'eye']" />
+            <input v-model="user.passwordRepeate" :type="showPasswordRepeat ? 'text' : 'password'" class="form-control">
+            <span class="input-group-text" @click="initiatePasswordRepeate" style="cursor: pointer;">
+            <font-awesome-icon :icon="['fas', 'eye']"/>
           </span>
-        </div>
+          </div>
           <div class="input-group mb-3">
             <span class="input-group-text">E-mail</span>
             <input v-model="user.email" type="email" class="form-control">
@@ -42,6 +38,12 @@
       <button v-if="!isUpdate" @click="handleIsUpdate" class="btn btn-outline-secondary">Muuda</button>
       <button v-if="isUpdate" @click="updateUser" type="button" class=" btn btn-light">Salvesta</button>
       <button @click="deleteUserInfo" type="button" class="btn btn-light">Kustuta konto</button>
+      <div class="row justify-content-center">
+        <div class="col col-4">
+          <AlertDanger :message="errorResponse.message"/>
+          <AlertSuccess :message="successMessage"/>
+        </div>
+      </div>
     </div>
   </div>
   <div class="row mt-5">
@@ -73,7 +75,6 @@
   </div>
 </template>
 
-
 <script>
 
 import NavigationService from "@/service/NavigationService";
@@ -81,6 +82,7 @@ import AlertSuccess from "@/components/alert/AlertSuccess.vue";
 import AlertDanger from "@/components/alert/AlertDanger.vue";
 import GameService from "@/service/GameService";
 import UserService from "@/service/UserService";
+import BusinessErrors from "@/errors/BusinessErrors";
 
 export default {
   name: "ProfileInfoView",
@@ -99,6 +101,10 @@ export default {
       showPasswordRepeat: false,
       successMessage: '',
       errorMessage: '',
+      errorResponse: {
+        message: '',
+        errorCode: 0
+      },
       allGames: [{
         gameId: 0,
         gameName: '',
@@ -110,10 +116,18 @@ export default {
   methods: {
     initiateShowPassword() {
       this.showPassword = true
+      setTimeout(() => {
+        this.showPassword = false;
+      }, 2000)
     },
+
     initiatePasswordRepeate() {
       this.showPasswordRepeat = true
+      setTimeout(() => {
+        this.showPasswordRepeat = false;
+      }, 2000)
     },
+
     getUser(userId) {
       UserService.sendGetUserInfoRequest(userId)
           .then(response => this.handleGetUserRequest(response))
@@ -129,12 +143,17 @@ export default {
       setTimeout(this.resetAllMessages, 4000)
     },
 
+
+
+
+
+
     updateUser() {
       if (this.allFieldsCorrect()) {
         UserService.sendPutUserUpdateRequest(this.user, this.userId)
             .then(response => this.handleUserInfoUpdateRequest(response))
-            .catch(() => NavigationService.navigateToErrorView())
-      } else {
+            .catch(error => this.handleUserInfoErrorResponse(error))
+      }else{
         this.alertMissingFields()
       }
     },
@@ -142,7 +161,30 @@ export default {
     handleUserInfoUpdateRequest(response) {
       this.successMessage = 'Sinu andmed on edukalt muudetud'
       setTimeout(this.resetAllMessages, 4000)
+
     },
+
+    handleUserInfoErrorResponse(error) {
+      this.errorResponse = error.response.data;
+      if (this.isIncorrectUsername() || this.isIncorrectEmail()) {
+        this.handleIncorrectCredentials();
+      } else {
+        NavigationService.navigateToErrorView()
+      }
+    },
+
+    handleIncorrectCredentials() {
+      this.message = this.errorResponse.message;
+      setTimeout(this.resetAlertMessage, 4000);
+    },
+    isIncorrectUsername() {
+      return BusinessErrors.CODE_USERNAME_EXISTS === this.errorResponse.errorCode;
+    },
+
+    isIncorrectEmail() {
+      return BusinessErrors.CODE_EMAIL_EXISTS === this.errorResponse.errorCode;
+    },
+
 
     deleteUserInfo() {
       UserService.sendDeleteUserInfoRequest(this.userId)
@@ -154,12 +196,13 @@ export default {
       this.successMessage = "Konto on edukalt kustutatud"
       setTimeout(() => this.resetAllMessages, 4000)
       NavigationService.navigateToLoginView()
-    },
+    }
+    ,
 
     allFieldsCorrect() {
       return this.user.username.length > 0
           && this.user.password.length > 0
-          && this.user.email.length > 0
+          && this.user.passwordRepeate === this.user.password
     },
 
     alertMissingFields() {
@@ -181,10 +224,12 @@ export default {
       GameService.sendGetUserGames(this.userId)
           .then(response => this.handleGetGamesResponse(response))
           .catch(() => NavigationService.navigateToErrorView());
-    },
+    }
+    ,
     handleGetGamesResponse(response) {
       this.allGames = response.data;
-    },
+    }
+    ,
 
 // todo - mängu kustutamise nupp - backis delete teenus teha
     // deleteUserGame() .- todo sarnane.. nupp siis ka startDeleteUserGameProcess(gameId)
@@ -216,6 +261,7 @@ export default {
     handleIsUpdate() {
       this.isUpdate = true
     }
+    ,
   },
 
   beforeMount() {
