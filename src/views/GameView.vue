@@ -1,18 +1,19 @@
 <template>
 
   <MapModal   :modal-is-open="mapModalIsOpen"
+              :locationId="randomLocation.locationId"
               @event-close-modal="closeMapModal"
               @increment-id="incrementId"
               @location-clicked="handleLocationClick"/>
 
   <GetHintModal :hint-modal-is-open="hintModalIsOpen"
-                :hint="hint"
+                :hint="randomLocation.clue"
+                :randomGameId="randomGameId"
                 @event-close-modal="closeHintModal"
                 @event-open-map-modal-from-hint-modal="openMapModalFromHintModal"
 
   />
 
-  <GameResultModal :gameresults-modal-is-open="gameResultModalIsOpen"/>
 
 
 
@@ -46,7 +47,7 @@
 
     <div class="row mt-3 justify-content-center">
       <div class="col-auto">
-        <img src="../assets/images/pexels-raulling-30949011.jpg" class="img-fluid w-50 d-block mx-auto" alt="image">
+        <img :src="randomLocation.imageData" class="img-fluid w-100 d-block mx-auto" alt="image">
       </div>
     </div>
 
@@ -66,6 +67,8 @@ import GetHintModal from "@/components/modal/GetHintModal.vue";
 import GetHintService from "@/service/GetHintService";
 import L from "leaflet";
 import GameResultModal from "@/components/modal/GameResultModal.vue";
+import {useRoute} from "vue-router";
+import GameService from "@/service/GameService";
 
 
 export default {
@@ -73,19 +76,41 @@ export default {
   components: {GameResultModal, MapModal, GetHintModal },
   data() {
     return {
+      randomGameId: Number(useRoute().query.randomGameId),
       mapModalIsOpen: false,
       hintModalIsOpen: false,
       gameResultIsOpen: false,
       clickedLocation: null,
-      id: 3,
+      randomLocation: {
+        locationName: '',
+        longitude: 0,
+        latitude: 0,
+        clue: '',
+        imageData: '',
+        locationId: 0,
+        isGameComplete: true,
+        timeStart: ''
+      },
+      /*id: 3,
       correct_latitude: 58.835353046883235,
       correct_longitude: 25.356445312500004,
-      hint: "Hint pole saadaval :(",
       allowedDistanceInMeters: 10000,
-      answerIsCorrect: false
+      answerIsCorrect: false*/
     };
   },
   methods: {
+
+    handleGetRandomGameLocationsResponse(response) {
+      return this.randomLocation = response.data;
+    },
+
+    getRandomGameLocations()
+    {
+      GameService.sendGetRandomGameLocationsRequest(this.randomGameId)
+          .then(response => this.handleGetRandomGameLocationsResponse(response))
+          .catch(error => this.someDataBlockErrorResponseObject = error.response.data)
+    },
+
     openMapModalFromHintModal() {
       this.closeHintModal()
       this.openMapModal()
@@ -106,7 +131,15 @@ export default {
       this.hintModalIsOpen = false;
     },
 
-    handleLocationClick(location) {
+   /* openGameResultModal() {
+      this.hintModalIsOpen = true;
+    },
+    closeGameResultModal() {
+      this.hintModalIsOpen = false;
+    },*/
+
+
+   /* handleLocationClick(location) {
       this.clickedLocation = location;
       console.log(`Chosen Location: ${location.lat}, ${location.lng}`);
       this.calculateDistance(location);
@@ -124,13 +157,13 @@ export default {
 
     incrementId() {
       this.id += 1;
-    },
+    },*/
 
     fetch() {
 
     },
 
-    async fetchHint() {
+   /* async fetchHint() {
       try {
         const response = await GetHintService.sendGetHintRequest(this.id);
         this.hint = response.data;
@@ -138,11 +171,11 @@ export default {
         console.error("Error fetching hint:", error);
         this.hint = "Viga vihje laadimisel"; // Fallback hint in case of error
       }
-    },
+    },*/
   },
   mounted() {
-
-    this.fetchHint();
+    this.getRandomGameLocations()
+  /*  this.fetchHint();*/
 
   }
 }

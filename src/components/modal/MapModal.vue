@@ -18,6 +18,8 @@
 <script>
 import Modal from "@/components/modal/Modal.vue";
 import L from 'leaflet'
+import axios from "axios";
+import GameService from "@/service/GameService";
 
 //marker fixed
 delete L.Icon.Default.prototype._getIconUrl;
@@ -33,6 +35,8 @@ export default {
   name: 'MapModal2',
   components: { Modal },
   props: {
+    locationId: Number,
+    randomGameId: Number,
     modalIsOpen: Boolean,
     center: { type: Array, default: () => [58.909184655697715, 25.455322265625004] },
     zoom: { type: Number, default: 7 },
@@ -42,6 +46,12 @@ export default {
     return {
       map: null,
       marker: null, // Store reference to the marker
+    /*  clickedLocation: {},*/
+      userAnswer: {
+        randomGameId: this.randomGameId,
+        locationId: this.locationId,
+        clickedLocation: {}
+      }
     };
   },
   watch: {
@@ -85,6 +95,8 @@ export default {
 
       this.map.on('click', (event) => {
         const { lat, lng } = event.latlng;
+        this.userAnswer.clickedLocation = { lat, lng };
+
 
         // Remove previous marker if it exists
         if (this.marker) {
@@ -97,13 +109,18 @@ export default {
       });
     },
 
-    handleLocationSubmission() {
-      this.$emit('event-close-modal');
-      this.$emit('increment-id');
-    }
+  sendUserAnswer() {
 
+      GameService.sendPostUserAnswerRequest(this.userAnswer)
 
-  }
+          .then(response => {
+        this.someDataBlockResponseObject = response.data
+      }).catch(error => {
+        this.someDataBlockErrorResponseObject = error.response.data
+      })
+    },
+
+},
 }
 </script>
 

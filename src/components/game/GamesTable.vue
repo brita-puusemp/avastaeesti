@@ -18,7 +18,7 @@
       <td>{{ allGames.gameDescription }}</td>
       <td>{{ allGames.totalTopScore }}</td>
       <td>
-        <font-awesome-icon :icon="['fas', 'play']" @click="NavigationService.navigateToGameView(allGames.gameId)"
+        <font-awesome-icon :icon="['fas', 'play']"
                            class="cursor-pointer me-3"/>
       </td>
     </tr>

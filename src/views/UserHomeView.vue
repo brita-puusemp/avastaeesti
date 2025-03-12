@@ -6,7 +6,7 @@
         <div class="card-body">
           <h5 class="card-title">Special title treatment</h5>
           <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-          <a href="#/game" class="btn btn-primary">ALUSTA UUT MÄNGU</a>
+          <a @click="createNewRandomGame" href="#/game" class="btn btn-primary">ALUSTA UUT MÄNGU</a>
         </div>
       </div>
     </div>
@@ -45,8 +45,31 @@
 </template>
 
 <script>
+import axios from "axios";
+import GameService from "@/service/GameService";
+import NavigationService from "@/service/NavigationService";
+
 export default {
-  name: 'UserHomeView'
+  name: 'UserHomeView',
+  data() {
+    return {
+      userId: sessionStorage.getItem('userId'),
+
+    }
+  },
+  methods: {
+
+    handleCreateNewRandomGameResponse(response) {
+      let randomGameId = response.data;
+      NavigationService.navigateToGameView(randomGameId)
+    },
+
+    createNewRandomGame() {
+      GameService.sendPostNewRandomGame(this.userId)
+          .then(response => this.handleCreateNewRandomGameResponse(response))
+          .catch(error => this.someDataBlockErrorResponseObject = error.response.data)
+    },
+  }
 }
 </script>
 
