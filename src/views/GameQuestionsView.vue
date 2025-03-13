@@ -31,14 +31,11 @@
           />
         </div>
         <div class="col col-2 mb-3">
-          <button @click="getLocationPreview" type="submit" class="btn btn-light">Lisa küsimus mängu</button>
+          <button @click="addNewLocationToUserGame" type="submit" class="btn btn-success">LISA KÜSIMUS MÄNGU</button>
         </div>
 
       </div>
 
-      <div class="col mb-3">
-        <button @click="createNewGameLocations" type="submit" class="btn btn-success">LOO MÄNG</button>
-      </div>
 
     </div>
 
@@ -86,7 +83,7 @@ export default {
   methods: {
     // todo __ ümber teha.. previewed NOK ja POST juurde.
 
-    getGamelocations() {
+    getGameLocations() {
       LocationService.sendGetGameLocationsRequest(this.gameId)
           .then(response => this.handleGameLocationResponse(response))
           .catch(() => NavigationService.navigateToErrorView())
@@ -97,13 +94,13 @@ export default {
     },
 
     addNewLocationToUserGame() {
-      this.sendPostNewLocationToUserGame(this.gameId, this.selectedLocationId)
-          .then(response => this.handleAddedGameLocationResponse(response))
+      GameService.sendPostNewLocationToUserGame(this.gameId, this.selectedLocationId)
+          .then(() => this.handleAddedGameLocationResponse())
           .catch(() => NavigationService.navigateToErrorView())
     },
 
-    handleAddedGameLocationResponse(response) {
-      this.addedGameLocation = response.data;
+    handleAddedGameLocationResponse() {
+      this.getGameLocations()
     },
 
 
@@ -159,6 +156,7 @@ export default {
 
   beforeMount() {
     this.getLocations()
+    this.getGameLocations()
   }
 }
 </script>

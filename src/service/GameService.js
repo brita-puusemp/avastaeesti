@@ -54,10 +54,10 @@ export default {
         );
     },
     sendPostNewLocationToUserGame(gameId, selectedLocationId) {
-        return axios.post('/game-location', {
+        return axios.post('/game-location', null,{
                 params: {
                     gameId: gameId,
-                    selectedLocationId: selectedLocationId
+                    locationId: selectedLocationId
                 }
             }
         )

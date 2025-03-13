@@ -35,7 +35,7 @@
         <h4>{{ user.username }}</h4>
         <h4>{{ user.email }}</h4>
       </div>
-      <button v-if="!isUpdate" @click="setIsUpdateToTrue" class="btn btn-outline-secondary">Muuda</button>
+      <button v-if="!isUpdate" @click="setIsUpdateToTrue" class="btn btn-outline-secondary">Muuda oma andmeid</button>
       <button v-if="isUpdate" @click="updateUser" type="button" class=" btn btn-light">Salvesta</button>
       <button v-if="isUpdate" @click="resetUser" type="button" class=" btn btn-light">Tagasi</button>
       <button v-if="isUser && !isUpdate" @click="deleteUserInfo" type="button" class="btn btn-light">Kustuta konto
@@ -153,7 +153,7 @@ export default {
         this.alertMissingFields()
       }
     },
-//todo: siin ei lähe nn /profile esilehele tagasi, kus kuvab minu andmeid.
+
     handleUserInfoUpdateRequest(response) {
       this.successMessage = 'Sinu andmed on edukalt muudetud'
       setTimeout(() => {
@@ -236,7 +236,7 @@ export default {
 
 
 // todo - mängu kustutamise nupp - backis delete teenus teha
-    // deleteUserGame() .- todo sarnane.. nupp siis ka startDeleteUserGameProcess(gameId)
+// deleteUserGame() .- todo sarnane.. nupp siis ka startDeleteUserGameProcess(gameId)
     // startDeleteLocationProcess(locationId) {
     //   this.selectedLocationId = locationId
     //   LocationService.sendGetLocationRequest(this.selectedLocationId)
