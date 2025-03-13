@@ -2,6 +2,7 @@
   <Modal :modal-is-open="modalIsOpen" @event-close-modal="$emit('event-close-modal')">
     <template #body>
       <h3>VALI ASUKOHT KAARDIL</h3>
+      <div id="modal-timer">{{ formattedTime }}</div>
       <div
           ref="mapContainer"
           class="map-container"
@@ -33,15 +34,24 @@ export default {
   name: 'MapModal2',
   components: {Modal},
   props: {
-    locationId: Number,
-    randomGameId: Number,
+    minutes: Number,
+    seconds: Number,
     modalIsOpen: Boolean,
     center: {type: Array, default: () => [58.909184655697715, 25.455322265625004]},
     zoom: {type: Number, default: 7},
 
   },
+  computed: {
+    // Vorminda minutid ja sekundid kahekohaliseks (nt 05:09)
+    formattedTime() {
+      const formattedMinutes = String(this.minutes).padStart(2, '0');
+      const formattedSeconds = String(this.seconds).padStart(2, '0');
+      return `${formattedMinutes}:${formattedSeconds}`;
+    },
+  },
   data() {
     return {
+      endTimeMilliseconds: 0,
       map: null,
       marker: null, // Store reference to the marker
       clickedLocation: {
@@ -75,17 +85,6 @@ export default {
       this.addMapClickListener(); // Attach click event listener
     },
 
-    /*addCircleMarker() {
-      if (!this.map) return;
-
-      L.circle([58.2806, 25.4856], {
-        color: 'red',
-        fillColor: '#f03',
-        fillOpacity: 0.5,
-        radius: 10000
-      }).addTo(this.map);
-    },*/
-
     addMapClickListener() {
       if (!this.map) return;
 
@@ -102,19 +101,22 @@ export default {
         // Add new marker
         this.marker = L.marker([lat, lng]).addTo(this.map);
 
-        /*    this.$emit('event-execute-answering', this.clickedLocation);*/
       });
     },
 
     executeAnswering() {
       if (this.clickedLocation) {
-        this.$emit('event-execute-answering', this.clickedLocation, this.locationId, this.randomGameId); // Saadab koordinaadid tagasi
+        this.endTimeMilliseconds = Date.now()
+        this.$emit('event-execute-answering', this.clickedLocation, this.endTimeMilliseconds); // Saadab koordinaadid tagasi
       } else {
         alert("Palun valige koht kaardil!");
       }
 
     },
-  }
+  },
+
+
+
 }
 </script>
 
