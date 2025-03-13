@@ -2,6 +2,7 @@
   <Modal :modal-is-open="modalIsOpen" @event-close-modal="$emit('event-close-modal')">
     <template #body>
       <h3>VALI ASUKOHT KAARDIL</h3>
+      <div id="modal-timer">{{ formattedTime }}</div>
       <div
           ref="mapContainer"
           class="map-container"
@@ -33,12 +34,23 @@ export default {
   name: 'MapModal2',
   components: {Modal},
   props: {
-    locationId: Number,
-    randomGameId: Number,
+    minutes: Number,
+    seconds: Number,
+   /* timeoutId: Number | null,*/
+    locationIdFromModal: Number,
+    randomGameIdFromModal: Number,
     modalIsOpen: Boolean,
     center: {type: Array, default: () => [58.909184655697715, 25.455322265625004]},
     zoom: {type: Number, default: 7},
 
+  },
+  computed: {
+    // Vorminda minutid ja sekundid kahekohaliseks (nt 05:09)
+    formattedTime() {
+      const formattedMinutes = String(this.minutes).padStart(2, '0');
+      const formattedSeconds = String(this.seconds).padStart(2, '0');
+      return `${formattedMinutes}:${formattedSeconds}`;
+    },
   },
   data() {
     return {
@@ -107,16 +119,34 @@ export default {
       });
     },
 
+   /* handleNoAnswer() {
+      if (!this.clickedLocation) {
+        this.timeoutId = setTimeout(() => {
+          this.executeNoAnswer();
+        }, 60000); // 60000 ms = 1 minut
+      }
+    },
+
+    executeNoAnswer() {
+      this.clickedLocation = null
+      this.endTimeMilliseconds = Date.now()
+      this.$emit('event-execute-no-answer', this.clickedLocation, this.locationIdFromModal, this.randomGameIdFromModal, this.endTimeMilliseconds);
+
+    },*/
+
     executeAnswering() {
       if (this.clickedLocation) {
         this.endTimeMilliseconds = Date.now()
-        this.$emit('event-execute-answering', this.clickedLocation, this.locationId, this.randomGameId, this.endTimeMilliseconds); // Saadab koordinaadid tagasi
+        this.$emit('event-execute-answering', this.clickedLocation, this.locationIdFromModal, this.randomGameIdFromModal, this.endTimeMilliseconds); // Saadab koordinaadid tagasi
       } else {
         alert("Palun valige koht kaardil!");
       }
 
     },
-  }
+  },
+
+
+
 }
 </script>
 

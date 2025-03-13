@@ -6,6 +6,7 @@
 
       <template #title>
         VIHJE
+        <div id="modal-timer">{{ formattedTime }}</div>
       </template>
 
       <template #body>
@@ -31,7 +32,17 @@ export default {
   props: {
     hintModalIsOpen: Boolean,
     hint: String,
+    minutes: Number,
+    seconds: Number
 
+  },
+  computed: {
+    // Vorminda minutid ja sekundid kahekohaliseks (nt 05:09)
+    formattedTime() {
+      const formattedMinutes = String(this.minutes).padStart(2, '0');
+      const formattedSeconds = String(this.seconds).padStart(2, '0');
+      return `${formattedMinutes}:${formattedSeconds}`;
+    },
   },
   methods: {
     openMapModal() {

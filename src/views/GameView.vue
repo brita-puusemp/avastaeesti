@@ -1,15 +1,23 @@
 <template>
 
   <MapModal :modal-is-open="mapModalIsOpen"
-            :location-id="randomLocation.locationId"
-            :random-game-id="randomGameId"
+            :location-id-from-modal="randomLocation.locationId"
+            :random-game-id-from-modal="randomGameId"
+            :minutes="minutes"
+            :seconds="seconds"
             @event-close-modal="closeMapModal"
             @event-execute-answering="handleUserAnswer"
+
   />
+  <!--            :timeout-id="timeoutId"-->
+
+  <!--            @event-execute-no-answer="handleTimeout"-->
 
   <GetHintModal :hint-modal-is-open="hintModalIsOpen"
                 :hint="randomLocation.clue"
                 :randomGameId="randomGameId"
+                :minutes="minutes"
+                :seconds="seconds"
                 @event-close-modal="closeHintModal"
                 @event-open-map-modal-from-hint-modal="openMapModalFromHintModal"
 
@@ -73,7 +81,9 @@ export default {
       timerInterval: null, // Timer'i interval
       timeoutId: null,
       startTimeMilliseconds: 0, // Stores the timestamp when the timer starts
-      endTimeMilliseconds: 0
+      endTimeMilliseconds: 0,
+     /* locationIdFromModal: 0,
+      randomGameIdFromModal: 0,*/
     };
   },
 
@@ -85,14 +95,22 @@ export default {
 
   methods: {
 
-    handleUserAnswer(clickedLocation, locationId, randomGameId, endTimeMilliseconds) {
+    handleUserAnswer(clickedLocation, locationIdFromModal, randomGameIdFromModal, endTimeMilliseconds) {
+
+      this.randomGameIdFromModal = randomGameIdFromModal
+      this.locationIdFromModal = locationIdFromModal
+      this.endTimeMilliseconds = endTimeMilliseconds
+
+
       const userAnswer = {
-        randomGameId: randomGameId,
-        locationId: locationId,
+        randomGameId: randomGameIdFromModal,
+        locationId: locationIdFromModal,
         clickedLocation: clickedLocation,
         startTimeMilliseconds: this.startTimeMilliseconds,
         endTimeMilliseconds: endTimeMilliseconds
       };
+
+      console.log(userAnswer)
 
         // Tühista timeout, kui kasutaja esitab vastuse enne ühe minuti möödumist
         if (this.timeoutId) {
@@ -210,24 +228,29 @@ export default {
 
       // Käivita ühe minuti pärast suunamine ResultView-i
       this.timeoutId = setTimeout(() => {
-        this.handleUserAnswer();
+        this.handleTimeout();
       }, 60000); // 60000 ms = 1 minut
     },
-    /*
-       handleTimeout() {
-         // Loo vale vastus
-         const userAnswer = {
-           randomGameId: this.randomGameId,
-           locationId: this.randomLocation.locationId,
-           clickedLocation: null
-         };
+    handleTimeout() {
+      this.clickedLocation = { lat: 0, lng: 0 }
+      this.endTimeMilliseconds = Date.now();
+      console.log(this.clickedLocation, this.endTimeMilliseconds)
+      // Loo vale vastus
+      const userAnswer = {
+        randomGameId: this.randomGameId,
+        locationId: this.randomLocation.locationId,
+        clickedLocation: this.clickedLocation,
+        startTimeMilliseconds: this.startTimeMilliseconds,
+        endTimeMilliseconds: this.endTimeMilliseconds
+      };
+      console.log(userAnswer)
 
-         // Saada vastus serverisse
-         this.sendUserAnswer(userAnswer);
+      // Saada vastus serverisse
+      this.sendUserAnswer(userAnswer);
 
-         // Peata timer
-         this.stopTimer();
-       },*/
+      // Peata timer
+      this.stopTimer();
+    },
 
     stopTimer() {
       // Peata timer
