@@ -1,10 +1,10 @@
 <template>
 
-  <MapModal   :modal-is-open="mapModalIsOpen"
-              :location-id="randomLocation.locationId"
-              :random-game-id="randomGameId"
-              @event-close-modal="closeMapModal"
-              @event-execute-answering="handleUserAnswer"
+  <MapModal :modal-is-open="mapModalIsOpen"
+            :location-id="randomLocation.locationId"
+            :random-game-id="randomGameId"
+            @event-close-modal="closeMapModal"
+            @event-execute-answering="handleUserAnswer"
   />
 
   <GetHintModal :hint-modal-is-open="hintModalIsOpen"
@@ -14,8 +14,6 @@
                 @event-open-map-modal-from-hint-modal="openMapModalFromHintModal"
 
   />
-
-
 
 
   <div class="container text-center">
@@ -47,8 +45,6 @@
 
 import MapModal from "@/components/modal/MapModal.vue";
 import GetHintModal from "@/components/modal/GetHintModal.vue";
-import GetHintService from "@/service/GetHintService";
-import L from "leaflet";
 import GameResultModal from "@/components/modal/GameResultModal.vue";
 import {useRoute} from "vue-router";
 import GameService from "@/service/GameService";
@@ -57,7 +53,7 @@ import NavigationService from "@/service/NavigationService";
 
 export default {
   name: 'GameView',
-  components: {GameResultModal, MapModal, GetHintModal },
+  components: {GameResultModal, MapModal, GetHintModal},
   data() {
     return {
       randomGameId: Number(useRoute().query.randomGameId),
@@ -76,7 +72,9 @@ export default {
       minutes: 0, // Minutid
       seconds: 0, // Sekundid
       timerInterval: null, // Timer'i interval
-      timeoutId: null
+      timeoutId: null,
+      startTimeMilliseconds: 0, // Stores the timestamp when the timer starts
+      endTimeMilliseconds: 0
     };
   },
 
@@ -88,22 +86,27 @@ export default {
 
   methods: {
 
-    handleUserAnswer(clickedLocation, locationId, randomGameId) {
+    handleUserAnswer(clickedLocation, locationId, randomGameId, endTimeMilliseconds) {
       const userAnswer = {
         randomGameId: randomGameId,
         locationId: locationId,
-        clickedLocation: clickedLocation
+        clickedLocation: clickedLocation,
+        startTimeMilliseconds: this.startTimeMilliseconds,
+        endTimeMilliseconds: endTimeMilliseconds
       };
 
-      if (this.timeoutId) {
-        clearTimeout(this.timeoutId);
-        this.timeoutId = null;
-      }
+        // Tühista timeout, kui kasutaja esitab vastuse enne ühe minuti möödumist
+        if (this.timeoutId) {
+          clearTimeout(this.timeoutId);
+          this.timeoutId = null;
+        }
 
-      // Tühista timeout, kui kasutaja esitab vastuse enne ühe minuti möödumist
-      this.sendUserAnswer(userAnswer)
+        this.sendUserAnswer(userAnswer)
+
+        // Peata timer
+        this.stopTimer();
+
     },
-
 
     handleUserAnswerResponse(response) {
       const userAnswerResult = response.data;
@@ -122,8 +125,7 @@ export default {
       this.startTimer()
     },
 
-    getRandomGameLocations()
-    {
+    getRandomGameLocations() {
       GameService.sendGetRandomGameLocationsRequest(this.randomGameId)
           .then(response => this.handleGetRandomGameLocationsResponse(response))
           .catch(error => this.someDataBlockErrorResponseObject = error.response.data)
@@ -155,6 +157,24 @@ export default {
         clearInterval(this.timerInterval);
       }
 
+
+      //Laadi startTime sessionStorage-st, kui see on olemas (nt refresh korral)
+      const savedStartTime = sessionStorage.getItem(
+          `startTime_${this.randomGameId}_${this.randomLocation.locationId}`
+      );
+
+      if (savedStartTime) {
+        // Kui startTime on olemas, kasuta seda
+        this.startTimeMilliseconds = JSON.parse(savedStartTime);
+      } else {
+        // Kui startTime pole olemas, salvesta uus startTime
+        this.startTimeMilliseconds = Date.now();
+        sessionStorage.setItem(
+            `startTime_${this.randomGameId}_${this.randomLocation.locationId}`,
+            JSON.stringify(this.startTimeMilliseconds)
+        );
+      }
+
       // Laadi salvestatud aeg localStorage-ist
       const savedTime = sessionStorage.getItem(`timer_${this.randomGameId}_${this.randomLocation.locationId}`);
       if (savedTime) {
@@ -179,7 +199,7 @@ export default {
           this.seconds = 0;
         }
 
-        // Salvesta aeg localStorage-i
+        // Salvesta aeg sessionStorage-i
         sessionStorage.setItem(`timer_${this.randomGameId}_${this.randomLocation.locationId}`, JSON.stringify({
           minutes: this.minutes,
           seconds: this.seconds
@@ -191,24 +211,24 @@ export default {
 
       // Käivita ühe minuti pärast suunamine ResultView-i
       this.timeoutId = setTimeout(() => {
-        this.handleTimeout();
+        this.handleUserAnswer();
       }, 60000); // 60000 ms = 1 minut
     },
+    /*
+       handleTimeout() {
+         // Loo vale vastus
+         const userAnswer = {
+           randomGameId: this.randomGameId,
+           locationId: this.randomLocation.locationId,
+           clickedLocation: null
+         };
 
-    handleTimeout() {
-      // Loo vale vastus
-      const userAnswer = {
-        randomGameId: this.randomGameId,
-        locationId: this.randomLocation.locationId,
-        clickedLocation: null
-      };
+         // Saada vastus serverisse
+         this.sendUserAnswer(userAnswer);
 
-      // Saada vastus serverisse
-      this.sendUserAnswer(userAnswer);
-
-      // Peata timer
-      this.stopTimer();
-    },
+         // Peata timer
+         this.stopTimer();
+       },*/
 
     stopTimer() {
       // Peata timer
@@ -226,8 +246,6 @@ export default {
       // Uuenda timerit HTML-is
       document.getElementById('timer').textContent = `${formattedMinutes}:${formattedSeconds}`;
     }
-
-
 
   },
   mounted() {

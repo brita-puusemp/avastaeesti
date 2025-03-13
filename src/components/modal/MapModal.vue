@@ -42,6 +42,7 @@ export default {
   },
   data() {
     return {
+      endTimeMilliseconds: 0,
       map: null,
       marker: null, // Store reference to the marker
       clickedLocation: {
@@ -108,7 +109,8 @@ export default {
 
     executeAnswering() {
       if (this.clickedLocation) {
-        this.$emit('event-execute-answering', this.clickedLocation, this.locationId, this.randomGameId); // Saadab koordinaadid tagasi
+        this.endTimeMilliseconds = Date.now()
+        this.$emit('event-execute-answering', this.clickedLocation, this.locationId, this.randomGameId, this.endTimeMilliseconds); // Saadab koordinaadid tagasi
       } else {
         alert("Palun valige koht kaardil!");
       }
