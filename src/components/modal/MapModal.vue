@@ -36,9 +36,6 @@ export default {
   props: {
     minutes: Number,
     seconds: Number,
-   /* timeoutId: Number | null,*/
-    locationIdFromModal: Number,
-    randomGameIdFromModal: Number,
     modalIsOpen: Boolean,
     center: {type: Array, default: () => [58.909184655697715, 25.455322265625004]},
     zoom: {type: Number, default: 7},
@@ -88,17 +85,6 @@ export default {
       this.addMapClickListener(); // Attach click event listener
     },
 
-    /*addCircleMarker() {
-      if (!this.map) return;
-
-      L.circle([58.2806, 25.4856], {
-        color: 'red',
-        fillColor: '#f03',
-        fillOpacity: 0.5,
-        radius: 10000
-      }).addTo(this.map);
-    },*/
-
     addMapClickListener() {
       if (!this.map) return;
 
@@ -115,29 +101,13 @@ export default {
         // Add new marker
         this.marker = L.marker([lat, lng]).addTo(this.map);
 
-        /*    this.$emit('event-execute-answering', this.clickedLocation);*/
       });
     },
-
-   /* handleNoAnswer() {
-      if (!this.clickedLocation) {
-        this.timeoutId = setTimeout(() => {
-          this.executeNoAnswer();
-        }, 60000); // 60000 ms = 1 minut
-      }
-    },
-
-    executeNoAnswer() {
-      this.clickedLocation = null
-      this.endTimeMilliseconds = Date.now()
-      this.$emit('event-execute-no-answer', this.clickedLocation, this.locationIdFromModal, this.randomGameIdFromModal, this.endTimeMilliseconds);
-
-    },*/
 
     executeAnswering() {
       if (this.clickedLocation) {
         this.endTimeMilliseconds = Date.now()
-        this.$emit('event-execute-answering', this.clickedLocation, this.locationIdFromModal, this.randomGameIdFromModal, this.endTimeMilliseconds); // Saadab koordinaadid tagasi
+        this.$emit('event-execute-answering', this.clickedLocation, this.endTimeMilliseconds); // Saadab koordinaadid tagasi
       } else {
         alert("Palun valige koht kaardil!");
       }

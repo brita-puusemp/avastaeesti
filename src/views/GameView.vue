@@ -1,17 +1,12 @@
 <template>
 
   <MapModal :modal-is-open="mapModalIsOpen"
-            :location-id-from-modal="randomLocation.locationId"
-            :random-game-id-from-modal="randomGameId"
             :minutes="minutes"
             :seconds="seconds"
             @event-close-modal="closeMapModal"
             @event-execute-answering="handleUserAnswer"
 
   />
-  <!--            :timeout-id="timeoutId"-->
-
-  <!--            @event-execute-no-answer="handleTimeout"-->
 
   <GetHintModal :hint-modal-is-open="hintModalIsOpen"
                 :hint="randomLocation.clue"
@@ -82,8 +77,7 @@ export default {
       timeoutId: null,
       startTimeMilliseconds: 0, // Stores the timestamp when the timer starts
       endTimeMilliseconds: 0,
-     /* locationIdFromModal: 0,
-      randomGameIdFromModal: 0,*/
+
     };
   },
 
@@ -95,16 +89,11 @@ export default {
 
   methods: {
 
-    handleUserAnswer(clickedLocation, locationIdFromModal, randomGameIdFromModal, endTimeMilliseconds) {
-
-      this.randomGameIdFromModal = randomGameIdFromModal
-      this.locationIdFromModal = locationIdFromModal
-      this.endTimeMilliseconds = endTimeMilliseconds
-
+    handleUserAnswer(clickedLocation, endTimeMilliseconds) {
 
       const userAnswer = {
-        randomGameId: randomGameIdFromModal,
-        locationId: locationIdFromModal,
+        randomGameId: this.randomGameId,
+        locationId: this.randomLocation.locationId,
         clickedLocation: clickedLocation,
         startTimeMilliseconds: this.startTimeMilliseconds,
         endTimeMilliseconds: endTimeMilliseconds
