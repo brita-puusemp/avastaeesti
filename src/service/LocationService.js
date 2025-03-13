@@ -46,6 +46,14 @@ export default {
             }
         )
     },
+    getGameLocationsRequest(gameId) {
+        axios.get('/game-locations', {
+                params: {
+                    gameId: gameId
+                }
+            }
+        );
+    },
 }
 
 

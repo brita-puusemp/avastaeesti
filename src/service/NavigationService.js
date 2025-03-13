@@ -20,6 +20,13 @@ export default {
         )
     },
 
+    navigateToProfileInfoView() {
+        router.push({
+                name: 'profileRoute'
+            }
+        )
+    },
+
     navigateToLoginView() {
         router.push({
                 name: 'loginRoute'

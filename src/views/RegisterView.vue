@@ -82,7 +82,7 @@ export default {
     },
 
     handleRegistrationResponse() {
-      this.$emit('event-show-nav-menu')
+      this.$emit('event-update-nav-menu')
       NavigationService.navigateToLoginView()
     },
 
