@@ -40,7 +40,7 @@
       <button @click="deleteUserInfo" type="button" class="btn btn-light">Kustuta konto</button>
       <div class="row justify-content-center">
         <div class="col col-4">
-          <AlertDanger :message="errorResponse.message"/>
+          <AlertDanger :message="errorMessage"/>
           <AlertSuccess :message="successMessage"/>
         </div>
       </div>
@@ -114,46 +114,33 @@ export default {
     }
   },
   methods: {
+
     initiateShowPassword() {
       this.showPassword = true
-      setTimeout(() => {
-        this.showPassword = false;
-      }, 2000)
+      setTimeout(() => this.showPassword = false, 2000)
     },
 
     initiatePasswordRepeate() {
       this.showPasswordRepeat = true
-      setTimeout(() => {
-        this.showPasswordRepeat = false;
-      }, 2000)
+      setTimeout(() => this.showPasswordRepeat = false, 2000)
     },
 
     getUser(userId) {
       UserService.sendGetUserInfoRequest(userId)
           .then(response => this.handleGetUserRequest(response))
-          .catch(() => this.handleGetUserErrorResponse())
+          .catch(() => NavigationService.navigateToErrorView())
     },
 
     handleGetUserRequest(response) {
       this.user = response.data
     },
 
-    handleGetUserErrorResponse() {
-      this.errorMessage = "Viga kasutaja andmete laadimisel!"
-      setTimeout(this.resetAllMessages, 4000)
-    },
-
-
-
-
-
-
     updateUser() {
       if (this.allFieldsCorrect()) {
         UserService.sendPutUserUpdateRequest(this.user, this.userId)
-            .then(response => this.handleUserInfoUpdateRequest(response))
+            .then(response => this.handleUserInfoUpdateRequest())
             .catch(error => this.handleUserInfoErrorResponse(error))
-      }else{
+      } else {
         this.alertMissingFields()
       }
     },
@@ -173,10 +160,6 @@ export default {
       }
     },
 
-    handleIncorrectCredentials() {
-      this.message = this.errorResponse.message;
-      setTimeout(this.resetAlertMessage, 4000);
-    },
     isIncorrectUsername() {
       return BusinessErrors.CODE_USERNAME_EXISTS === this.errorResponse.errorCode;
     },
@@ -185,6 +168,14 @@ export default {
       return BusinessErrors.CODE_EMAIL_EXISTS === this.errorResponse.errorCode;
     },
 
+    handleIncorrectCredentials() {
+      this.message = this.errorResponse.message;
+      setTimeout(this.resetAlertMessage, 4000);
+    },
+
+    resetAlertMessage() {
+      this.message = ''
+    },
 
     deleteUserInfo() {
       UserService.sendDeleteUserInfoRequest(this.userId)
@@ -196,23 +187,19 @@ export default {
       this.successMessage = "Konto on edukalt kustutatud"
       setTimeout(() => this.resetAllMessages, 4000)
       NavigationService.navigateToLoginView()
-    }
-    ,
+    },
 
     allFieldsCorrect() {
       return this.user.username.length > 0
-          && this.user.password.length > 0
-          && this.user.passwordRepeate === this.user.password
+          && this.user.password.length > 0 && this.user.passwordRepeate === this.user.password
+          && this.user.email.length > 0
     },
 
     alertMissingFields() {
-      this.message = 'Kontrolli andmeid'
+      this.errorMessage = 'Kontrolli andmeid'
       setTimeout(this.resetAlertMessage, 4000)
     },
 
-    resetAlertMessage() {
-      this.message = ''
-    },
 
     resetAllMessages() {
       this.errorMessage = ''
@@ -224,8 +211,7 @@ export default {
       GameService.sendGetUserGames(this.userId)
           .then(response => this.handleGetGamesResponse(response))
           .catch(() => NavigationService.navigateToErrorView());
-    }
-    ,
+    },
     handleGetGamesResponse(response) {
       this.allGames = response.data;
     }

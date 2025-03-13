@@ -24,19 +24,19 @@
       </div>
 
       <div class="row justify-content-center">
-        <div class="col col-2">
+        <div class="col col-2 mb-3">
           <LocationsDropdown :locations="locations"
                              :selected-location-id="selectedLocationId"
                              @event-new-location-selected="setGameLocationLocationId"
           />
         </div>
-        <div class="col col-2">
-          <button @click="getLocationPreview" type="submit">Lisa mõistatus mängu</button>
+        <div class="col col-2 mb-3">
+          <button @click="getLocationPreview" type="submit" class= "btn btn-light">Lisa küsimus mängu</button>
         </div>
 
       </div>
 
-      <div class="col">
+      <div class="col mb-3">
         <button @click="createNewGameLocations" type="submit" class="btn btn-success">LOO MÄNG</button>
       </div>
 

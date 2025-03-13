@@ -37,7 +37,6 @@
           </template>
 
           <template v-if="isUser">
-            <!--              todo: siin see to: /games TBD ning kas Admin ka seda näeb(on adminil edalsi mingi koostatud mängude leht?-->
             <router-link class="nav-link" to="/games">KÕIK MÄNGUD</router-link>
           </template>
         </div>
@@ -51,7 +50,6 @@
           </template>
 
           <template v-if="isUser">
-            <!--              todo: siin tuleb /profile-user route õigeks muuta -->
             <router-link class="nav-link" to="/profile">
               <font-awesome-icon :icon="['far', 'circle-user']"/>
             </router-link>
@@ -105,20 +103,30 @@ export default {
       this.modalIsOpen = false
     },
 
+    // executeLogOut() {
+    //   sessionStorage.clear()
+    //   this.showNavMenu()
+    //   NavigationService.navigateToLoginView()
+    //   this.isLoggedIn = false
+    //   this.closeLogOutModal()
+    // },
     executeLogOut() {
+      this.closeLogOutModal()
+      this.isLoggedIn = false
+      this.isUser = false
+      this.isAdmin = false
       sessionStorage.clear()
       this.showNavMenu()
       NavigationService.navigateToLoginView()
-      this.isLoggedIn = false
-      this.closeLogOutModal()
+
     },
 
     showNavMenu() {
       let userId = sessionStorage.getItem('userId')
-      this.isLoggedIn = userId !== null
+      this.isLoggedIn = userId !== null && userId !== ""
       let roleName = sessionStorage.getItem('roleName')
-      this.isUser = roleName != null && 'user' === roleName
-      this.isAdmin = roleName != null && 'admin' === roleName
+      this.isUser = roleName === 'user'
+      this.isAdmin = roleName === 'admin'
     },
   }
 }

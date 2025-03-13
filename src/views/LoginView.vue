@@ -3,21 +3,20 @@
   <InstructionsModal :modal-is-open="modalIsOpen"
                      @event-close-modal="closeModal
 "/>
-
   <div class="container text-center">
-    <div class="row justify-content-center">
+    <div class="row justify-content-center mb-5">
       <div class="col col-8">
         <AlertDanger :message="message"/>
       </div>
     </div>
-    <div class="row">
+    <div class="row justify-content-center mb-5">
       <div class="col">
         <h1>Avasta Eestimaad</h1>
-        <button @click="openInstructionsModal">Kuidas mängida?</button>
+        <button @click="openInstructionsModal" class="btn btn-light">Kuidas mängida?</button>
 
         <h3>Sisene kasutajaga</h3>
 
-        <div class="row justify-content-center">
+        <div class="row justify-content-center mb-3">
           <div class="col col-4">
             <div class="input-group mb-3">
               <span class="input-group-text">Kasutajanimi</span>

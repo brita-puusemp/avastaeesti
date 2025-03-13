@@ -18,18 +18,13 @@
           <input v-model="newGame.timePerLocation" type="text" class="form-control">
         </div>
 
-
-        <button @click="createNewGame" type="submit">Lisa küsimused</button>
+        <button @click="createNewGame" type="button" class="btn btn-light">Vali oma mängu küsimused</button>
+        <button @click="goBack" type="button" class="btn btn-light">Tagasi</button>
 
       </div>
-      <div class="col">
-        <button @click="createNewGame" type="submit" class="btn btn-success ms-5">KINNITA</button>
-      </div>
-
     </div>
   </div>
 </template>
-
 
 <script>
 import NavigationService from "@/service/NavigationService";
@@ -45,12 +40,10 @@ export default {
         description: '',
         timePerLocation: 0
       }
-
     }
   },
 
   methods: {
-
 
     handleCreateNewGameResponse(response) {
       let gameId = response.data;
@@ -71,11 +64,16 @@ export default {
       }
 
     },
+
     allFieldsCorrect() {
       return this.newGame.gameName.length > 0
           && this.newGame.description.length > 0
           && this.newGame.timePerLocation.length > 0
     },
+
+    goBack() {
+      this.$router.go(-1)
+    }
   }
 }
 </script>
