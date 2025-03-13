@@ -1,5 +1,8 @@
 <template>
   <div class="container text-center">
+
+    <AlertDanger :message="message"/>
+
     <div class="row">
       <div class="col">
         <h3>Mängu andmed</h3>
@@ -29,11 +32,14 @@
 <script>
 import NavigationService from "@/service/NavigationService";
 import GameService from "@/service/GameService";
+import AlertDanger from "@/components/alert/AlertDanger.vue";
 
 export default {
   name: "NewGameView",
+  components: {AlertDanger},
   data() {
     return {
+      message: '',
       newGame: {
         userId: sessionStorage.getItem('userId'),
         gameName: '',
@@ -48,7 +54,7 @@ export default {
       if (this.allFieldsCorrect()) {
         this.handleNewGameInfo()
       } else {
-        NavigationService.navigateToErrorView()
+        this.alertMissingFields()
       }
     },
 
@@ -67,6 +73,11 @@ export default {
     handleCreateNewGameResponse(response) {
       let gameId = response.data;
       NavigationService.navigateToGameQuestionView(gameId)
+    },
+
+    alertMissingFields() {
+      this.message = 'Kontrolli andmeid'
+      setTimeout(this.resetAlertMessage, 4000)
     },
 
     goBack() {
