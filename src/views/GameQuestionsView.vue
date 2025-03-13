@@ -14,7 +14,8 @@
             </thead>
             <tbody>
             <tr v-for="(gameLocation) in gameLocations" :key="gameLocation.gameLocationId">
-              <td><img :src="gameLocation.locationImage" :alt="gameLocation.locationName + ' pilt'" :style="{width: '240px'}"></td>
+              <td><img :src="gameLocation.locationImage" :alt="gameLocation.locationName + ' pilt'"
+                       :style="{width: '240px'}"></td>
               <td>{{ gameLocation.locationName }}</td>
             </tr>
             </tbody>
@@ -83,16 +84,26 @@ export default {
     }
   },
   methods: {
-    // todo siin, et gameId järgi loodud mängu lisatud asukohad ära tuua. ja eesmärk siis ikkagi kasutaja neid kuvada ja võimalus muuta/kustutada?
+    // todo __ ümber teha.. previewed NOK ja POST juurde.
 
     getGamelocations() {
-      LocationService.getGameLocationsRequest(this.gameId)
+      LocationService.sendGetGameLocationsRequest(this.gameId)
           .then(response => this.handleGameLocationResponse(response))
           .catch(() => NavigationService.navigateToErrorView())
     },
 
     handleGameLocationResponse(response) {
       this.gameLocations = response.data;
+    },
+
+    addNewLocationToUserGame() {
+      this.sendPostNewLocationToUserGame(this.gameId, this.selectedLocationId)
+          .then(response => this.handleAddedGameLocationResponse(response))
+          .catch(() => NavigationService.navigateToErrorView())
+    },
+
+    handleAddedGameLocationResponse(response) {
+      this.addedGameLocation = response.data;
     },
 
 
@@ -128,7 +139,7 @@ export default {
     },
 
     handleLocationPreviewErrorResponse(error) {
-     this.someDataBlockErrorResponseObject = error.response.data;
+      this.someDataBlockErrorResponseObject = error.response.data;
     },
 
     getLocations() {

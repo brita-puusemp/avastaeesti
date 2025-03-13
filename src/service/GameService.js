@@ -42,6 +42,15 @@ export default {
 
     sendPostUserAnswerRequest(userAnswer) {
         return axios.post('/game/location/result', userAnswer);
+    },
 
-    }
+    sendPostNewLocationToUserGame(gameId, selectedLocationId) {
+        return axios.post('/game-location', {
+                params: {
+                    gameId: gameId,
+                    selectedLocationId: selectedLocationId
+                }
+            }
+        )
+    },
 }

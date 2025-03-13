@@ -66,7 +66,7 @@ export default {
         router.push({
             name: 'gameResultsRoute',
             query: {
-                locationName: userAnswerResult.locationName ,
+                locationName: userAnswerResult.locationName,
                 locationIsCorrect: userAnswerResult.locationIsCorrect,
                 totalQuestions: userAnswerResult.totalQuestions,
                 questionsAnswered: userAnswerResult.questionsAnswered,

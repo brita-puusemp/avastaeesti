@@ -25,7 +25,6 @@ export default {
                 }
             }
         )
-
     },
 
     sendGetLocationPreviewRequest(locationId) {
@@ -46,13 +45,14 @@ export default {
             }
         )
     },
-    getGameLocationsRequest(gameId) {
-        axios.get('/game-locations', {
+
+    sendGetGameLocationsRequest(gameId) {
+        return axios.get('/game-locations', {
                 params: {
                     gameId: gameId
                 }
             }
-        );
+        )
     },
 }
 
