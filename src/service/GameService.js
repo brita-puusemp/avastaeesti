@@ -22,6 +22,15 @@ export default {
         });
     },
 
+    sendGetUserGames(userId) {
+        return axios.get('/user-games',
+        {
+            params: {
+                userId: userId
+            }
+        });
+    },
+
     sendGetRandomGameLocationsRequest(randomGameId) {
         return axios.get('/random/game/location', {
                 params: {
@@ -35,5 +44,4 @@ export default {
         return axios.post('/game/location/result', userAnswer);
 
     }
-
 }

@@ -10,7 +10,9 @@ import NewGameView from "@/views/NewGameView.vue";
 import GameQuestionsView from "@/views/GameQuestionsView.vue";
 import AllGamesView from "@/views/AllGamesView.vue";
 import ResultView from "@/views/ResultView.vue";
-import FavoritesView from "@/views/FavoritesView.vue";
+import FavouritesView from "@/views/FavouritesView.vue";
+import ProfileInfoView from "@/views/ProfileInfoView.vue";
+
 import GameOverView from "@/views/GameOverView.vue";
 
 const routes = [
@@ -70,9 +72,14 @@ const routes = [
         component: ResultView
     },
     {
-        path: '/favorites',
-        name: 'favoritesRoute',
-        component: FavoritesView
+        path: '/favourites',
+        name: 'favouritesRoute',
+        component: FavouritesView
+    },
+    {
+        path: '/profile',
+        name: 'profileRoute',
+        component: ProfileInfoView
     },
     {
         path: '/game-over',

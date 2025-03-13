@@ -42,7 +42,6 @@
 
 <script>
 
-
 import MapModal from "@/components/modal/MapModal.vue";
 import GetHintModal from "@/components/modal/GetHintModal.vue";
 import GameResultModal from "@/components/modal/GameResultModal.vue";

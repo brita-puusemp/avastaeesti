@@ -17,7 +17,7 @@
 
 <script>
 export default {
-  name: 'FavoritesView',
+  name: 'FavouritesView',
   data() {
     return {
       id: '',

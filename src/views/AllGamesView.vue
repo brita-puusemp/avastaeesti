@@ -1,14 +1,10 @@
 <template>
-
-    <div class="row mt-4 justify-content-center">
-      <div class="col col-10">
-    <GamesTable :all-games="allGames" />
-
-
-  </div></div>
-
+  <div class="row mt-4 justify-content-center">
+    <div class="col col-10">
+      <GamesTable :all-games="allGames"/>
+    </div>
+  </div>
 </template>
-
 
 <script>
 import GamesTable from "@/components/game/GamesTable.vue";
@@ -18,7 +14,7 @@ export default {
   name: 'AllGamesView',
   components: {GamesTable},
   data() {
-    return  {
+    return {
       allGames: [{
         gameId: 0,
         gameName: '',
@@ -30,25 +26,20 @@ export default {
 
   methods: {
 
-    handleGetGamesResponse(response) {
-      return this.allGames = response.data;
-    },
-
-
-
     getGames() {
       GameService.sendGetGamesRequest()
           .then(response => this.handleGetGamesResponse(response))
           .catch(error => this.someDataBlockErrorResponseObject = error.response.data);
     },
 
-
+    handleGetGamesResponse(response) {
+      this.allGames = response.data;
+    },
   },
 
   beforeMount() {
     this.getGames();
   }
-
 }
 </script>
 

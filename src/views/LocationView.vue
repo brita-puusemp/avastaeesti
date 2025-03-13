@@ -11,7 +11,6 @@
             <span class="input-group-text" id="addon-wrapping">Asukoha nimi</span>
             <input v-model="location.locationName" type="text" class="form-control">
           </div>
-
           <div class="d-flex gap-4 mb-3">
             <div class="input-group flex-nowrap">
               <span class="input-group-text" id="addon-wrapping">Pikkuskraad</span>
@@ -22,20 +21,16 @@
               <input v-model="location.latitude" type="number" class="form-control">
             </div>
           </div>
-
           <div class="input-group mb-3">
             <span class="input-group-text" id="addon-wrapping">Asukoha vihje</span>
             <textarea v-model="location.clue" class="form-control"></textarea>
           </div>
-
           <div class="input-group mb-4">
             <label class="input-group-text" for="imageInput">Lisa pilt</label>
             <ImageInput @event-new-image-selected="setNewLocationImageData"/>
-
           </div>
-
           <div class="d-flex justify-content-center">
-            <LocationImage :image-data="location.imageData" style="width: 500px; height: 500px;"/>
+            <LocationImage :image-data="location.imageData" style="width: 300px; height: 300px;"/>
           </div>
           <button @click="goBack" type="button" class="btn btn-light">Nimekirja juurde</button>
           <button v-if="isEdit" @click="saveLocation" type="submit" class="btn btn-success ms-5">SALVESTA</button>
@@ -57,6 +52,8 @@ import LocationService from "@/service/LocationService";
 import locationService from "@/service/LocationService";
 import BusinessErrors from "@/errors/BusinessErrors";
 import AlertSuccess from "@/components/alert/AlertSuccess.vue";
+import HttpStatusCodes from "@/errors/HttpStatusCodes";
+import {useRoute} from "vue-router";
 
 export default {
   name: 'LocationView',
@@ -64,7 +61,7 @@ export default {
   data() {
     return {
       isEdit: false,
-      locationId: 0,
+      locationId: Number(useRoute().params.locationId),
       successMessage: '',
       errorMessage: '',
       location: {
@@ -80,78 +77,11 @@ export default {
       }
     }
   },
+
   methods: {
 
-    addNewLocation() {
-      if (this.allFieldsCorrect()) {
-        this.sendCreateNewLocationRequest()
-      } else {
-        this.alertMissingFields()
-      }
-    },
-
-    sendCreateNewLocationRequest() {
-      LocationService.sendNewLocationPostRequest(this.location)
-          .then(() => this.handleNewLocationResponse())
-          .catch(error => this.handleNewErrorResponse(error))
-    },
-
-    // todo ei anna edukat asukoht lisatud, läks home-admin lehele.
-    handleNewLocationResponse() {
-      sessionStorage.setItem('successMessage', 'Asukoht lisatud')
-      // setTimeout(this.resetAllMessages, 4000,)
-      NavigationService.navigateToAdminHomeView()
-    },
-
-    handleNewErrorResponse(error) {
-      this.errorResponse = error.response.data
-      if (BusinessErrors.CODE_LOCATION_EXISTS === this.errorResponse.errorCode) {
-        this.errorMessage = this.errorResponse.message
-        setTimeout(this.resetAllMessages, 4000)
-      } else {
-        NavigationService.navigateToErrorView()
-      }
-    },
-
-    updateLocation() {
-      LocationService.sendPutLocationRequest(this.location, this.locationId)
-          .then(response => this.handleUpdateLocationResponse(response))
-          .catch(() => NavigationService.navigateToErrorView())
-    },
-
-    handleUpdateLocationResponse() {
-      this.successMessage = 'Asukoha info on edukalt muudetud'
-      setTimeout(this.resetAllMessages, 4000)
-    },
-
-    saveLocation() {
-      if (this.allFieldsCorrect()) {
-        this.updateLocation()
-      } else {
-        this.alertMissingFields()
-      }
-    },
-
-    alertMissingFields() {
-      this.errorMessage = 'Kontrolli andmeid'
-      setTimeout(this.resetAllMessages, 4000)
-    },
-
-    allFieldsCorrect() {
-      return this.location.locationName.length > 0
-          && this.location.longitude !== null
-          && this.location.latitude !== null
-          && this.location.clue.length > 0
-          && this.location.imageData.length > 0
-    },
-
-    handleIsEdit() {
-      let locationId = Number(this.$route.query.locationId)
-      this.isEdit = !isNaN(locationId)
-      if (this.isEdit) {
-        this.locationId = locationId
-        this.getLocation(locationId)
-      }
+    setNewLocationImageData(imageData) {
+      this.location.imageData = imageData
     },
 
     getLocation(locationId) {
@@ -164,13 +94,82 @@ export default {
       this.location = response.data
     },
 
-    setNewLocationImageData(imageData) {
-      this.location.imageData = imageData
+    addNewLocation() {
+      if (this.allFieldsCorrect()) {
+        this.sendCreateNewLocationRequest()
+      } else {
+        this.alertMissingFields()
+      }
+    },
+
+    allFieldsCorrect() {
+      return this.location.locationName.length > 0
+          && typeof this.location.longitude === "number" && !isNaN(this.location.longitude)
+          && typeof this.location.latitude === "number" && !isNaN(this.location.latitude)
+          && this.location.clue.length > 0
+          && this.location.imageData.length > 0
+    },
+
+    sendCreateNewLocationRequest() {
+      LocationService.sendNewLocationPostRequest(this.location)
+          .then((response) => this.handleNewLocationResponse(response))
+          .catch(error => this.handleNewErrorResponse(error))
+    },
+
+    handleNewLocationResponse() {
+      this.successMessage = 'Asukoht lisatud'
+      setTimeout(() => NavigationService.navigateToAdminHomeView(), 2000)
+    },
+
+    handleNewErrorResponse(error) {
+      this.errorResponse = error.response.data
+      if (this.locationAlreadyExists(error)) {
+        this.errorMessage = this.errorResponse.message
+        setTimeout(this.resetAllMessages, 4000)
+      }
+    },
+
+    locationAlreadyExists(error) {
+      return HttpStatusCodes.STATUS_FORBIDDEN === error.response.status
+          && BusinessErrors.CODE_LOCATION_EXISTS === this.errorResponse.errorCode;
+    },
+
+    saveLocation() {
+      if (this.allFieldsCorrect()) {
+        this.updateLocation()
+      } else {
+        this.alertMissingFields()
+      }
+    },
+
+    updateLocation() {
+      LocationService.sendPutLocationRequest(this.location, this.locationId)
+          .then(response => this.handleUpdateLocationResponse(response))
+          .catch(() => NavigationService.navigateToErrorView())
+    },
+
+    handleUpdateLocationResponse() {
+      this.successMessage = 'Asukoha info on edukalt muudetud'
+      setTimeout(() => NavigationService.navigateToAdminHomeView(), 2000)
+    },
+
+    alertMissingFields() {
+      this.errorMessage = 'Kontrolli andmeid'
+      setTimeout(this.resetAllMessages, 2000)
     },
 
     resetAllMessages() {
       this.errorMessage = ''
       this.successMessage = ''
+    },
+
+    handleIsEdit() {
+      let locationId = Number(this.$route.query.locationId)
+      this.isEdit = !isNaN(locationId)
+      if (this.isEdit) {
+        this.locationId = locationId
+        this.getLocation(locationId)
+      }
     },
 
     goBack() {
