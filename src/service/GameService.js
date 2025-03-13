@@ -43,5 +43,14 @@ export default {
     sendPostUserAnswerRequest(userAnswer) {
         return axios.post('/game/location/result', userAnswer);
 
-    }
+    },
+
+    sendGetGameOverResultsRequest(randomGameId) {
+        return axios.get('/game/gameover', {
+                params: {
+                    randomGameId: randomGameId,
+                }
+            }
+        );
+    },
 }
