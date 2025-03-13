@@ -147,16 +147,11 @@ export default {
       this.errorMessage = ''
       this.successMessage = ''
     },
-    //
-    // navigateToLocationView(locationId) {
-    //   NavigationService.navigateToLocationView(locationId)
-    // },
   },
 
   beforeMount() {
     this.validateIsAdmin()
     this.getLocations()
-    // this.successMessage = sessionStorage.getItem('sussessMessage')
   }
 }
 </script>

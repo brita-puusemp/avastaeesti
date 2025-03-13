@@ -4,7 +4,7 @@
     <div class="container text-center">
       <h3>Mängu andmed</h3>
       <div class="row justify-content-center">
-        <div class="col col-3">
+        <div class="col col-6">
           <table class="table">
             <thead>
             <tr>
@@ -15,7 +15,7 @@
             <tbody>
             <tr v-for="(gameLocation) in gameLocations" :key="gameLocation.gameLocationId">
               <td><img :src="gameLocation.locationImage" :alt="gameLocation.locationName + ' pilt'"
-                       :style="{width: '240px'}"></td>
+                       :style="{width: '250px'}"></td>
               <td>{{ gameLocation.locationName }}</td>
             </tr>
             </tbody>
@@ -24,21 +24,20 @@
       </div>
 
       <div class="row justify-content-center">
-        <div class="col col-2 mb-3">
+        <div class="col col-6 mb-3">
           <LocationsDropdown :locations="locations"
                              :selected-location-id="selectedLocationId"
                              @event-new-location-selected="setGameLocationLocationId"
           />
         </div>
         <div class="col col-2 mb-3">
-          <button @click="addNewLocationToUserGame" type="submit" class="btn btn-success">LISA KÜSIMUS MÄNGU</button>
+          <button @click="addNewLocationToUserGame" type="submit" class="btn btn-light">Lisa see mängu</button>
         </div>
-
+        <div>
+          <button @click="gameCreated" type="button" class="btn btn-success ms-5">MÄNG ON VALMIS</button>
+        </div>
       </div>
-
-
     </div>
-
   </div>
 </template>
 <script>
@@ -81,7 +80,6 @@ export default {
     }
   },
   methods: {
-    // todo __ ümber teha.. previewed NOK ja POST juurde.
 
     getGameLocations() {
       LocationService.sendGetGameLocationsRequest(this.gameId)
@@ -103,42 +101,6 @@ export default {
       this.getGameLocations()
     },
 
-
-
-    createNewGameLocations() {
-      this.gameData.locationIds = this.gameLocations.map(preview => preview.locationId);
-      this.saveNewGameLocation(this.gameData)
-    },
-
-    saveNewGameLocation(gameData) {
-      GameService.sendSaveGameLocations(gameData)
-          .then(() => this.handleSaveGameLocationsResponse())
-          .catch(() => NavigationService.navigateToErrorView())
-    },
-
-    handleSaveGameLocationsResponse() {
-      this.$router.go(-2)
-
-    },
-
-    getLocationPreview() {
-      LocationService.sendGetLocationPreviewRequest(this.selectedLocationId)
-          .then(response => this.handleLocationPreviewResponse(response))
-          .catch(error => this.handleLocationPreviewErrorResponse(error))
-    },
-
-    handleLocationPreviewResponse(response) {
-      this.gameLocations.push({
-        locationId: response.data.locationId,
-        locationName: response.data.locationName,
-        imageData: response.data.imageData,
-      });
-    },
-
-    handleLocationPreviewErrorResponse(error) {
-      this.someDataBlockErrorResponseObject = error.response.data;
-    },
-
     getLocations() {
       LocationService.sendGetLocationsRequest()
           .then(response => this.handleGetLocationsResponse(response))
@@ -152,6 +114,10 @@ export default {
     setGameLocationLocationId(selectedLocationId) {
       this.selectedLocationId = selectedLocationId
     },
+
+    gameCreated(){
+      NavigationService.navigateToProfileInfoView()
+    }
   },
 
   beforeMount() {
