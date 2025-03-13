@@ -63,7 +63,8 @@ export default {
                 locationIsCorrect: userAnswerResult.locationIsCorrect,
                 totalQuestions: userAnswerResult.totalQuestions,
                 questionsAnswered: userAnswerResult.questionsAnswered,
-                randomGameId: randomGameId
+                randomGameId: randomGameId,
+
             }
         })
     },
