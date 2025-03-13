@@ -13,9 +13,10 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="(preview, index) in locationPreviews" :key="index">
-              <td><img :src="preview.imageData" :alt="preview.locationName + ' pilt'" :style="{width: '140px'}"></td>
-              <td>{{ preview.locationName }}</td>
+            <tr v-for="(gameLocation) in gameLocations" :key="gameLocation.gameLocationId">
+              <td><img :src="gameLocation.locationImage" :alt="gameLocation.locationName + ' pilt'"
+                       :style="{width: '240px'}"></td>
+              <td>{{ gameLocation.locationName }}</td>
             </tr>
             </tbody>
           </table>
@@ -30,14 +31,11 @@
           />
         </div>
         <div class="col col-2 mb-3">
-          <button @click="getLocationPreview" type="submit" class="btn btn-light">Lisa küsimus mängu</button>
+          <button @click="addNewLocationToUserGame" type="submit" class="btn btn-success">LISA KÜSIMUS MÄNGU</button>
         </div>
 
       </div>
 
-      <div class="col mb-3">
-        <button @click="createNewGameLocations" type="submit" class="btn btn-success">LOO MÄNG</button>
-      </div>
 
     </div>
 
@@ -56,9 +54,21 @@ export default {
   data() {
     return {
       gameId: Number(useRoute().query.gameId),
-      locationPreviews: [],
+      gameLocations:
+          [
+            {
+              gameLocationId: 0,
+              locationImage: '',
+              locationName: ''
+            }
+          ],
       selectedLocationId: 0,
-      locations: [],
+      locations: [
+        {
+          locationId: 0,
+          locationName: ''
+        }
+      ],
       locationPreview: {
         locationId: 0,
         locationName: '',
@@ -71,9 +81,32 @@ export default {
     }
   },
   methods: {
+    // todo __ ümber teha.. previewed NOK ja POST juurde.
+
+    getGameLocations() {
+      LocationService.sendGetGameLocationsRequest(this.gameId)
+          .then(response => this.handleGameLocationResponse(response))
+          .catch(() => NavigationService.navigateToErrorView())
+    },
+
+    handleGameLocationResponse(response) {
+      this.gameLocations = response.data;
+    },
+
+    addNewLocationToUserGame() {
+      GameService.sendPostNewLocationToUserGame(this.gameId, this.selectedLocationId)
+          .then(() => this.handleAddedGameLocationResponse())
+          .catch(() => NavigationService.navigateToErrorView())
+    },
+
+    handleAddedGameLocationResponse() {
+      this.getGameLocations()
+    },
+
+
 
     createNewGameLocations() {
-      this.gameData.locationIds = this.locationPreviews.map(preview => preview.locationId);
+      this.gameData.locationIds = this.gameLocations.map(preview => preview.locationId);
       this.saveNewGameLocation(this.gameData)
     },
 
@@ -95,7 +128,7 @@ export default {
     },
 
     handleLocationPreviewResponse(response) {
-      this.locationPreviews.push({
+      this.gameLocations.push({
         locationId: response.data.locationId,
         locationName: response.data.locationName,
         imageData: response.data.imageData,
@@ -103,17 +136,17 @@ export default {
     },
 
     handleLocationPreviewErrorResponse(error) {
-      return this.someDataBlockErrorResponseObject = error.response.data;
+      this.someDataBlockErrorResponseObject = error.response.data;
     },
 
-    sendLocation() {
+    getLocations() {
       LocationService.sendGetLocationsRequest()
           .then(response => this.handleGetLocationsResponse(response))
           .catch(() => NavigationService.navigateToErrorView());
     },
 
     handleGetLocationsResponse(response) {
-      return this.locations = response.data;
+      this.locations = response.data;
     },
 
     setGameLocationLocationId(selectedLocationId) {
@@ -122,7 +155,8 @@ export default {
   },
 
   beforeMount() {
-    this.sendLocation()
+    this.getLocations()
+    this.getGameLocations()
   }
 }
 </script>

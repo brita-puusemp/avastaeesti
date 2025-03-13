@@ -83,7 +83,7 @@ export default {
       this.loginResponse = response.data;
       sessionStorage.setItem('userId', this.loginResponse.userId)
       sessionStorage.setItem('roleName', this.loginResponse.roleName)
-      this.$emit('event-show-nav-menu')
+      this.$emit('event-update-nav-menu')
       if (this.loginResponse.roleName === 'admin') {
         NavigationService.navigateToAdminHomeView()
       } else {

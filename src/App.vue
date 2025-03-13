@@ -1,9 +1,9 @@
-<template v-if="isLoggedIn">
+<template>
   <LogOutModal :modal-is-open="modalIsOpen"
                @event-close-modal="closeLogOutModal"
                @event-execute-log-out="executeLogOut"
   />
-  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <nav v-if="isLoggedIn" class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
       <a class="navbar-brand">Avasta Eestimaad</a>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
@@ -80,7 +80,7 @@
       </div>
     </div>
   </nav>
-  <router-view @event-show-nav-menu="showNavMenu"/>
+  <router-view @event-update-nav-menu="updateNavMenu"/>
 </template>
 <script>
 
@@ -113,17 +113,20 @@ export default {
       this.isUser = false
       this.isAdmin = false
       sessionStorage.clear()
-      this.showNavMenu()
+      this.updateNavMenu()
       NavigationService.navigateToLoginView()
     },
 
-    showNavMenu() {
+    updateNavMenu() {
       let userId = sessionStorage.getItem('userId')
       this.isLoggedIn = userId !== null && userId !== ""
       let roleName = sessionStorage.getItem('roleName')
       this.isUser = roleName === 'user'
       this.isAdmin = roleName === 'admin'
     },
+  },
+  beforeMount() {
+    this.updateNavMenu()
   }
 }
 </script>

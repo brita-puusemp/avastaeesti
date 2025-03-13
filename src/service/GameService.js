@@ -53,4 +53,13 @@ export default {
             }
         );
     },
+    sendPostNewLocationToUserGame(gameId, selectedLocationId) {
+        return axios.post('/game-location', null,{
+                params: {
+                    gameId: gameId,
+                    locationId: selectedLocationId
+                }
+            }
+        )
+    },
 }

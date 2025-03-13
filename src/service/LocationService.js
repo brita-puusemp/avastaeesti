@@ -25,7 +25,6 @@ export default {
                 }
             }
         )
-
     },
 
     sendGetLocationPreviewRequest(locationId) {
@@ -38,10 +37,19 @@ export default {
         )
     },
 
-    sendDeleteLocationRequest(locationId) {
+    sendDeleteLocationRequest(selectedLocationId) {
         return axios.delete('/home-admin', {
                 params: {
-                    locationId: locationId
+                    locationId: selectedLocationId
+                }
+            }
+        )
+    },
+
+    sendGetGameLocationsRequest(gameId) {
+        return axios.get('/game-locations', {
+                params: {
+                    gameId: gameId
                 }
             }
         )

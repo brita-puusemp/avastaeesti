@@ -1,23 +1,19 @@
 <template>
 
-  <MapModal :modal-is-open="mapModalIsOpen"
-            :minutes="minutes"
-            :seconds="seconds"
-            @event-close-modal="closeMapModal"
-            @event-execute-answering="handleUserAnswer"
-
+  <MapModal   :modal-is-open="mapModalIsOpen"
+              :location-id="randomLocation.locationId"
+              :random-game-id="randomGameId"
+              @event-close-modal="closeMapModal"
+              @event-execute-answering="handleUserAnswer"
   />
 
   <GetHintModal :hint-modal-is-open="hintModalIsOpen"
                 :hint="randomLocation.clue"
                 :randomGameId="randomGameId"
-                :minutes="minutes"
-                :seconds="seconds"
                 @event-close-modal="closeHintModal"
                 @event-open-map-modal-from-hint-modal="openMapModalFromHintModal"
 
   />
-
 
   <div class="container text-center">
     <div class="row justify-content-center">
