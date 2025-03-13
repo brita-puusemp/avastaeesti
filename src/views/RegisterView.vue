@@ -60,8 +60,25 @@ export default {
   },
   methods: {
 
-    goBack() {
-      this.$router.go(-1)
+    createNewUser() {
+      if (this.allFieldsCorrect()) {
+        this.sendCreateNewUserRequest();
+      } else {
+        this.alertMissingFields()
+      }
+    },
+
+    allFieldsCorrect() {
+      return this.newUser.username.length > 0
+          && this.newUser.password.length > 0
+          && this.newUser.password === this.newUser.passwordRepeat
+          && this.newUser.email.length > 0;
+    },
+
+    sendCreateNewUserRequest() {
+      UserService.sendPostRegisterRequest(this.newUser)
+          .then(() => this.handleRegistrationResponse())
+          .catch(error => this.handleRegistrationErrorResponse(error))
     },
 
     handleRegistrationResponse() {
@@ -91,35 +108,18 @@ export default {
       setTimeout(this.resetAlertMessage, 4000);
     },
 
-    sendCreateNewUserRequest() {
-      UserService.sendPostRegisterRequest(this.newUser)
-          .then(() => this.handleRegistrationResponse())
-          .catch(error => this.handleRegistrationErrorResponse(error))
-    },
-
-    allFieldsCorrect() {
-      return this.newUser.username.length > 0
-          && this.newUser.password.length > 0
-          && this.newUser.password === this.newUser.passwordRepeat
-          && this.newUser.email.length > 0;
-    },
-
-    createNewUser() {
-      if (this.allFieldsCorrect()) {
-        this.sendCreateNewUserRequest();
-      } else {
-        this.alertMissingFields()
-      }
-    },
-
     alertMissingFields() {
       this.message = 'Kontrolli andmeid'
       setTimeout(this.resetAlertMessage, 4000)
     },
+
     resetAlertMessage() {
       this.message = ''
     },
 
+    goBack() {
+      this.$router.go(-1)
+    },
   }
 }
 </script>

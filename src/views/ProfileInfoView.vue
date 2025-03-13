@@ -200,22 +200,20 @@ export default {
       setTimeout(this.resetAlertMessage, 4000)
     },
 
-
     resetAllMessages() {
       this.errorMessage = ''
       this.successMessage = ''
     },
 
-    // todo minu MÄNGU tabeli teemad
     getGames() {
       GameService.sendGetUserGames(this.userId)
           .then(response => this.handleGetGamesResponse(response))
           .catch(() => NavigationService.navigateToErrorView());
     },
+
     handleGetGamesResponse(response) {
       this.allGames = response.data;
-    }
-    ,
+    },
 
 // todo - mängu kustutamise nupp - backis delete teenus teha
     // deleteUserGame() .- todo sarnane.. nupp siis ka startDeleteUserGameProcess(gameId)

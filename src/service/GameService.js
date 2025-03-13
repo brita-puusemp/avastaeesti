@@ -44,5 +44,4 @@ export default {
         return axios.post('/game/location/result', userAnswer);
 
     }
-
 }

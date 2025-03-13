@@ -44,7 +44,6 @@
 
 <script>
 
-
 import MapModal from "@/components/modal/MapModal.vue";
 import GetHintModal from "@/components/modal/GetHintModal.vue";
 import GetHintService from "@/service/GetHintService";

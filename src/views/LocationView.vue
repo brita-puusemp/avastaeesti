@@ -77,7 +77,12 @@ export default {
       }
     }
   },
+
   methods: {
+
+    setNewLocationImageData(imageData) {
+      this.location.imageData = imageData
+    },
 
     getLocation(locationId) {
       locationService.sendGetLocationRequest(locationId)
@@ -87,15 +92,6 @@ export default {
 
     handleGetLocationRequest(response) {
       this.location = response.data
-    },
-
-    handleIsEdit() {
-      let locationId = Number(this.$route.query.locationId)
-      this.isEdit = !isNaN(locationId)
-      if (this.isEdit) {
-        this.locationId = locationId
-        this.getLocation(locationId)
-      }
     },
 
     addNewLocation() {
@@ -138,6 +134,14 @@ export default {
           && BusinessErrors.CODE_LOCATION_EXISTS === this.errorResponse.errorCode;
     },
 
+    saveLocation() {
+      if (this.allFieldsCorrect()) {
+        this.updateLocation()
+      } else {
+        this.alertMissingFields()
+      }
+    },
+
     updateLocation() {
       LocationService.sendPutLocationRequest(this.location, this.locationId)
           .then(response => this.handleUpdateLocationResponse(response))
@@ -149,25 +153,23 @@ export default {
       setTimeout(() => NavigationService.navigateToAdminHomeView(), 2000)
     },
 
-    saveLocation() {
-      if (this.allFieldsCorrect()) {
-        this.updateLocation()
-      } else {
-        this.alertMissingFields()
-      }
-    },
     alertMissingFields() {
       this.errorMessage = 'Kontrolli andmeid'
       setTimeout(this.resetAllMessages, 2000)
     },
 
-    setNewLocationImageData(imageData) {
-      this.location.imageData = imageData
-    },
-
     resetAllMessages() {
       this.errorMessage = ''
       this.successMessage = ''
+    },
+
+    handleIsEdit() {
+      let locationId = Number(this.$route.query.locationId)
+      this.isEdit = !isNaN(locationId)
+      if (this.isEdit) {
+        this.locationId = locationId
+        this.getLocation(locationId)
+      }
     },
 
     goBack() {

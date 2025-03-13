@@ -1,4 +1,3 @@
-
 <template>
   <div>
 
@@ -14,7 +13,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr  v-for="(preview, index) in locationPreviews" :key="index">
+            <tr v-for="(preview, index) in locationPreviews" :key="index">
               <td><img :src="preview.imageData" :alt="preview.locationName + ' pilt'" :style="{width: '140px'}"></td>
               <td>{{ preview.locationName }}</td>
             </tr>
@@ -31,7 +30,7 @@
           />
         </div>
         <div class="col col-2 mb-3">
-          <button @click="getLocationPreview" type="submit" class= "btn btn-light">Lisa küsimus mängu</button>
+          <button @click="getLocationPreview" type="submit" class="btn btn-light">Lisa küsimus mängu</button>
         </div>
 
       </div>
@@ -49,7 +48,6 @@ import LocationsDropdown from "@/components/location/LocationsDropdown.vue";
 import LocationService from "@/service/LocationService";
 import NavigationService from "@/service/NavigationService";
 import GameService from "@/service/GameService";
-import axios from "axios";
 import {useRoute} from "vue-router";
 
 export default {
@@ -86,13 +84,19 @@ export default {
     },
 
     handleSaveGameLocationsResponse() {
-        this.$router.go(-2)
+      this.$router.go(-2)
 
+    },
+
+    getLocationPreview() {
+      LocationService.sendGetLocationPreviewRequest(this.selectedLocationId)
+          .then(response => this.handleLocationPreviewResponse(response))
+          .catch(error => this.handleLocationPreviewErrorResponse(error))
     },
 
     handleLocationPreviewResponse(response) {
       this.locationPreviews.push({
-            locationId: response.data.locationId,
+        locationId: response.data.locationId,
         locationName: response.data.locationName,
         imageData: response.data.imageData,
       });
@@ -100,12 +104,6 @@ export default {
 
     handleLocationPreviewErrorResponse(error) {
       return this.someDataBlockErrorResponseObject = error.response.data;
-    },
-
-    getLocationPreview() {
-      LocationService.sendGetLocationPreviewRequest(this.selectedLocationId)
-          .then(response => this.handleLocationPreviewResponse(response))
-          .catch(error => this.handleLocationPreviewErrorResponse(error))
     },
 
     sendLocation() {
@@ -119,11 +117,10 @@ export default {
     },
 
     setGameLocationLocationId(selectedLocationId) {
-      console.log("Valitud ID-d enne uuendamist:", this.selectedLocationId);
       this.selectedLocationId = selectedLocationId
-      console.log("Valitud ID-d pärast uuendamist:", this.selectedLocationId);
     },
   },
+
   beforeMount() {
     this.sendLocation()
   }

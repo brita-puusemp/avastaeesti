@@ -44,10 +44,18 @@ export default {
   },
 
   methods: {
+    createNewGame() {
+      if (this.allFieldsCorrect()) {
+        this.handleNewGameInfo()
+      } else {
+        NavigationService.navigateToErrorView()
+      }
+    },
 
-    handleCreateNewGameResponse(response) {
-      let gameId = response.data;
-      NavigationService.navigateToGameQuestionView(gameId)
+    allFieldsCorrect() {
+      return this.newGame.gameName.length > 0
+          && this.newGame.description.length > 0
+          && this.newGame.timePerLocation.length > 0
     },
 
     handleNewGameInfo() {
@@ -56,19 +64,9 @@ export default {
           .catch(() => NavigationService.navigateToErrorView())
     },
 
-    createNewGame() {
-      if (this.allFieldsCorrect()) {
-        this.handleNewGameInfo()
-      } else {
-        NavigationService.navigateToErrorView()
-      }
-
-    },
-
-    allFieldsCorrect() {
-      return this.newGame.gameName.length > 0
-          && this.newGame.description.length > 0
-          && this.newGame.timePerLocation.length > 0
+    handleCreateNewGameResponse(response) {
+      let gameId = response.data;
+      NavigationService.navigateToGameQuestionView(gameId)
     },
 
     goBack() {

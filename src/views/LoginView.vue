@@ -39,7 +39,6 @@
 
 </template>
 
-
 <script>
 import LoginService from "@/service/LoginService";
 import NavigationService from "@/service/NavigationService";
@@ -47,7 +46,6 @@ import HttpStatusCodes from "@/errors/HttpStatusCodes";
 import BusinessErrors from "@/errors/BusinessErrors";
 import AlertDanger from "@/components/alert/AlertDanger.vue";
 import InstructionsModal from "@/components/modal/InstructionsModal.vue";
-
 
 export default {
   name: 'LoginView',
@@ -68,10 +66,17 @@ export default {
       }
     }
   },
+
   methods: {
 
     openInstructionsModal() {
       this.modalIsOpen = true
+    },
+
+    sendLoginRequest() {
+      LoginService.sendLoginRequest(this.username, this.password)
+          .then(response => this.handleLoginResponse(response))
+          .catch(error => this.handleLoginErrorResponse(error))
     },
 
     handleLoginResponse(response) {
@@ -79,21 +84,11 @@ export default {
       sessionStorage.setItem('userId', this.loginResponse.userId)
       sessionStorage.setItem('roleName', this.loginResponse.roleName)
       this.$emit('event-show-nav-menu')
-      if (this.loginResponse.roleName === 'admin'){
+      if (this.loginResponse.roleName === 'admin') {
         NavigationService.navigateToAdminHomeView()
-      }else{
-      NavigationService.navigateToUserHomeView()
+      } else {
+        NavigationService.navigateToUserHomeView()
       }
-    },
-
-    isIncorrectCredentials(httpStatusCode) {
-      return HttpStatusCodes.STATUS_FORBIDDEN === httpStatusCode
-          && BusinessErrors.CODE_INCORRECT_CREDENTIALS === this.errorResponse.errorCode;
-    },
-
-    handleIncorrectCredentials() {
-      this.message = this.errorResponse.message;
-      setTimeout(this.resetAlertMessage, 4000);
     },
 
     handleLoginErrorResponse(error) {
@@ -107,19 +102,18 @@ export default {
       }
     },
 
+    isIncorrectCredentials(httpStatusCode) {
+      return HttpStatusCodes.STATUS_FORBIDDEN === httpStatusCode
+          && BusinessErrors.CODE_INCORRECT_CREDENTIALS === this.errorResponse.errorCode;
+    },
+
+    handleIncorrectCredentials() {
+      this.message = this.errorResponse.message;
+      setTimeout(this.resetAlertMessage, 4000);
+    },
+
     resetAlertMessage() {
       this.message = ''
-    },
-
-    sendLoginRequest() {
-      LoginService.sendLoginRequest(this.username, this.password)
-          .then(response => this.handleLoginResponse(response))
-          .catch(error => this.handleLoginErrorResponse(error))
-    },
-
-    alertMissingFields() {
-      this.message = 'Kontrolli andmeid'
-      setTimeout(this.resetAlertMessage, 4000)
     },
 
     login() {
@@ -128,14 +122,17 @@ export default {
       } else {
         this.alertMissingFields();
       }
-
     },
+
+    alertMissingFields() {
+      this.message = 'Kontrolli andmeid'
+      setTimeout(this.resetAlertMessage, 4000)
+    },
+
     closeModal() {
       this.modalIsOpen = false
-    },
-
-  },
-
+    }
+  }
 }
 </script>
 

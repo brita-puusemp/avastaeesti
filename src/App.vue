@@ -39,12 +39,16 @@
           <template v-if="isUser">
             <router-link class="nav-link" to="/games">KÕIK MÄNGUD</router-link>
           </template>
+
+          <template v-if="isAdmin">
+            <router-link class="nav-link" to="/games">KÕIK MÄNGUD</router-link>
+          </template>
         </div>
 
         <div class="navbar-nav ms-auto">
           <template v-if="isUser">
-            <!--              todo: siin tuleb /favorite route õigeks muuta-->
-            <router-link class="nav-link" to="/favorite">
+            <!--              todo: siin tuleb /favourite route õigeks muuta-->
+            <router-link class="nav-link" to="/favourites">
               <font-awesome-icon :icon="['far', 'star']"/>
             </router-link>
           </template>
@@ -103,13 +107,6 @@ export default {
       this.modalIsOpen = false
     },
 
-    // executeLogOut() {
-    //   sessionStorage.clear()
-    //   this.showNavMenu()
-    //   NavigationService.navigateToLoginView()
-    //   this.isLoggedIn = false
-    //   this.closeLogOutModal()
-    // },
     executeLogOut() {
       this.closeLogOutModal()
       this.isLoggedIn = false
@@ -118,7 +115,6 @@ export default {
       sessionStorage.clear()
       this.showNavMenu()
       NavigationService.navigateToLoginView()
-
     },
 
     showNavMenu() {
