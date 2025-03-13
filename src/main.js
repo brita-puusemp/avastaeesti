@@ -7,6 +7,7 @@ import axios from "axios";
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {faEye, faEyeSlash, faR, fas, faUserSecret} from '@fortawesome/free-solid-svg-icons';
+import '@/assets/css/global.css'
 
 // leaflet css
 import 'leaflet/dist/leaflet.css'

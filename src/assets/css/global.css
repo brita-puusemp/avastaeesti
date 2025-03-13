@@ -1,0 +1,68 @@
+/* global.css */
+
+body {
+    position: relative; /* Vajalik pseudoelemendi jaoks */
+    color: rgba(173, 219, 246, 0.92) !important;
+    margin: 0; /* Eemalda marginaalid */
+    padding: 0; /* Eemalda paddingu */
+    height: 100vh; /* Veendu, et leht ulatub täiskõrgusel */
+    width: 219vh;
+    overflow: hidden; /* Keela kerimine, kui sisu ei mahu ekraanile */
+}
+
+body::before {
+    content: ''; /* Vajalik pseudoelemendi jaoks */
+    background-image: url('@/assets/images/loginview_background.jpg'); /* Lisa taustapilt */
+    background-size: cover; /* Skaleeri pilt, et see kataks kogu lehe */
+    background-position: center; /* Joonda pilt keskele */
+    background-repeat: no-repeat; /* Ära korra pilti */
+    position: absolute; /* Aseta pilt lehe taha */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1; /* Aseta pilt lehe taha */
+}
+
+body::after {
+    content: ''; /* Vajalik pseudoelemendi jaoks */
+    background-color: rgba(152, 194, 218, 0.9); /* Lisa värvifilter pildi peale */
+    position: absolute; /* Aseta värvifilter pildi peale */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1; /* Aseta värvifilter pildi peale */
+}
+
+.btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-light {
+    background-color: #f8f9fa;
+    color: #000;
+}
+
+.btn-success {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group-text {
+    background-color: #333;
+    color: #fff;
+    border: none;
+}
+
+.form-control {
+    background-color: #444;
+    color: #fff;
+    border: none;
+}
