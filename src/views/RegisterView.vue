@@ -57,6 +57,7 @@ export default {
       errorMessage: '',
       successMessage: '',
       showPassword: '',
+      showPasswordRepeat: '',
       message: '',
       newUser: {
         email: "",
