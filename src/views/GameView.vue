@@ -3,6 +3,8 @@
   <MapModal   :modal-is-open="mapModalIsOpen"
               :location-id="randomLocation.locationId"
               :random-game-id="randomGameId"
+              :minutes="minutes"
+              :seconds="seconds"
               @event-close-modal="closeMapModal"
               @event-execute-answering="handleUserAnswer"
   />
@@ -11,6 +13,8 @@
                 :hint="randomLocation.clue"
                 :randomGameId="randomGameId"
                 @event-close-modal="closeHintModal"
+                :minutes="minutes"
+                :seconds="seconds"
                 @event-open-map-modal-from-hint-modal="openMapModalFromHintModal"
 
   />
@@ -214,7 +218,7 @@ export default {
       // Käivita ühe minuti pärast suunamine ResultView-i
       this.timeoutId = setTimeout(() => {
         this.handleTimeout();
-      }, 60000); // 60000 ms = 1 minut
+      }, 10000); // 60000 ms = 1 minut; 10000 ms = 10 sek
     },
     handleTimeout() {
       this.clickedLocation = { lat: 0, lng: 0 }
@@ -262,6 +266,18 @@ export default {
   beforeUnmount() {
     // Peata timer, kui komponent eemaldatakse
     this.stopTimer();
+
+    // Tühista timeout, kui see on aktiivne
+    if (this.timeoutId) {
+      clearTimeout(this.timeoutId);
+      this.timeoutId = null; // Tühjenda timeoutId
+    }
+
+    // Kustuta startTime sessionStorage-ist
+    sessionStorage.removeItem(`startTime_${this.randomGameId}_${this.randomLocation.locationId}`);
+
+    // Kustuta ka timer sessionStorage-ist, kui soovite
+    sessionStorage.removeItem(`timer_${this.randomGameId}_${this.randomLocation.locationId}`);
   }
 }
 

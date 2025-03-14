@@ -4,8 +4,8 @@
     <div class="col-sm-6 mb-3 mb-sm-0">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Special title treatment</h5>
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+          <h5 class="card-title">Mängi arvuti genereeritud mängu</h5>
+          <p class="card-text">Sinu ülesandeks on ära tunda 5 erinevat paika Eestimaal. Iga koha ära arvamiseks on sul 1 minut.</p>
           <a @click="createNewRandomGame" href="#/game" class="btn btn-primary">ALUSTA UUT MÄNGU</a>
         </div>
       </div>
@@ -13,8 +13,8 @@
     <div class="col-sm-6">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Special title treatment</h5>
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+          <h5 class="card-title">Sirvi teiste loodud mänge</h5>
+          <p class="card-text"> vaata parimaid tulemusi! Võta vastu väljakutse, ületa teiste skoorid ja tõesta, et oled tõeline Eestimaa asjade tundja.</p>
           <a href="#/games" class="btn btn-primary">VAATA KÕIKI MÄNGE</a>
         </div>
       </div>
@@ -24,8 +24,8 @@
     <div class="col-sm-6 mb-3 mb-sm-0">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Special title treatment</h5>
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+          <h5 class="card-title">Loo oma mäng ja kutsu sõbrad võistlema!</h5>
+          <p class="card-text">Vali asukohad, määra reeglid ja kutsu sõbrad võistlema. Kes tuleb välja kõige parema Eestimaa tundjana?</p>
           <a href="#/game-new" class="btn btn-primary">LOO UUS MÄNG</a>
         </div>
       </div>
@@ -33,8 +33,8 @@
     <div class="col-sm-6">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Special title treatment</h5>
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+          <h5 class="card-title">Salvesta oma lemmikkohad Eestis</h5>
+          <p class="card-text">Sinu isiklik teejuht! Kui aeg seiklema minna on käes, on sul käepärast kõik parimad kohad, mida külastada.</p>
           <a href="#/favourites" class="btn btn-primary">VAATA LEMMIKKOHTI</a>
         </div>
       </div>
@@ -44,8 +44,10 @@
 </template>
 
 <script>
-import GameService from "@/service/GameService";
+import GameService from "@/service/GameService"
 import NavigationService from "@/service/NavigationService";
+import '@/assets/css/UserHomeView.css'
+
 
 export default {
   name: 'UserHomeView',

@@ -86,6 +86,7 @@
 
 import LogOutModal from "@/components/modal/LogOutModal.vue";
 import NavigationService from "@/service/NavigationService";
+import '@/assets/css/global.css';
 
 export default {
   components: {LogOutModal},
@@ -130,3 +131,37 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.navbar {
+  background-color: #16446a !important; /* Tumesinine taust */
+  color: #afd1ec !important; /* Valge tekst */
+}
+
+.navbar-brand, .nav-link {
+  color: #afd1ec !important; /* Valge tekst */
+}
+
+.nav-link:hover {
+  color: #ffffff !important; /* Hele sinine tekst hover korral */
+}
+
+.btn-success {
+  background-color: #8cd390 !important; /* Hele roheline taust */
+  color: #1a426e !important; /* Tumesinine tekst */
+  border: none !important; /* Eemalda piirjoon */
+}
+
+.btn-success:hover {
+  background-color: #218838 !important; /* Tumem roheline hover korral */
+}
+
+.nav-link .fa-icon {
+  color: #afd1ec !important; /* Valge ikoon */
+  font-size: 1.5rem !important; /* Suurenda ikooni suurust */
+}
+
+.nav-link:hover .fa-icon {
+  color: #ffffff !important; /* Hele sinine ikoon hover korral */
+}
+</style>
