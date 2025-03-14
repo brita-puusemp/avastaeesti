@@ -5,8 +5,8 @@
         <div class="row justify-content-center">
           <div class="col col-6">
             <h1>Loo uus kasutaja</h1>
-            <AlertDanger :message="message"/>
-
+            <AlertDanger :message="errorMessage"/>
+            <AlertSuccess :message="successMessage"/>
             <div class="input-group mb-3">
               <span class="input-group-text">E-MAIL</span>
               <input v-model="newUser.email" type="text" class="form-control">
@@ -47,12 +47,15 @@ import UserService from "@/service/UserService";
 import NavigationService from "@/service/NavigationService";
 import BusinessErrors from "@/errors/BusinessErrors";
 import AlertDanger from "@/components/alert/AlertDanger.vue";
+import AlertSuccess from "@/components/alert/AlertSuccess.vue";
 
 export default {
   name: 'RegisterView',
-  components: {AlertDanger},
+  components: {AlertSuccess, AlertDanger},
   data() {
     return {
+      errorMessage: '',
+      successMessage: '',
       showPassword: '',
       message: '',
       newUser: {
@@ -89,23 +92,32 @@ export default {
 
     allFieldsCorrect() {
       return this.newUser.username.length > 0
-          && this.newUser.password.length > 0 && this.newUser.passwordRepeate === this.newUser.password
-          && this.newUser.email.length > 0;
+          && this.newUser.password.length > 0 && this.newUser.passwordRepeat === this.newUser.password
+          && this.newUser.email.length > 0
+          && this.isValidEmail(this.newUser.email)
+    },
+
+    isValidEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
     },
 
     sendCreateNewUserRequest() {
-      UserService.sendPostRegisterRequest(this.newUser)
-          .then(() => this.handleRegistrationResponse())
-          .catch(error => this.handleRegistrationErrorResponse(error))
+        UserService.sendPostRegisterRequest(this.newUser)
+            .then(() => this.handleRegistrationResponse())
+            .catch(error => this.handleRegistrationErrorResponse(error))
     },
 
     handleRegistrationResponse() {
-      this.$emit('event-update-nav-menu')
-      NavigationService.navigateToLoginView()
+      this.successMessage = 'Sinu andmed salvestati, saad sisse logida'
+      setTimeout( () => {
+        this.$emit('event-update-nav-menu')
+        NavigationService.navigateToLoginView()
+        this.resetAllMessages()
+      }, 2000)
     },
 
     handleRegistrationErrorResponse(error) {
-      this.errorResponse = error.response.data;
+      this.errorResponse = error.response.data
       if (this.isIncorrectUsername() || this.isIncorrectEmail()) {
         this.handleIncorrectCredentials();
       } else {
@@ -122,17 +134,18 @@ export default {
     },
 
     handleIncorrectCredentials() {
-      this.message = this.errorResponse.message;
-      setTimeout(this.resetAlertMessage, 4000);
+      this.errorMessage = 'Sellise e-maili või kasutajanimega on juba registreeritud'
+      setTimeout(this.resetAllMessages, 2000);
     },
 
     alertMissingFields() {
-      this.message = 'Kontrolli andmeid'
-      setTimeout(this.resetAlertMessage, 4000)
+      this.errorMessage = 'Kontrolli andmeid'
+      setTimeout(this.resetAllMessages, 2000)
     },
 
-    resetAlertMessage() {
-      this.message = ''
+    resetAllMessages() {
+      this.errorMessage = ''
+      this.successMessage = ''
     },
 
     goBack() {

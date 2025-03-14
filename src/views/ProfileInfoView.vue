@@ -176,12 +176,8 @@ export default {
     },
 
     handleIncorrectCredentials() {
-      this.message = this.errorResponse.message;
-      setTimeout(this.resetAlertMessage, 2000);
-    },
-
-    resetAlertMessage() {
-      this.message = ''
+      this.errorMessage = 'Sellise e-maili või kasutajanimega on juba registreeritud'
+      setTimeout(this.resetAllMessages, 2000);
     },
 
     deleteUserInfo() {
@@ -202,6 +198,11 @@ export default {
       return this.user.username.length > 0
           && this.user.password.length > 0 && this.user.passwordRepeate === this.user.password
           && this.user.email.length > 0
+          && this.isValidEmail(this.user.email)
+    },
+
+    isValidEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
     },
 
     alertMissingFields() {
