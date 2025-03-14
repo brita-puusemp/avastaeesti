@@ -11,6 +11,14 @@
   <div class="container text-center">
     <div class="row">
       <div class="col">
+        <span class="d-block mb-3">
+          <font-awesome-icon
+              :icon="isActive ? ['fas', 'star'] : ['far', 'star']"
+              @click="toggleIcon"
+              style="cursor: pointer;"
+          />
+          {{ buttonText }}
+        </span>
         <button @click="checkIfGameIsCompleteOrGoToNextQuestion" type="submit" class="btn btn-success mx-2">JÄRGMINE</button>
       </div>
     </div>
@@ -30,6 +38,8 @@ export default {
   components: {ResultWrong, ResultCorrect},
   data() {
     return {
+      isActive: false,
+      buttonText: 'Lisa lemmikutesse',
       userAnswerResult: {
         locationName: this.$route.query.locationName,
         locationIsCorrect: this.$route.query.locationIsCorrect === 'true',
@@ -43,6 +53,15 @@ export default {
   },
   methods: {
 
+    toggleIcon() {
+      this.isActive = true;
+      if (this.isActive) {this.buttonText = 'Lisatud lemmikutesse'
+      }
+
+      sessionStorage.setItem('isStarActive', this.isActive);
+      sessionStorage.setItem('buttonText', this.buttonText);
+    },
+
     checkIfGameIsCompleteOrGoToNextQuestion() {
       if (this.userAnswerResult.questionsAnswered === this.userAnswerResult.totalQuestions) {
         NavigationService.navigateToGameOverView(this.randomGameId)
@@ -51,7 +70,17 @@ export default {
       }
     },
 
-  }
+  },
+
+  mounted() {
+    const savedState = sessionStorage.getItem('isStarActive');
+    const savedText = sessionStorage.getItem('buttonText');
+    if (savedState !== null) {
+      this.isActive = savedState
+      this.buttonText = savedText
+
+    }
+  },
 }
 </script>
 
