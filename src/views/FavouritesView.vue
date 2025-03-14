@@ -148,9 +148,4 @@ export default {
   width: 100%; /* Ensure the container takes full width */
 }
 
-.centered-image {
-  width: 100%; /* Set the image width to 70% of the container */
-  height: auto; /* Maintain aspect ratio */
-  max-width: 100%; /* Ensure the image doesn't exceed its container */
-}
 </style>
