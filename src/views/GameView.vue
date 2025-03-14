@@ -3,6 +3,8 @@
   <MapModal   :modal-is-open="mapModalIsOpen"
               :location-id="randomLocation.locationId"
               :random-game-id="randomGameId"
+              :minutes="minutes"
+              :seconds="seconds"
               @event-close-modal="closeMapModal"
               @event-execute-answering="handleUserAnswer"
   />
@@ -11,6 +13,8 @@
                 :hint="randomLocation.clue"
                 :randomGameId="randomGameId"
                 @event-close-modal="closeHintModal"
+                :minutes="minutes"
+                :seconds="seconds"
                 @event-open-map-modal-from-hint-modal="openMapModalFromHintModal"
 
   />

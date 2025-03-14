@@ -107,6 +107,7 @@ export default {
     executeAnswering() {
       if (this.clickedLocation) {
         this.endTimeMilliseconds = Date.now()
+        console.log(this.clickedLocation)
         this.$emit('event-execute-answering', this.clickedLocation, this.endTimeMilliseconds); // Saadab koordinaadid tagasi
       } else {
         alert("Palun valige koht kaardil!");

@@ -7,7 +7,7 @@ body {
     padding: 0; /* Eemalda paddingu */
     height: 100vh; /* Veendu, et leht ulatub täiskõrgusel */
     width: 219vh;
-    overflow: hidden; /* Keela kerimine, kui sisu ei mahu ekraanile */
+    /*overflow: hidden; !* Keela kerimine, kui sisu ei mahu ekraanile *!*/
 }
 
 body::before {
