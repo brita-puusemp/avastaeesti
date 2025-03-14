@@ -1,8 +1,8 @@
 <template>
-  <div class="row">
+  <div class="row justify-content-center mt-5">
     <div class="col">
-      <h3 v-if="isUpdate">Muuda oma andmeid</h3>
-      <h3 v-else>Minu andmed</h3>
+      <h1 v-if="isUpdate">Muuda oma andmeid</h1>
+      <h1 v-else>Minu andmed</h1>
       <div v-if="isUpdate" class="row justify-content-center align-items-start">
         <div class="col col-4 text-start">
 
@@ -32,16 +32,15 @@
         </div>
       </div>
       <div v-else>
-        <h4>{{ user.username }}</h4>
-        <h4>{{ user.email }}</h4>
+        <h5>{{ user.username }}</h5>
+        <h5>{{ user.email }}</h5>
       </div>
-      <button v-if="!isUpdate" @click="setIsUpdateToTrue" class="btn btn-outline-secondary">Muuda oma andmeid</button>
-      <button v-if="isUpdate" @click="updateUser" type="button" class=" btn btn-light">Salvesta</button>
-      <button v-if="isUpdate" @click="resetUser" type="button" class=" btn btn-light">Tagasi</button>
-      <button v-if="isUser && !isUpdate" @click="deleteUserInfo" type="button" class="btn btn-light">Kustuta konto
-      </button>
+      <button v-if="!isUpdate" @click="setIsUpdateToTrue" class="btn btn-secondary ms-5">Muuda oma andmeid</button>
+      <button v-if="isUpdate" @click="updateUser" type="button" class=" btn btn-success ms-5">Salvesta</button>
+      <button v-if="isUpdate" @click="resetUser" type="button" class=" btn btn-light ms-5">Tagasi</button>
+      <button v-if="isUser && !isUpdate" @click="deleteUserInfo" type="button" class="btn btn-dark ms-5">Kustuta konto</button>
       <div class="row justify-content-center">
-        <div class="col col-4">
+        <div class="col col-6 mb-4">
           <AlertDanger :message="errorMessage"/>
           <AlertSuccess :message="successMessage"/>
         </div>
@@ -49,37 +48,38 @@
     </div>
   </div>
   <div v-if="isUser">
-
-
-    <!--  todo siin admin ikka näeb seda tabelit -->
-    <div  class="row mt-5">
-      <div class="col">
+    <div class="row justify-content-center mb-3">
+      <div class="col col-12 mb-2">
         <h3>Minu loodud mängud</h3>
       </div>
     </div>
-    <div>
-      <table class="table">
-        <thead>
-        <tr>
-          <th scope="col">Mängu nimi</th>
-          <th scope="col">Kirjeldus</th>
-          <th scope="col">Kustuta</th>
-          <th scope="col">Muuda</th>
-        </tr>
-        </thead>
-        <tbody>
-        <!--      todo: kas on siin allGames?-->
-        <tr v-for="(newGame) in allGames" :key="newGame.gameId">
-          <td>{{ newGame.gameName }}</td>
-          <td>{{ newGame.gameDescription }}</td>
-          <td>
-<!--            todo siiiia teenus-->
-            <font-awesome-icon icon="trash" @click="deleteUserGame(newGame.gameId)"
-                               class="cursor-pointer"/>
-          </td>
-        </tr>
-        </tbody>
-      </table>
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-lg-10">
+        <table class="table">
+          <thead>
+          <tr>
+            <th scope="col">Mängu nimi</th>
+            <th scope="col">Kirjeldus</th>
+            <th scope="col">Kustuta</th>
+            <th scope="col">Muuda</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr v-for="(newGame) in allGames" :key="newGame.gameId">
+            <td>{{ newGame.gameName }}</td>
+            <td>{{ newGame.gameDescription }}</td>
+            <td>
+<!--              todo -SIIA TEENUS-->
+<!--              <font-awesome-icon icon="pen-to-square" @click="navigateToLocationView(location.locationId)"-->
+<!--                                 class="cursor-pointer me-3"/>-->
+              <font-awesome-icon icon="trash" @click="removeUserGame(newGame.gameId)"
+                                 class="cursor-pointer"/>
+
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </template>
@@ -225,7 +225,6 @@ export default {
       this.isUser = !this.isAdmin
     },
 
-
     getGames() {
       GameService.sendGetUserGames(this.userId)
           .then(response => this.handleGetGamesResponse(response))
@@ -236,33 +235,17 @@ export default {
       this.allGames = response.data;
     },
 
+    removeUserGame(gameId) {
+      GameService.sendUserGameDeleteRequest(gameId)
+          .then(response => this.handleUserGameRemovalResponse(response))
+          .catch(() => NavigationService.navigateToErrorView())
+    },
 
-// todo - mängu kustutamise nupp - backis delete teenus teha
-// deleteUserGame() .- todo sarnane.. nupp siis ka startDeleteUserGameProcess(gameId)
-    // startDeleteLocationProcess(locationId) {
-    //   this.selectedLocationId = locationId
-    //   LocationService.sendGetLocationRequest(this.selectedLocationId)
-    //       .then(response => {
-    //         this.handleGetLocationResponse(response);
-    //       })
-    //       .catch(() => NavigationService.navigateToErrorView())
-    // },
-    //
-    // handleGetLocationResponse(response) {
-    //   this.location = response.data
-    //   this.modalIsOpen = true
-    // },
-    //
-    // deleteLocation() {
-    //   LocationService.sendDeleteLocationRequest(this.selectedLocationId)
-    //       .then(() => this.handleDeleteLocationResponse())
-    // },
-    //
-    // handleDeleteLocationResponse() {
-    //   this.getLocations()
-    //   this.successMessage = "Asukoht on edukalt kustutatud"
-    //   setTimeout(this.resetAllMessages, 4000)
-    // },
+    handleUserGameRemovalResponse(response) {
+      this.getGames()
+      this.successMessage = "Mäng on edukalt kustutatud"
+      setTimeout(this.resetAllMessages, 2000)
+    },
 
     setIsUpdateToTrue() {
       this.isUpdate = true
@@ -285,3 +268,13 @@ export default {
 
 </script>
 
+<style scoped>
+.table {
+  background-color: rgba(255, 255, 255, 0.1) !important
+
+}
+.table th, .table td {
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3)
+}
+</style>
