@@ -6,6 +6,7 @@
         <p>Õiged vastused: {{this.gameOverResults.correctCount}}</p>
         <p>Valed vastused: {{this.gameOverResults.inCorrectCount}}</p>
         <p>Aega läks: {{formatTime(this.gameOverResults.totalTime)}}</p>
+        <a @click="createNewRandomGame" href="#/game" class="btn btn-primary">ALUSTA UUT MÄNGU</a>
       </div>
     </div>
   </div>
@@ -14,11 +15,13 @@
 <script>
 import GameService from "@/service/GameService";
 import {useRoute} from "vue-router";
+import NavigationService from "@/service/NavigationService";
 
 export default {
   name: 'GameOverView',
   data() {
     return {
+      userId: sessionStorage.getItem('userId'),
       randomGameId: Number(useRoute().query.randomGameId),
       gameOverResults: {
         correctCount: 0,
@@ -41,7 +44,17 @@ export default {
       const minutes = Math.floor(totalTime / 60); // Arvuta minutid
       const seconds = totalTime % 60; // Arvuta sekundid
       return `${minutes} min ja ${seconds} sek`;
-}
+  },
+    createNewRandomGame() {
+      GameService.sendPostNewRandomGame(this.userId)
+          .then(response => this.handleCreateNewRandomGameResponse(response))
+          .catch(error => this.someDataBlockErrorResponseObject = error.response.data)
+    },
+
+    handleCreateNewRandomGameResponse(response) {
+      let randomGameId = response.data;
+      NavigationService.navigateToGameView(randomGameId)
+    },
 
   },
   mounted() {
