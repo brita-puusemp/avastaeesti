@@ -1,8 +1,9 @@
 <template>
   <div class="container text-center">
-    <div class="row">
-      <div class="col">
+    <div class="row justify-content-center">
+      <div class="col col-10">
         <h3>Mängu andmed</h3>
+          <AlertDanger :message="errorMessage"/>
         <div class="input-group flex-nowrap mb-3">
           <span class="input-group-text" id="addon-wrapping">Mängu nimi</span>
           <input v-model="newGame.gameName" type="text" class="form-control">
@@ -29,11 +30,15 @@
 <script>
 import NavigationService from "@/service/NavigationService";
 import GameService from "@/service/GameService";
+import AlertDanger from "@/components/alert/AlertDanger.vue";
+import AlertSuccess from "@/components/alert/AlertSuccess.vue";
 
 export default {
   name: "NewGameView",
+  components: {AlertSuccess, AlertDanger},
   data() {
     return {
+      errorMessage: '',
       newGame: {
         userId: sessionStorage.getItem('userId'),
         gameName: '',
@@ -48,8 +53,13 @@ export default {
       if (this.allFieldsCorrect()) {
         this.handleNewGameInfo()
       } else {
-        NavigationService.navigateToErrorView()
+        this.alertMissingFields()
       }
+    },
+
+    alertMissingFields() {
+      this.errorMessage = 'Kontrolli andmeid'
+      setTimeout(this.resetAllMessages, 2000)
     },
 
     allFieldsCorrect() {
