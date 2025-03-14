@@ -58,6 +58,7 @@ export default {
   components: {GameResultModal, MapModal, GetHintModal},
   data() {
     return {
+      userGameId: Number(useRoute().query.userGameId),
       randomGameId: Number(useRoute().query.randomGameId),
       mapModalIsOpen: false,
       hintModalIsOpen: false,
@@ -134,6 +135,17 @@ export default {
     getRandomGameLocations() {
       GameService.sendGetRandomGameLocationsRequest(this.randomGameId)
           .then(response => this.handleGetRandomGameLocationsResponse(response))
+          .catch(error => this.someDataBlockErrorResponseObject = error.response.data)
+    },
+
+    handleGetUserGameLocationResponse(response) {
+      return this.randomLocation = response.data;
+    },
+
+    getUserGameLocations() {
+      GameService.sendGetUserGameLocationsRequest(this.userGameId)
+
+          .then(response => this.handleGetUserGameLocationResponse(response))
           .catch(error => this.someDataBlockErrorResponseObject = error.response.data)
     },
 
@@ -260,7 +272,12 @@ export default {
 
   },
   mounted() {
-    this.getRandomGameLocations()
+    if (this.randomGameId) {
+      this.getRandomGameLocations();
+    } else {
+      this.getUserGameLocations();
+    }
+
 
   },
   beforeUnmount() {

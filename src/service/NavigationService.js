@@ -61,6 +61,15 @@ export default {
         })
 
     },
+    navigateToUserGameView(userGameId) {
+        router.push({
+            name: 'gameRoute',
+            query: {
+                userGameId: userGameId
+            }
+        })
+
+    },
 
     navigateToResultView(userAnswerResult, randomGameId) {
         router.push({

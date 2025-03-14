@@ -18,8 +18,10 @@
       <td>{{ allGames.gameDescription }}</td>
       <td>{{ allGames.totalTopScore }}</td>
       <td>
-        <font-awesome-icon :icon="['fas', 'play']"
-                           class="cursor-pointer me-3"/>
+        <font-awesome-icon
+            @click="createNewUserGame(allGames.gameId)"
+            :icon="['fas', 'play']"
+            class="cursor-pointer me-3"/>
       </td>
     </tr>
     </tbody>
@@ -39,6 +41,11 @@ export default {
   },
   props: {
     allGames: Array
+  },
+  methods: {
+    createNewUserGame(gameId) {
+      this.$emit('event-create-new-user', gameId)
+    },
   }
 
 }

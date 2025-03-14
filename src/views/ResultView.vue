@@ -41,6 +41,7 @@ export default {
       isActive: false,
       buttonText: 'Lisa lemmikutesse',
       userAnswerResult: {
+        locationId: this.$route.query.locationId,
         locationName: this.$route.query.locationName,
         locationIsCorrect: this.$route.query.locationIsCorrect === 'true',
         totalQuestions: this.$route.query.totalQuestions,

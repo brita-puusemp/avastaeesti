@@ -40,6 +40,15 @@ export default {
         );
     },
 
+    sendGetUserGameLocationsRequest(userGameId) {
+        return axios.get('/user/game/location', {
+                params: {
+                    userGameId: userGameId,
+                }
+            }
+        );
+    },
+
     sendPostUserAnswerRequest(userAnswer) {
         return axios.post('/game/location/result', userAnswer);
 
@@ -79,5 +88,14 @@ export default {
                 }
             }
         )
+    },
+    sendPostNewUserGameRequest(gameId, userId) {
+        return axios.post('/user/game', null, {
+                params: {
+                    gameId: gameId,
+                    userId: userId
+                }
+            }
+        );
     },
 }
