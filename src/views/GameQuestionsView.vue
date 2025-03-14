@@ -1,46 +1,50 @@
 <template>
   <div>
-
     <div class="container text-center">
       <h3>Mängu andmed</h3>
-      <div class="row justify-content-center">
-        <div class="col col-3">
-          <table class="table">
-            <thead>
-            <tr>
-              <th scope="col">PILT</th>
-              <th scope="col">KOHANIMI</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="(preview, index) in locationPreviews" :key="index">
-              <td><img :src="preview.imageData" :alt="preview.locationName + ' pilt'" :style="{width: '140px'}"></td>
-              <td>{{ preview.locationName }}</td>
-            </tr>
-            </tbody>
-          </table>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col col-6">
+        <table class="table">
+          <thead>
+          <tr>
+            <th scope="col">PILT</th>
+            <th scope="col">KOHANIMI</th>
+            <th scope="col">Kustuta</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr v-for="(gameLocation) in gameLocations" :key="gameLocation.gameLocationId">
+            <td><img :src="gameLocation.locationImage" :alt="gameLocation.locationName + ' pilt'"
+                     :style="{width: '250px'}"></td>
+            <td>{{ gameLocation.locationName }}</td>
+            <td>
+              <font-awesome-icon icon="trash" @click="removeGameLocation(gameLocation.gameLocationId)"
+                                 class=" cursor-pointer"/>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+        <div class="col-6">
+          <AlertSuccess :message="successMessage"/>
         </div>
       </div>
-
-      <div class="row justify-content-center">
-        <div class="col col-2 mb-3">
-          <LocationsDropdown :locations="locations"
-                             :selected-location-id="selectedLocationId"
-                             @event-new-location-selected="setGameLocationLocationId"
-          />
-        </div>
-        <div class="col col-2 mb-3">
-          <button @click="getLocationPreview" type="submit" class="btn btn-light">Lisa küsimus mängu</button>
-        </div>
-
-      </div>
-
-      <div class="col mb-3">
-        <button @click="createNewGameLocations" type="submit" class="btn btn-success">LOO MÄNG</button>
-      </div>
-
     </div>
 
+    <div class="row justify-content-center">
+      <div class="col col-6 mb-3">
+        <LocationsDropdown :locations="locations"
+                           :selected-location-id="selectedLocationId"
+                           @event-new-location-selected="setGameLocationLocationId"
+        />
+      </div>
+      <div class="col col-2 mb-3">
+        <button @click="addNewLocationToUserGame" type="submit" class="btn btn-success ms-5">Lisa see mängu</button>
+      </div>
+      <div>
+        <button @click="gameCreated" type="button" class="btn btn-light">MÄNG ON VALMIS</button>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -49,82 +53,93 @@ import LocationService from "@/service/LocationService";
 import NavigationService from "@/service/NavigationService";
 import GameService from "@/service/GameService";
 import {useRoute} from "vue-router";
+import AlertSuccess from "@/components/alert/AlertSuccess.vue";
 
 export default {
-  name: 'gameQuestionsView',
-  components: {LocationsDropdown},
+  name: 'gameLocationsView',
+  components: {LocationsDropdown, AlertSuccess},
   data() {
     return {
       gameId: Number(useRoute().query.gameId),
-      locationPreviews: [],
+      successMessage: '',
+      gameLocations:
+          [
+            {
+              gameLocationId: 0,
+              locationImage: '',
+              locationName: ''
+            }
+          ],
       selectedLocationId: 0,
-      locations: [],
-      locationPreview: {
-        locationId: 0,
-        locationName: '',
-        imageData: ''
-      },
-      gameData: {
-        gameId: Number(useRoute().query.gameId),
-        locationIds: [],
-      }
+      locations: [
+        {
+          locationId: 0,
+          locationName: ''
+        }
+      ],
     }
   },
   methods: {
 
-    createNewGameLocations() {
-      this.gameData.locationIds = this.locationPreviews.map(preview => preview.locationId);
-      this.saveNewGameLocation(this.gameData)
-    },
-
-    saveNewGameLocation(gameData) {
-      GameService.sendSaveGameLocations(gameData)
-          .then(() => this.handleSaveGameLocationsResponse())
+    removeGameLocation(gameLocationId) {
+      console.log(gameLocationId)
+      GameService.sendDeleteGameLocationRequest(gameLocationId)
+          .then(response => this.handleGameLocationDeleteResponse(response))
           .catch(() => NavigationService.navigateToErrorView())
     },
 
-    handleSaveGameLocationsResponse() {
-      this.$router.go(-2)
-
+    handleGameLocationDeleteResponse() {
+      this.getGameLocations()
+      this.successMessage = "Asukoht on edukalt kustutatud"
+      setTimeout(this.resetAllMessages, 1000)
     },
 
-    getLocationPreview() {
-      LocationService.sendGetLocationPreviewRequest(this.selectedLocationId)
-          .then(response => this.handleLocationPreviewResponse(response))
-          .catch(error => this.handleLocationPreviewErrorResponse(error))
+    resetAllMessages() {
+      this.successMessage = ''
     },
 
-    handleLocationPreviewResponse(response) {
-      this.locationPreviews.push({
-        locationId: response.data.locationId,
-        locationName: response.data.locationName,
-        imageData: response.data.imageData,
-      });
+    getGameLocations() {
+      LocationService.sendGetGameLocationsRequest(this.gameId)
+          .then(response => this.handleGameLocationResponse(response))
+          .catch(() => NavigationService.navigateToErrorView())
     },
 
-    handleLocationPreviewErrorResponse(error) {
-      return this.someDataBlockErrorResponseObject = error.response.data;
+    handleGameLocationResponse(response) {
+      this.gameLocations = response.data;
     },
 
-    sendLocation() {
+    addNewLocationToUserGame() {
+      GameService.sendPostNewLocationToUserGame(this.gameId, this.selectedLocationId)
+          .then(() => this.handleAddedGameLocationResponse())
+          .catch(() => NavigationService.navigateToErrorView())
+    },
+
+    handleAddedGameLocationResponse() {
+      this.getGameLocations()
+    },
+
+    getLocations() {
       LocationService.sendGetLocationsRequest()
           .then(response => this.handleGetLocationsResponse(response))
           .catch(() => NavigationService.navigateToErrorView());
     },
 
     handleGetLocationsResponse(response) {
-      return this.locations = response.data;
+      this.locations = response.data;
     },
 
     setGameLocationLocationId(selectedLocationId) {
       this.selectedLocationId = selectedLocationId
     },
+
+    gameCreated() {
+      NavigationService.navigateToProfileInfoView()
+    }
   },
 
   beforeMount() {
-    this.sendLocation()
+    this.getLocations()
+    this.getGameLocations()
   }
 }
-</script>
-<script setup lang="ts">
 </script>

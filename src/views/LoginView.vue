@@ -1,17 +1,17 @@
 <template>
-
+<div class="taust">
   <InstructionsModal :modal-is-open="modalIsOpen"
                      @event-close-modal="closeModal
 "/>
-  <div class="container text-center">
+  <div class="container text-center login-container">
     <div class="row justify-content-center mb-5">
       <div class="col col-8">
         <AlertDanger :message="message"/>
       </div>
     </div>
-    <div class="row justify-content-center mb-5">
+    <div class="row justify-content-center mb-5 content">
       <div class="col">
-        <h1>Avasta Eestimaad</h1>
+        <h1 >AVASTA EESTIMAAD</h1>
         <button @click="openInstructionsModal" class="btn btn-light">Kuidas mängida?</button>
 
         <h3>Sisene kasutajaga</h3>
@@ -19,27 +19,28 @@
         <div class="row justify-content-center mb-3">
           <div class="col col-4">
             <div class="input-group mb-3">
-              <span class="input-group-text">Kasutajanimi</span>
+              <span class="input-group-text">KASUTAJANIMI</span>
               <input v-model="username" type="text" class="form-control">
             </div>
             <div class="input-group mb-3">
-              <span class="input-group-text">Parool</span>
+              <span class="input-group-text">PAROOL</span>
               <input v-model="password" type="password" class="form-control">
             </div>
           </div>
         </div>
 
-        <router-link to="/register">Loo kasutaja</router-link>
+        <router-link to="/register" class="register-link">Loo uus kasutaja</router-link>
         <button @click="login" type="submit" class="btn btn-success ms-5">LOGI SISSE</button>
 
       </div>
 
     </div>
   </div>
-
+</div>
 </template>
 
 <script>
+import '@/assets/css/LoginView.css'
 import LoginService from "@/service/LoginService";
 import NavigationService from "@/service/NavigationService";
 import HttpStatusCodes from "@/errors/HttpStatusCodes";
@@ -83,7 +84,7 @@ export default {
       this.loginResponse = response.data;
       sessionStorage.setItem('userId', this.loginResponse.userId)
       sessionStorage.setItem('roleName', this.loginResponse.roleName)
-      this.$emit('event-show-nav-menu')
+      this.$emit('event-update-nav-menu')
       if (this.loginResponse.roleName === 'admin') {
         NavigationService.navigateToAdminHomeView()
       } else {

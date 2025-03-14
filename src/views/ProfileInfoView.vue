@@ -35,9 +35,11 @@
         <h4>{{ user.username }}</h4>
         <h4>{{ user.email }}</h4>
       </div>
-      <button v-if="!isUpdate" @click="handleIsUpdate" class="btn btn-outline-secondary">Muuda</button>
+      <button v-if="!isUpdate" @click="setIsUpdateToTrue" class="btn btn-outline-secondary">Muuda oma andmeid</button>
       <button v-if="isUpdate" @click="updateUser" type="button" class=" btn btn-light">Salvesta</button>
-      <button @click="deleteUserInfo" type="button" class="btn btn-light">Kustuta konto</button>
+      <button v-if="isUpdate" @click="resetUser" type="button" class=" btn btn-light">Tagasi</button>
+      <button v-if="isUser && !isUpdate" @click="deleteUserInfo" type="button" class="btn btn-light">Kustuta konto
+      </button>
       <div class="row justify-content-center">
         <div class="col col-4">
           <AlertDanger :message="errorMessage"/>
@@ -46,32 +48,39 @@
       </div>
     </div>
   </div>
-  <div class="row mt-5">
-    <div class="col">
-      <h3>Minu loodud mängud</h3>
+  <div v-if="isUser">
+
+
+    <!--  todo siin admin ikka näeb seda tabelit -->
+    <div  class="row mt-5">
+      <div class="col">
+        <h3>Minu loodud mängud</h3>
+      </div>
     </div>
-  </div>
-  <div>
-    <table class="table">
-      <thead>
-      <tr>
-        <th scope="col">Mängu nimi</th>
-        <th scope="col">Kirjeldus</th>
-        <th scope="col">Kustuta</th>
-      </tr>
-      </thead>
-      <tbody>
-      <!--      todo: kas on siin allGames?-->
-      <tr v-for="(newGame) in allGames" :key="newGame.gameId">
-        <td>{{ newGame.gameName }}</td>
-        <td>{{ newGame.gameDescription }}</td>
-        <td>
-          <font-awesome-icon icon="trash" @click="deleteUserGame(newGame.gameId)"
-                             class="cursor-pointer"/>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+    <div>
+      <table class="table">
+        <thead>
+        <tr>
+          <th scope="col">Mängu nimi</th>
+          <th scope="col">Kirjeldus</th>
+          <th scope="col">Kustuta</th>
+          <th scope="col">Muuda</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!--      todo: kas on siin allGames?-->
+        <tr v-for="(newGame) in allGames" :key="newGame.gameId">
+          <td>{{ newGame.gameName }}</td>
+          <td>{{ newGame.gameDescription }}</td>
+          <td>
+<!--            todo siiiia teenus-->
+            <font-awesome-icon icon="trash" @click="deleteUserGame(newGame.gameId)"
+                               class="cursor-pointer"/>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
@@ -89,6 +98,8 @@ export default {
   components: {AlertSuccess, AlertDanger},
   data() {
     return {
+      isUser: false,
+      isAdmin: false,
       isUpdate: false,
       user: {
         username: '',
@@ -125,8 +136,8 @@ export default {
       setTimeout(() => this.showPasswordRepeat = false, 2000)
     },
 
-    getUser(userId) {
-      UserService.sendGetUserInfoRequest(userId)
+    getUser() {
+      UserService.sendGetUserInfoRequest(this.userId)
           .then(response => this.handleGetUserRequest(response))
           .catch(() => NavigationService.navigateToErrorView())
     },
@@ -138,7 +149,7 @@ export default {
     updateUser() {
       if (this.allFieldsCorrect()) {
         UserService.sendPutUserUpdateRequest(this.user, this.userId)
-            .then(response => this.handleUserInfoUpdateRequest())
+            .then(response => this.handleUserInfoUpdateRequest(response))
             .catch(error => this.handleUserInfoErrorResponse(error))
       } else {
         this.alertMissingFields()
@@ -147,8 +158,10 @@ export default {
 
     handleUserInfoUpdateRequest(response) {
       this.successMessage = 'Sinu andmed on edukalt muudetud'
-      setTimeout(this.resetAllMessages, 4000)
-
+      setTimeout(() => {
+        this.resetAllMessages()
+        NavigationService.navigateToProfileInfoView()
+      }, 2000)
     },
 
     handleUserInfoErrorResponse(error) {
@@ -170,7 +183,7 @@ export default {
 
     handleIncorrectCredentials() {
       this.message = this.errorResponse.message;
-      setTimeout(this.resetAlertMessage, 4000);
+      setTimeout(this.resetAlertMessage, 2000);
     },
 
     resetAlertMessage() {
@@ -185,8 +198,10 @@ export default {
 
     handleDeleteUserInfoRequest(response) {
       this.successMessage = "Konto on edukalt kustutatud"
-      setTimeout(() => this.resetAllMessages, 4000)
-      NavigationService.navigateToLoginView()
+      setTimeout(() => {
+        this.resetAllMessages()
+        NavigationService.navigateToLoginView()
+      }, 2000)
     },
 
     allFieldsCorrect() {
@@ -197,7 +212,7 @@ export default {
 
     alertMissingFields() {
       this.errorMessage = 'Kontrolli andmeid'
-      setTimeout(this.resetAlertMessage, 4000)
+      setTimeout(() => this.resetAllMessages(), 2000)
     },
 
     resetAllMessages() {
@@ -205,18 +220,25 @@ export default {
       this.successMessage = ''
     },
 
+    decideRoles() {
+      this.isAdmin = sessionStorage.getItem('roleName') === 'admin'
+      this.isUser = !this.isAdmin
+    },
+
+
     getGames() {
       GameService.sendGetUserGames(this.userId)
           .then(response => this.handleGetGamesResponse(response))
-          .catch(() => NavigationService.navigateToErrorView());
+          .catch(() => NavigationService.navigateToErrorView())
     },
 
     handleGetGamesResponse(response) {
       this.allGames = response.data;
     },
 
+
 // todo - mängu kustutamise nupp - backis delete teenus teha
-    // deleteUserGame() .- todo sarnane.. nupp siis ka startDeleteUserGameProcess(gameId)
+// deleteUserGame() .- todo sarnane.. nupp siis ka startDeleteUserGameProcess(gameId)
     // startDeleteLocationProcess(locationId) {
     //   this.selectedLocationId = locationId
     //   LocationService.sendGetLocationRequest(this.selectedLocationId)
@@ -242,15 +264,22 @@ export default {
     //   setTimeout(this.resetAllMessages, 4000)
     // },
 
-    handleIsUpdate() {
+    setIsUpdateToTrue() {
       this.isUpdate = true
+    },
+
+    resetUser() {
+      this.isUpdate = false
+      this.getUser()
     }
-    ,
   },
 
   beforeMount() {
-    this.getUser(this.userId)
-    this.getGames()
+    this.decideRoles()
+    this.getUser()
+    if (this.isUser) {
+      this.getGames()
+    }
   },
 }
 

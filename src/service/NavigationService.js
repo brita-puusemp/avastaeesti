@@ -20,6 +20,13 @@ export default {
         )
     },
 
+    navigateToProfileInfoView() {
+        router.push({
+                name: 'profileRoute'
+            }
+        )
+    },
+
     navigateToLoginView() {
         router.push({
                 name: 'loginRoute'
@@ -38,7 +45,7 @@ export default {
 
     navigateToGameQuestionView(gameId) {
         router.push({
-            name: 'gameQuestionsRoute',
+            name: 'gameLocationsRoute',
             query: {
                 gameId: gameId
             }
@@ -59,7 +66,7 @@ export default {
         router.push({
             name: 'gameResultsRoute',
             query: {
-                locationName: userAnswerResult.locationName ,
+                locationName: userAnswerResult.locationName,
                 locationIsCorrect: userAnswerResult.locationIsCorrect,
                 totalQuestions: userAnswerResult.totalQuestions,
                 questionsAnswered: userAnswerResult.questionsAnswered,

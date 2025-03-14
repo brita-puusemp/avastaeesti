@@ -50,8 +50,6 @@ export default {
     startDeleteLocationProcess(locationId) {
       this.$emit('event-start-delete-location-process', locationId)
     },
-
-
   }
 }
 </script>

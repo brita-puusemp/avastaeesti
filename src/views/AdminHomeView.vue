@@ -83,9 +83,7 @@ export default {
     startDeleteLocationProcess(locationId) {
       this.selectedLocationId = locationId
       LocationService.sendGetLocationRequest(this.selectedLocationId)
-          .then(response => {
-            this.handleGetLocationResponse(response);
-          })
+          .then(response => this.handleGetLocationResponse(response))
           .catch(() => NavigationService.navigateToErrorView())
     },
 
@@ -95,8 +93,10 @@ export default {
     },
 
     deleteLocation() {
+      console.log(this.selectedLocationId)
       LocationService.sendDeleteLocationRequest(this.selectedLocationId)
           .then(() => this.handleDeleteLocationResponse())
+          .catch(() => NavigationService.navigateToErrorView())
     },
 
     handleDeleteLocationResponse() {
@@ -147,16 +147,11 @@ export default {
       this.errorMessage = ''
       this.successMessage = ''
     },
-    //
-    // navigateToLocationView(locationId) {
-    //   NavigationService.navigateToLocationView(locationId)
-    // },
   },
 
   beforeMount() {
     this.validateIsAdmin()
     this.getLocations()
-    // this.successMessage = sessionStorage.getItem('sussessMessage')
   }
 }
 </script>
