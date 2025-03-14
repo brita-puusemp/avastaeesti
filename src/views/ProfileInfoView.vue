@@ -38,8 +38,7 @@
       <button v-if="!isUpdate" @click="setIsUpdateToTrue" class="btn btn-secondary ms-5">Muuda oma andmeid</button>
       <button v-if="isUpdate" @click="updateUser" type="button" class=" btn btn-success ms-5">Salvesta</button>
       <button v-if="isUpdate" @click="resetUser" type="button" class=" btn btn-light ms-5">Tagasi</button>
-      <button v-if="isUser && !isUpdate" @click="deleteUserInfo" type="button" class="btn btn-dark ms-5">Kustuta konto
-      </button>
+      <button v-if="isUser && !isUpdate" @click="deleteUserInfo" type="button" class="btn btn-dark ms-5">Kustuta konto</button>
       <div class="row justify-content-center">
         <div class="col col-6 mb-4">
           <AlertDanger :message="errorMessage"/>
@@ -70,8 +69,12 @@
             <td>{{ newGame.gameName }}</td>
             <td>{{ newGame.gameDescription }}</td>
             <td>
+<!--              todo -SIIA TEENUS-->
+<!--              <font-awesome-icon icon="pen-to-square" @click="navigateToLocationView(location.locationId)"-->
+<!--                                 class="cursor-pointer me-3"/>-->
               <font-awesome-icon icon="trash" @click="removeUserGame(newGame.gameId)"
                                  class="cursor-pointer"/>
+
             </td>
           </tr>
           </tbody>
