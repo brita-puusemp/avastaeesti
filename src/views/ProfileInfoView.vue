@@ -16,7 +16,6 @@
             <span class="input-group-text" @click="initiateShowPassword" style="cursor: pointer;">
              <font-awesome-icon :icon="['fas', 'eye']"/>
             </span>
-
           </div>
           <div class="input-group mb-3">
             <span class="input-group-text">Korda parooli</span>
@@ -35,10 +34,10 @@
         <h5>{{ user.username }}</h5>
         <h5>{{ user.email }}</h5>
       </div>
-      <button v-if="!isUpdate" @click="setIsUpdateToTrue" class="btn btn-secondary ms-5">Muuda oma andmeid</button>
-      <button v-if="isUpdate" @click="updateUser" type="button" class=" btn btn-success ms-5">Salvesta</button>
-      <button v-if="isUpdate" @click="resetUser" type="button" class=" btn btn-light ms-5">Tagasi</button>
-      <button v-if="isUser && !isUpdate" @click="deleteUserInfo" type="button" class="btn btn-dark ms-5">Kustuta konto</button>
+      <button v-if="!isUpdate" @click="setIsUpdateToTrue" class="btn btn-secondary mb-5">Muuda oma andmeid</button>
+      <button v-if="isUpdate" @click="updateUser" type="button" class=" btn btn-success ms-3">Salvesta</button>
+      <button v-if="isUpdate" @click="resetUser" type="button" class=" btn btn-light ms-3">Tagasi</button>
+      <button v-if="isUser && !isUpdate" @click="deleteUserInfo" type="button" class="btn btn-dark mb-5">Kustuta konto</button>
       <div class="row justify-content-center">
         <div class="col col-6 mb-4">
           <AlertDanger :message="errorMessage"/>
@@ -50,18 +49,17 @@
   <div v-if="isUser">
     <div class="row justify-content-center mb-3">
       <div class="col col-12 mb-2">
-        <h3>Minu loodud mängud</h3>
+        <h1>Minu loodud mängud</h1>
       </div>
     </div>
     <div class="row justify-content-center">
-      <div class="col-md-8 col-lg-10">
+      <div class="col-md-8 col-8">
         <table class="table">
           <thead>
           <tr>
             <th scope="col">Mängu nimi</th>
             <th scope="col">Kirjeldus</th>
             <th scope="col">Kustuta</th>
-            <th scope="col">Muuda</th>
           </tr>
           </thead>
           <tbody>
@@ -69,12 +67,8 @@
             <td>{{ newGame.gameName }}</td>
             <td>{{ newGame.gameDescription }}</td>
             <td>
-<!--              todo -SIIA TEENUS-->
-<!--              <font-awesome-icon icon="pen-to-square" @click="navigateToLocationView(location.locationId)"-->
-<!--                                 class="cursor-pointer me-3"/>-->
               <font-awesome-icon icon="trash" @click="removeUserGame(newGame.gameId)"
                                  class="cursor-pointer"/>
-
             </td>
           </tr>
           </tbody>

@@ -4,7 +4,7 @@
       <div class="col col-10">
         <h1>Mängu andmed</h1>
           <AlertDanger :message="errorMessage"/>
-        <div class="input-group flex-nowrap mb-3">
+        <div class="input-group flex-nowrap mt-4">
           <span class="input-group-text" id="addon-wrapping">Mängu nimi</span>
           <input v-model="newGame.gameName" type="text" class="form-control">
         </div>
@@ -57,7 +57,7 @@ export default {
     },
 
     alertMissingFields() {
-      this.errorMessage = 'Kontrolli andmeid'
+      this.errorMessage = 'Kõik väljad peavad olema sisestatud'
       setTimeout(this.resetAllMessages, 2000)
     },
 

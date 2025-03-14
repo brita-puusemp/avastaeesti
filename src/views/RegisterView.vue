@@ -1,36 +1,44 @@
 <template>
   <div>
+    <div class="d-flex justify-content-center">
+      <div class="container text-center mt-5">
+        <div class="row justify-content-center">
+          <div class="col col-6">
+            <h1>Loo uus kasutaja</h1>
+            <AlertDanger :message="message"/>
 
-    <AlertDanger :message="message"/>
+            <div class="input-group mb-3">
+              <span class="input-group-text">E-MAIL</span>
+              <input v-model="newUser.email" type="text" class="form-control">
+            </div>
+            <div class="input-group mb-3">
+              <span class="input-group-text">KASUTAJANIMI</span>
+              <input v-model="newUser.username" type="text" class="form-control">
+            </div>
+            <div class="input-group mb-3">
+              <span class="input-group-text">PAROOL</span>
+              <input v-model="newUser.password" :type="showPassword ? 'text' : 'password'" class="form-control">
+              <span class="input-group-text" @click="initiateShowPassword" style="cursor: pointer;">
+              <font-awesome-icon :icon="['fas', 'eye']"/>
+            </span>
+            </div>
 
-    <div class="container text-center">
-      <div class="row justify-content-center">
-        <div class="col col-4">
-          <h3>Loo uus kasutaja</h3>
-          <div class="input-group mb-3">
-            <span class="input-group-text">E-MAIL</span>
-            <input v-model="newUser.email" type="text" class="form-control">
+            <div class="input-group mb-3">
+              <span class="input-group-text">KORDA PAROOLI</span>
+              <input v-model="newUser.passwordRepeat" :type="showPasswordRepeat ? 'text' : 'password'"
+                     class="form-control">
+              <span class="input-group-text" @click="initiatePasswordRepeate" style="cursor: pointer;">
+          <font-awesome-icon :icon="['fas', 'eye']"/>
+              </span>
+            </div>
+            <div class="d-flex justify-content-center mt-3">
+              <button @click="goBack" class="btn btn-light me-3">Tagasi</button>
+              <button @click="createNewUser" type="submit" class="btn btn-success">Loo kasutaja</button>
+            </div>
           </div>
-          <div class="input-group mb-3">
-            <span class="input-group-text">KASUTAJANIMI</span>
-            <input v-model="newUser.username" type="text" class="form-control">
-          </div>
-          <!--todo: parool peab võrduma korda parool + ui visble/not visble nupp-->
-          <div class="input-group mb-3">
-            <span class="input-group-text">PAROOL</span>
-            <input v-model="newUser.password" type="password" class="form-control">
-          </div>
-          <div class="input-group mb-3">
-            <span class="input-group-text">KORDA PAROOLI</span>
-            <input v-model="newUser.passwordRepeat" type="password" class="form-control">
-          </div>
-
-          <button @click="goBack">Tagasi</button>
-          <button @click="createNewUser" type="submit" class="btn btn-success ms-5">Loo kasutaja</button>
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -45,6 +53,7 @@ export default {
   components: {AlertDanger},
   data() {
     return {
+      showPassword: '',
       message: '',
       newUser: {
         email: "",
@@ -60,6 +69,16 @@ export default {
   },
   methods: {
 
+    initiateShowPassword() {
+      this.showPassword = true
+      setTimeout(() => this.showPassword = false, 2000)
+    },
+
+    initiatePasswordRepeate() {
+      this.showPasswordRepeat = true
+      setTimeout(() => this.showPasswordRepeat = false, 2000)
+    },
+
     createNewUser() {
       if (this.allFieldsCorrect()) {
         this.sendCreateNewUserRequest();
@@ -70,8 +89,7 @@ export default {
 
     allFieldsCorrect() {
       return this.newUser.username.length > 0
-          && this.newUser.password.length > 0
-          && this.newUser.password === this.newUser.passwordRepeat
+          && this.newUser.password.length > 0 && this.newUser.passwordRepeate === this.newUser.password
           && this.newUser.email.length > 0;
     },
 
