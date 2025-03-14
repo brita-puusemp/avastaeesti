@@ -45,7 +45,7 @@ export default {
 
     navigateToGameQuestionView(gameId) {
         router.push({
-            name: 'gameQuestionsRoute',
+            name: 'gameLocationsRoute',
             query: {
                 gameId: gameId
             }

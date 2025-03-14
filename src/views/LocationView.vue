@@ -148,7 +148,7 @@ export default {
           .catch(() => NavigationService.navigateToErrorView())
     },
 
-    handleUpdateLocationResponse() {
+    handleUpdateLocationResponse(response) {
       this.successMessage = 'Asukoha info on edukalt muudetud'
       setTimeout(() => NavigationService.navigateToAdminHomeView(), 2000)
     },

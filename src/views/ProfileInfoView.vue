@@ -64,6 +64,7 @@
           <th scope="col">Mängu nimi</th>
           <th scope="col">Kirjeldus</th>
           <th scope="col">Kustuta</th>
+          <th scope="col">Muuda</th>
         </tr>
         </thead>
         <tbody>
@@ -72,6 +73,7 @@
           <td>{{ newGame.gameName }}</td>
           <td>{{ newGame.gameDescription }}</td>
           <td>
+<!--            todo siiiia teenus-->
             <font-awesome-icon icon="trash" @click="deleteUserGame(newGame.gameId)"
                                class="cursor-pointer"/>
           </td>

@@ -37,6 +37,7 @@ export default {
         )
     },
 
+
     sendDeleteLocationRequest(selectedLocationId) {
         return axios.delete('/home-admin', {
                 params: {

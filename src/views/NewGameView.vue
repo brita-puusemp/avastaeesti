@@ -18,7 +18,7 @@
           <input v-model="newGame.timePerLocation" type="text" class="form-control">
         </div>
 
-        <button @click="createNewGame" type="button" class="btn btn-light">Vali oma mängu küsimused</button>
+        <button @click="createNewGame" type="button" class="btn btn-success ms-5">LOO MÄNG</button>
         <button @click="goBack" type="button" class="btn btn-light">Tagasi</button>
 
       </div>

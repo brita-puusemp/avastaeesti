@@ -7,7 +7,7 @@ import GameView from "@/views/GameView.vue";
 import LocationView from "@/views/LocationView.vue";
 import AdminHomeView from "@/views/AdminHomeView.vue";
 import NewGameView from "@/views/NewGameView.vue";
-import GameQuestionsView from "@/views/GameQuestionsView.vue";
+import GameLocationsView from "@/views/GameQuestionsView.vue";
 import AllGamesView from "@/views/AllGamesView.vue";
 import ResultView from "@/views/ResultView.vue";
 import FavouritesView from "@/views/FavouritesView.vue";
@@ -57,9 +57,9 @@ const routes = [
         component: NewGameView
     },
     {
-        path: '/game-question',
-        name: 'gameQuestionsRoute',
-        component: GameQuestionsView
+        path: '/game-location',
+        name: 'gameLocationsRoute',
+        component: GameLocationsView
     },
     {
         path: '/games',

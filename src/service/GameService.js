@@ -15,20 +15,20 @@ export default {
 
     sendPostNewRandomGame(userId) {
         return axios.post('/random/game', null,
-        {
-            params: {
-                userId: userId
-            }
-        });
+            {
+                params: {
+                    userId: userId
+                }
+            });
     },
 
     sendGetUserGames(userId) {
         return axios.get('/user-games',
-        {
-            params: {
-                userId: userId
-            }
-        });
+            {
+                params: {
+                    userId: userId
+                }
+            });
     },
 
     sendGetRandomGameLocationsRequest(randomGameId) {
@@ -54,7 +54,7 @@ export default {
         );
     },
     sendPostNewLocationToUserGame(gameId, selectedLocationId) {
-        return axios.post('/game-location', null,{
+        return axios.post('/game-location', null, {
                 params: {
                     gameId: gameId,
                     locationId: selectedLocationId
@@ -62,4 +62,13 @@ export default {
             }
         )
     },
+
+    sendDeleteGameLocationRequest(gameLocationId) {
+        return axios.delete('/game-location', {
+                params: {
+                    gameLocationId: gameLocationId
+                }
+            }
+        )
+    }
 }
