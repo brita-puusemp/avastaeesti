@@ -53,3 +53,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.table {
+  background-color: rgba(0, 0, 0, 0.2) !important
+}
+</style>

@@ -53,6 +53,7 @@ export default {
             }
         );
     },
+
     sendPostNewLocationToUserGame(gameId, selectedLocationId) {
         return axios.post('/game-location', null, {
                 params: {
@@ -70,5 +71,13 @@ export default {
                 }
             }
         )
-    }
+    },
+    sendUserGameDeleteRequest(gameId) {
+        return axios.delete('/user-game', {
+                params: {
+                    gameId: gameId
+                }
+            }
+        )
+    },
 }

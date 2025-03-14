@@ -4,10 +4,10 @@
                        @event-location-deleted="deleteLocation"
                        @event-close-modal="closeModal"
     />
-    <div class="container text-center">
+    <div class="container text-center mt-5">
       <div class="row">
         <div class="col">
-          <h3>ASUKOHAD</h3>
+          <h1>Asukohad</h1>
         </div>
       </div>
 

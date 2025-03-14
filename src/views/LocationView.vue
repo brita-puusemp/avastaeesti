@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div class="container text-center">
+    <div class="container text-center mt-4">
       <div class="row justify-content-center">
         <div class="col col-7">
-          <h3 v-if="isEdit">Muuda asukoha andmeid</h3>
-          <h3 v-else>Lisa asukoha andmed</h3>
+          <h1 v-if="isEdit">Muuda asukoha andmeid</h1>
+          <h1 v-else>Lisa asukoha andmed</h1>
           <AlertDanger :message="errorMessage"/>
           <AlertSuccess :message="successMessage"/>
           <div class="input-group flex-nowrap mb-3">

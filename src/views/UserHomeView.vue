@@ -1,7 +1,7 @@
 <template>
 
   <div class="row">
-    <div class="col-sm-6 mb-3 mb-sm-0">
+    <div class="col-sm-6 mt-5 mb-sm-5">
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">Mängi arvuti genereeritud mängu</h5>
@@ -10,7 +10,7 @@
         </div>
       </div>
     </div>
-    <div class="col-sm-6">
+    <div class="col-sm-6 mt-5 mb-sm-5">
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">Sirvi teiste loodud mänge</h5>
@@ -21,7 +21,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-sm-6 mb-3 mb-sm-0">
+    <div class="col-sm-6 mt-5 mb-sm-5">
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">Loo oma mäng ja kutsu sõbrad võistlema!</h5>
@@ -30,7 +30,7 @@
         </div>
       </div>
     </div>
-    <div class="col-sm-6">
+    <div class="col-sm-6 mt-5 mb-sm-5">
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">Salvesta oma lemmikkohad Eestis</h5>

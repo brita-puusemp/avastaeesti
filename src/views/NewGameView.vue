@@ -1,8 +1,8 @@
 <template>
   <div class="container text-center">
-    <div class="row justify-content-center">
+    <div class="row justify-content-center mt-5">
       <div class="col col-10">
-        <h3>Mängu andmed</h3>
+        <h1>Mängu andmed</h1>
           <AlertDanger :message="errorMessage"/>
         <div class="input-group flex-nowrap mb-3">
           <span class="input-group-text" id="addon-wrapping">Mängu nimi</span>
@@ -19,9 +19,8 @@
           <input v-model="newGame.timePerLocation" type="text" class="form-control">
         </div>
 
-        <button @click="createNewGame" type="button" class="btn btn-success ms-5">LOO MÄNG</button>
+        <button @click="createNewGame" type="button" class="btn btn-success me-3">LOO MÄNG</button>
         <button @click="goBack" type="button" class="btn btn-light">Tagasi</button>
-
       </div>
     </div>
   </div>
@@ -60,6 +59,10 @@ export default {
     alertMissingFields() {
       this.errorMessage = 'Kontrolli andmeid'
       setTimeout(this.resetAllMessages, 2000)
+    },
+
+    resetAllMessages() {
+      this.errorMessage = ''
     },
 
     allFieldsCorrect() {

@@ -43,5 +43,13 @@ export default {
 
 }
 </script>
+<style scoped>
+.table {
+  background-color: rgba(255, 255, 255, 0.1) !important
 
-
+}
+.table th, .table td {
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3)
+}
+</style>
