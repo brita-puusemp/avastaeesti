@@ -1,23 +1,34 @@
+
 <template>
-  <div>
+  <div class = "lemmikkohad">
     <div v-if="userHasAtLeastOneFavourite">
+      <br><br>
       <h1>MINU LEMMIK KOHAD</h1>
-      <p>Koha nimi: {{location.locationName}}</p>
+      <br>
+      <h2>Koha nimi: {{location.locationName}}</h2>
+      <p>Koha info: {{location.clue}}</p>
+
       <div class="container text-center">
         <div class="row">
           <div class="col d-flex align-items-center justify-content-center">
             <font-awesome-icon v-if="displayLeftArrow" @click="handlePreviousLocation" :icon="['fas', 'angle-left']"/>
           </div>
-          <div class="col image-container">
+          <div class="col-8 image-container">
             <LocationImage :image-data="location.imageData"/>
           </div>
           <div class="col d-flex align-items-center justify-content-center">
             <font-awesome-icon v-if="displayRightArrow" @click="handleNextLocation" :icon="['fas', 'angle-right']"/>
           </div>
         </div>
+        <br>
         <div class="row justify-content-center">
-          <div v-for="userFavourite in userFavourites">
-            <font-awesome-icon @click="updateLocation(userFavourite.index, userFavourite.locationId)" :icon="['far', 'circle-dot']" />
+          <div style="display: flex; gap: 1rem; justify-content: center;">
+            <div v-for="userFavourite in userFavourites" :key="userFavourite.index">
+              <font-awesome-icon
+                  @click="updateLocation(userFavourite.index, userFavourite.locationId)"
+                  :icon="['far', 'circle-dot']"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -25,10 +36,14 @@
 
     </div>
     <div v-else>
-      No luck
+      <br>
+      <br>
+      <h1>MINU LEMMIK KOHAD</h1>
+      <h2>Sa ei ole veel lisanud lemmikkohti</h2>
     </div>
 
   </div>
+
 </template>
 
 <script>
@@ -36,6 +51,7 @@
 import FavouriteService from "@/service/FavouriteService";
 import LocationService from "@/service/LocationService";
 import LocationImage from "@/components/image/LocationImage.vue";
+import '@/assets/css/favourite.css'
 
 
 export default {
@@ -48,6 +64,7 @@ export default {
       displayRightArrow: true,
       userHasAtLeastOneFavourite: true,
       userId: Number(sessionStorage.getItem('userId')),
+
       selectedIndex: 1,
       userFavourites: [
         {
@@ -63,8 +80,6 @@ export default {
         clue: '',
         imageData: '',
       },
-      current_location_name: "",
-      current_location_image: "",
     }
   },
 
@@ -140,12 +155,6 @@ export default {
 
 </script>
 
-<style scoped>
-.image-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%; /* Ensure the container takes full width */
-}
+<style>
 
 </style>
