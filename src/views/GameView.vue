@@ -46,8 +46,6 @@
 
 import MapModal from "@/components/modal/MapModal.vue";
 import GetHintModal from "@/components/modal/GetHintModal.vue";
-import GetHintService from "@/service/GetHintService";
-import L from "leaflet";
 import GameResultModal from "@/components/modal/GameResultModal.vue";
 import {useRoute} from "vue-router";
 import GameService from "@/service/GameService";
