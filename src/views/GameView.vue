@@ -83,8 +83,15 @@ export default {
   },
 
   beforeRouteUpdate(to, from, next) {
+    this.userGameId = Number(to.query.userGameId); // Uuenda userGameId
     this.randomGameId = Number(to.query.randomGameId); // Uuenda randomGameId
-    this.getRandomGameLocations(); // Laadi uued andmed
+
+    if (this.userGameId) {
+      this.getUserGameLocations(); // Laadi kasutaja mängu asukohad
+    } else if (this.randomGameId) {
+      this.getRandomGameLocations(); // Laadi juhusliku mängu asukohad
+    }
+
     next(); // Jätka navigeerimist
   },
 
@@ -93,7 +100,7 @@ export default {
     handleUserAnswer(clickedLocation, endTimeMilliseconds) {
 
       const userAnswer = {
-        randomGameId: this.randomGameId,
+        randomGameId: this.randomGameId ? this.randomGameId : this.userGameId,
         locationId: this.randomLocation.locationId,
         clickedLocation: clickedLocation,
         startTimeMilliseconds: this.startTimeMilliseconds,
@@ -139,7 +146,8 @@ export default {
     },
 
     handleGetUserGameLocationResponse(response) {
-      return this.randomLocation = response.data;
+      this.randomLocation = response.data;
+      this.startTimer()
     },
 
     getUserGameLocations() {
@@ -230,7 +238,7 @@ export default {
       // Käivita ühe minuti pärast suunamine ResultView-i
       this.timeoutId = setTimeout(() => {
         this.handleTimeout();
-      }, 10000); // 60000 ms = 1 minut; 10000 ms = 10 sek
+      }, 20000); // 60000 ms = 1 minut; 10000 ms = 10 sek
     },
     handleTimeout() {
       this.clickedLocation = { lat: 0, lng: 0 }
@@ -238,7 +246,7 @@ export default {
       console.log(this.clickedLocation, this.endTimeMilliseconds)
       // Loo vale vastus
       const userAnswer = {
-        randomGameId: this.randomGameId,
+        randomGameId: this.randomGameId ? this.randomGameId : this.userGameId,
         locationId: this.randomLocation.locationId,
         clickedLocation: this.clickedLocation,
         startTimeMilliseconds: this.startTimeMilliseconds,
