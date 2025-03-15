@@ -19,7 +19,7 @@
           </div>
           <div class="input-group mb-3">
             <span class="input-group-text">Korda parooli</span>
-            <input v-model="user.passwordRepeate" :type="showPasswordRepeat ? 'text' : 'password'" class="form-control">
+            <input v-model="user.passwordRepeat" :type="showPasswordRepeat ? 'text' : 'password'" class="form-control">
             <span class="input-group-text" @click="initiatePasswordRepeate" style="cursor: pointer;">
             <font-awesome-icon :icon="['fas', 'eye']"/>
           </span>
@@ -39,7 +39,7 @@
       <button v-if="isUpdate" @click="resetUser" type="button" class=" btn btn-light ms-3">Tagasi</button>
       <button v-if="isUser && !isUpdate" @click="deleteUserInfo" type="button" class="btn btn-dark mb-5">Kustuta konto</button>
       <div class="row justify-content-center">
-        <div class="col col-6 mb-4">
+        <div class="col col-4 mb-4">
           <AlertDanger :message="errorMessage"/>
           <AlertSuccess :message="successMessage"/>
         </div>
@@ -98,7 +98,7 @@ export default {
       user: {
         username: '',
         password: '',
-        passwordRepeate: '',
+        passwordRepeat: '',
         email: '',
       },
       userId: Number(sessionStorage.getItem("userId")),
