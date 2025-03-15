@@ -48,6 +48,7 @@ export default {
         questionsAnswered: this.$route.query.questionsAnswered,
       },
       randomGameId: this.$route.query.randomGameId,
+      userGameId: this.$route.query.userGameId,
 
 
     }
@@ -63,11 +64,27 @@ export default {
       sessionStorage.setItem('buttonText', this.buttonText);
     },
 
-    checkIfGameIsCompleteOrGoToNextQuestion() {
+    checkWhichGameIsUserPlaying() {
+      if (this.randomGameId) {
+        this.checkIfGameIsCompleteOrGoToNextRandomLocation();
+      } else {
+        this.checkIfGameIsCompleteOrGoToNextUserGameLocation()
+      }
+    },
+
+    checkIfGameIsCompleteOrGoToNextRandomLocation() {
       if (this.userAnswerResult.questionsAnswered === this.userAnswerResult.totalQuestions) {
         NavigationService.navigateToGameOverView(this.randomGameId)
       } else {
         NavigationService.navigateToGameView(this.randomGameId)
+      }
+    },
+
+    checkIfGameIsCompleteOrGoToNextUserGameLocation() {
+      if (this.userAnswerResult.questionsAnswered === this.userAnswerResult.totalQuestions) {
+        NavigationService.navigateToGameScoreView(this.userGameId)
+      } else {
+        NavigationService.navigateToUserGameView(this.userGameId)
       }
     },
 

@@ -14,6 +14,7 @@ import FavouritesView from "@/views/FavouritesView.vue";
 import ProfileInfoView from "@/views/ProfileInfoView.vue";
 
 import GameOverView from "@/views/GameOverView.vue";
+import GameScoreView from "@/views/GameScoreView.vue";
 
 const routes = [
     {
@@ -85,6 +86,11 @@ const routes = [
         path: '/game-over',
         name: 'gameOverRoute',
         component: GameOverView
+    },
+    {
+        path: '/game-score',
+        name: 'gameScoreRoute',
+        component: GameScoreView
     },
 ]
 

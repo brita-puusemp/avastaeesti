@@ -94,4 +94,14 @@ export default {
         })
 
     },
+
+    navigateToGameScoreView(userGameId) {
+        router.push({
+            name: 'gameScoreRoute',
+            query: {
+                userGameId: userGameId
+            }
+        })
+
+    },
 }

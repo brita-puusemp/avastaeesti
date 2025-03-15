@@ -115,7 +115,13 @@ export default {
           this.timeoutId = null;
         }
 
-        this.sendUserAnswer(userAnswer)
+      if (this.randomGameId) {
+        this.sendUserAnswer(userAnswer);
+      } else {
+        this.sendUserGameUserAnswer(userAnswer)
+      }
+
+
 
         // Peata timer
         this.stopTimer();
@@ -130,6 +136,12 @@ export default {
 
     sendUserAnswer(userAnswer) {
       GameService.sendPostUserAnswerRequest(userAnswer)
+          .then(response => this.handleUserAnswerResponse(response))
+          .catch(error => this.someDataBlockErrorResponseObject = error.response.data)
+    },
+
+    sendUserGameUserAnswer(userAnswer) {
+      GameService.sendPostUserGameUserAnswerRequest(userAnswer)
           .then(response => this.handleUserAnswerResponse(response))
           .catch(error => this.someDataBlockErrorResponseObject = error.response.data)
     },
