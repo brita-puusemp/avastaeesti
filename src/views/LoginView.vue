@@ -5,11 +5,11 @@
 "/>
   <div class="container text-center login-container">
     <div class="row justify-content-center mb-5">
-      <div class="col col-8">
+      <div class="col">
         <AlertDanger :message="message"/>
       </div>
     </div>
-    <div class="row justify-content-center mb-5 content">
+    <div class="row mb-5">
       <div class="col">
         <h1 >AVASTA EESTIMAAD</h1>
         <button @click="openInstructionsModal" class="btn btn-light">Kuidas mängida?</button>

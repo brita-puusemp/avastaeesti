@@ -1,8 +1,8 @@
 <template>
   <div class="row justify-content-center mt-5">
     <div class="col">
-      <h1 v-if="isUpdate">Muuda oma andmeid</h1>
-      <h1 v-else>Minu andmed</h1>
+      <h1 v-if="isUpdate">MUUDA OMA ANDMEID</h1>
+      <h1 v-else>MINU ANDMED</h1>
       <div v-if="isUpdate" class="row justify-content-center align-items-start">
         <div class="col col-4 text-start">
 
@@ -34,7 +34,7 @@
         <h5>{{ user.username }}</h5>
         <h5>{{ user.email }}</h5>
       </div>
-      <button v-if="!isUpdate" @click="setIsUpdateToTrue" class="btn btn-secondary mb-5">Muuda oma andmeid</button>
+      <button v-if="!isUpdate" @click="setIsUpdateToTrue" class="btn btn-success mb-5 me-3">Muuda oma andmeid</button>
       <button v-if="isUpdate" @click="updateUser" type="button" class=" btn btn-success ms-3">Salvesta</button>
       <button v-if="isUpdate" @click="resetUser" type="button" class=" btn btn-light ms-3">Tagasi</button>
       <button v-if="isUser && !isUpdate" @click="deleteUserInfo" type="button" class="btn btn-dark mb-5">Kustuta konto</button>

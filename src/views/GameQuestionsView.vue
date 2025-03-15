@@ -1,10 +1,10 @@
 <template>
   <div>
     <div class="container text-center">
-      <h3>Mängu andmed</h3>
+      <h1>MÄNGU ANDMED</h1>
     </div>
     <div class="row justify-content-center">
-      <div class="col col-6">
+      <div class="col col-8">
         <table class="table">
           <thead>
           <tr>
@@ -39,10 +39,10 @@
         />
       </div>
       <div class="col col-2 mb-3">
-        <button @click="addNewLocationToUserGame" type="submit" class="btn btn-success ms-5">Lisa see mängu</button>
+        <button @click="addNewLocationToUserGame" type="submit" class="btn btn-warning ms-5">Lisa see mängu</button>
       </div>
       <div>
-        <button @click="gameCreated" type="button" class="btn btn-light">MÄNG ON VALMIS</button>
+        <button @click="gameCreated" type="button" class="btn btn-success">KINNITA VALITUD ASUKOHAD</button>
       </div>
     </div>
   </div>
@@ -143,3 +143,13 @@ export default {
   }
 }
 </script>
+<style scoped>
+.table {
+  background-color: rgba(255, 255, 255, 0.1) !important
+
+}
+.table th, .table td {
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3)
+}
+</style>
