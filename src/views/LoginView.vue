@@ -3,28 +3,25 @@
   <InstructionsModal :modal-is-open="modalIsOpen"
                      @event-close-modal="closeModal
 "/>
-  <div class="container text-center login-container">
+  <div class="container text-center login-container col col-6">
     <div class="row justify-content-center mb-5">
-      <div class="col">
-        <AlertDanger :message="message"/>
-      </div>
-    </div>
-    <div class="row mb-5">
-      <div class="col">
+      <div class="col col-12">
         <h1 >AVASTA EESTIMAAD</h1>
         <button @click="openInstructionsModal" class="btn btn-light">Kuidas mängida?</button>
-
         <h3>Sisene kasutajaga</h3>
-
+        <AlertDanger :message="errorMessage"/>
         <div class="row justify-content-center mb-3">
-          <div class="col col-4">
+          <div class="col col-8">
             <div class="input-group mb-3">
               <span class="input-group-text">KASUTAJANIMI</span>
               <input v-model="username" type="text" class="form-control">
             </div>
             <div class="input-group mb-3">
               <span class="input-group-text">PAROOL</span>
-              <input v-model="password" type="password" class="form-control">
+              <input v-model="password" :type="showPassword ? 'text' : 'password'" class="form-control">
+              <span class="input-group-text" @click="initiateShowPassword" style="cursor: pointer;">
+             <font-awesome-icon :icon="['fas', 'eye']"/>
+                </span>
             </div>
           </div>
         </div>
@@ -53,10 +50,11 @@ export default {
   components: {InstructionsModal, AlertDanger},
   data() {
     return {
+      showPassword: '',
       modalIsOpen: false,
       username: '',
       password: '',
-      message: '',
+      errorMessage: '',
       loginResponse: {
         userId: 0,
         roleName: ''
@@ -69,6 +67,11 @@ export default {
   },
 
   methods: {
+
+    initiateShowPassword() {
+      this.showPassword = true
+      setTimeout(() => this.showPassword = false, 2000)
+    },
 
     openInstructionsModal() {
       this.modalIsOpen = true
@@ -126,10 +129,13 @@ export default {
     },
 
     alertMissingFields() {
-      this.message = 'Kontrolli andmeid'
-      setTimeout(this.resetAlertMessage, 4000)
+      this.errorMessage = 'Kontrolli andmeid'
+      setTimeout(this.resetAllMessages, 4000)
     },
 
+    resetAllMessages() {
+      this.errorMessage = ''
+    },
     closeModal() {
       this.modalIsOpen = false
     }
