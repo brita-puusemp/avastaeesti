@@ -20,7 +20,7 @@
           <div class="input-group mb-3">
             <span class="input-group-text">Korda parooli</span>
             <input v-model="user.passwordRepeat" :type="showPasswordRepeat ? 'text' : 'password'" class="form-control">
-            <span class="input-group-text" @click="initiatePasswordRepeate" style="cursor: pointer;">
+            <span class="input-group-text" @click="initiatePasswordRepeat" style="cursor: pointer;">
             <font-awesome-icon :icon="['fas', 'eye']"/>
           </span>
           </div>
@@ -125,7 +125,7 @@ export default {
       setTimeout(() => this.showPassword = false, 2000)
     },
 
-    initiatePasswordRepeate() {
+    initiatePasswordRepeat() {
       this.showPasswordRepeat = true
       setTimeout(() => this.showPasswordRepeat = false, 2000)
     },
@@ -159,7 +159,7 @@ export default {
     },
 
     handleUserInfoErrorResponse(error) {
-      this.errorResponse = error.response.data;
+      this.errorResponse = error.response.data
       if (this.isIncorrectUsername() || this.isIncorrectEmail()) {
         this.handleIncorrectCredentials();
       } else {
@@ -181,9 +181,9 @@ export default {
     },
 
     deleteUserInfo() {
-      UserService.sendDeleteUserInfoRequest(this.userId)
-          .then(response => this.handleDeleteUserInfoRequest(response))
-          .catch(() => NavigationService.navigateToErrorView())
+        UserService.sendDeleteUserInfoRequest(this.userId)
+            .then(response => this.handleDeleteUserInfoRequest(response))
+            .catch(() => NavigationService.navigateToErrorView())
     },
 
     handleDeleteUserInfoRequest(response) {
@@ -196,7 +196,7 @@ export default {
 
     allFieldsCorrect() {
       return this.user.username.length > 0
-          && this.user.password.length > 0 && this.user.passwordRepeate === this.user.password
+          && this.user.password.length > 0 && this.user.passwordRepeat === this.user.password
           && this.user.email.length > 0
           && this.isValidEmail(this.user.email)
     },
