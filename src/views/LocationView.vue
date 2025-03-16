@@ -32,10 +32,11 @@
           <div class="d-flex justify-content-center">
             <LocationImage :image-data="location.imageData" style="width: 300px; height: 300px;"/>
           </div>
+          <div class="mb-5">
           <button @click="goBack" type="button" class="btn btn-light">Nimekirja juurde</button>
           <button v-if="isEdit" @click="saveLocation" type="submit" class="btn btn-success ms-5">SALVESTA</button>
           <button v-else @click="addNewLocation" type="submit" class="btn btn-success ms-5">LISA ASUKOHT</button>
-
+        </div>
         </div>
       </div>
     </div>

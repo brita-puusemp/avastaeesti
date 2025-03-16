@@ -19,7 +19,7 @@
 
       </div>
 
-      <div class="row mt-4 justify-content-center">
+      <div class="row mt-4 justify-content-center mt-5">
         <div class="col col-8">
           <LocationsTable :locations="locations"
                           @event-start-delete-location-process="startDeleteLocationProcess"
