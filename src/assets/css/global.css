@@ -5,7 +5,7 @@ body {
     color: rgba(173, 219, 246, 0.92) !important;
     margin: 0; /* Eemalda marginaalid */
     padding: 0; /* Eemalda paddingu */
-    height: 100vh; /* Veendu, et leht ulatub täiskõrgusel */
+    min-height: 100vh; /* Veendu, et leht ulatub täiskõrgusel */
     width: 219vh;
     /*overflow: hidden; !* Keela kerimine, kui sisu ei mahu ekraanile *!*/
     overflow-x: hidden;
@@ -17,7 +17,8 @@ body::before {
     background-size: cover; /* Skaleeri pilt, et see kataks kogu lehe */
     background-position: center; /* Joonda pilt keskele */
     background-repeat: no-repeat; /* Ära korra pilti */
-    position: absolute; /* Aseta pilt lehe taha */
+    background-attachment: fixed; /* Fikseeri taustapilt */
+    position: fixed; /* Aseta pilt lehe taha */
     top: 0;
     left: 0;
     right: 0;

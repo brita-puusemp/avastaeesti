@@ -1,7 +1,8 @@
 <template>
   <div>
-    <div class="container text-center">
+    <div class="container text-center col-4">
       <h1>MÄNGU ANDMED</h1>
+      <AlertSuccess :message="successMessage"/>
     </div>
     <div class="row justify-content-center">
       <div class="col col-8">
@@ -26,23 +27,23 @@
           </tbody>
         </table>
         <div class="col-6">
-          <AlertSuccess :message="successMessage"/>
+
         </div>
       </div>
     </div>
 
     <div class="row justify-content-center">
-      <div class="col col-6 mb-3">
+      <div class="col col-6 mb-3 mt-6">
         <LocationsDropdown :locations="locations"
                            :selected-location-id="selectedLocationId"
                            @event-new-location-selected="setGameLocationLocationId"
         />
       </div>
       <div class="col col-2 mb-3">
-        <button @click="addNewLocationToUserGame" type="submit" class="btn btn-warning ms-5">Lisa see mängu</button>
+        <button @click="addNewLocationToUserGame" type="submit" class="btn btn-secondary ms-5">Lisa see mängu</button>
       </div>
       <div>
-        <button @click="gameCreated" type="button" class="btn btn-success">KINNITA VALITUD ASUKOHAD</button>
+        <button @click="gameCreated" type="button" class="btn btn-success mb-4">KINNITA VALITUD ASUKOHAD</button>
       </div>
     </div>
   </div>
@@ -54,6 +55,7 @@ import NavigationService from "@/service/NavigationService";
 import GameService from "@/service/GameService";
 import {useRoute} from "vue-router";
 import AlertSuccess from "@/components/alert/AlertSuccess.vue";
+import '@/assets/css/GameQuestionView.css'
 
 export default {
   name: 'gameLocationsView',

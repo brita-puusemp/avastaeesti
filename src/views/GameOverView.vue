@@ -1,12 +1,12 @@
 <template>
-  <div class="container text-center">
+  <div class="container text-center full-height-container">
     <div class="row">
       <div class="col">
         <h3>TULEMUSED</h3>
         <p>Õiged vastused: {{this.gameOverResults.correctCount}}</p>
         <p>Valed vastused: {{this.gameOverResults.inCorrectCount}}</p>
         <p>Aega läks: {{formatTime(this.gameOverResults.totalTime)}}</p>
-        <a @click="createNewRandomGame" href="#/game" class="btn btn-primary">ALUSTA UUT MÄNGU</a>
+        <a @click="createNewRandomGame" href="#/game" class="btn btn-primary mt-4">ALUSTA UUT MÄNGU</a>
       </div>
     </div>
   </div>
@@ -16,6 +16,7 @@
 import GameService from "@/service/GameService";
 import {useRoute} from "vue-router";
 import NavigationService from "@/service/NavigationService";
+import '@/assets/css/ResultView.css'
 
 export default {
   name: 'GameOverView',

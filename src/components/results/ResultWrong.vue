@@ -18,5 +18,15 @@ export default {
 }
 </script>
 
+<style scoped>
+
+h3 {
+
+  color: #953035; /* Tume roheline tekst */
+
+
+}
+
+</style>
 
 

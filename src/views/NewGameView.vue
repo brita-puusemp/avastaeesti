@@ -18,10 +18,11 @@
           <span class="input-group-text" id="addon-wrapping">Aega vastamiseks (min)</span>
           <input v-model="newGame.timePerLocation" type="text" class="form-control">
         </div>
+        <div class="text-center d-block">
+        <button @click="goBack" type="button" class="btn btn-light mx-auto mt-5">Tagasi</button>
+        <button @click="createNewGame" type="button" class="btn btn-success ms-5 mx-auto mt-3">LOO MÄNG</button>
 
-        <button @click="createNewGame" type="button" class="btn btn-success me-3">LOO MÄNG</button>
-        <button @click="goBack" type="button" class="btn btn-light">Tagasi</button>
-      </div>
+      </div></div>
     </div>
   </div>
 </template>
