@@ -68,13 +68,13 @@ export default {
 
   methods: {
 
+    openInstructionsModal() {
+      this.modalIsOpen = true
+    },
+
     initiateShowPassword() {
       this.showPassword = true
       setTimeout(() => this.showPassword = false, 2000)
-    },
-
-    openInstructionsModal() {
-      this.modalIsOpen = true
     },
 
     sendLoginRequest() {
@@ -96,7 +96,7 @@ export default {
     },
 
     handleLoginErrorResponse(error) {
-      this.errorResponse = error.response.data;
+      this.errorResponse = error.response.data
       const httpStatusCode = error.response.status
 
       if (this.isIncorrectCredentials(httpStatusCode)) {
@@ -112,12 +112,12 @@ export default {
     },
 
     handleIncorrectCredentials() {
-      this.message = this.errorResponse.message;
+      this.errorMessage = this.errorResponse.message;
       setTimeout(this.resetAlertMessage, 4000);
     },
 
     resetAlertMessage() {
-      this.message = ''
+      this.errorMessage = ''
     },
 
     login() {
