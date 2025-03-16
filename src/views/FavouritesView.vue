@@ -3,30 +3,32 @@
   <div class = "lemmikkohad">
     <div v-if="userHasAtLeastOneFavourite">
       <br><br>
-      <h1>MINU LEMMIK KOHAD</h1>
-      <br>
-      <h2>Koha nimi: {{location.locationName}}</h2>
+      <h3>MINU LEMMIK KOHAD</h3>
+      <h5>Koha nimi: {{location.locationName}}</h5>
       <p>Koha info: {{location.clue}}</p>
 
       <div class="container text-center">
         <div class="row">
           <div class="col d-flex align-items-center justify-content-center">
-            <font-awesome-icon v-if="displayLeftArrow" @click="handlePreviousLocation" :icon="['fas', 'angle-left']"/>
+            <font-awesome-icon v-if="displayLeftArrow" @click="handlePreviousLocation" :icon="['fas', 'angle-left']" size="3x"/>
           </div>
+
+
+
           <div class="col-8 image-container">
             <LocationImage :image-data="location.imageData"/>
           </div>
           <div class="col d-flex align-items-center justify-content-center">
-            <font-awesome-icon v-if="displayRightArrow" @click="handleNextLocation" :icon="['fas', 'angle-right']"/>
+            <font-awesome-icon v-if="displayRightArrow" @click="handleNextLocation" :icon="['fas', 'angle-right']" size="3x"/>
           </div>
         </div>
-        <br>
+        <br><br><br>
         <div class="row justify-content-center">
           <div style="display: flex; gap: 1rem; justify-content: center;">
             <div v-for="userFavourite in userFavourites" :key="userFavourite.index">
               <font-awesome-icon
                   @click="updateLocation(userFavourite.index, userFavourite.locationId)"
-                  :icon="['far', 'circle-dot']"
+                  :icon="['fas', 'circle']"
               />
             </div>
           </div>
@@ -52,6 +54,7 @@ import FavouriteService from "@/service/FavouriteService";
 import LocationService from "@/service/LocationService";
 import LocationImage from "@/components/image/LocationImage.vue";
 import '@/assets/css/favourite.css'
+import '@/assets/css/GameView.css'
 
 
 export default {

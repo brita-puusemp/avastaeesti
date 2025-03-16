@@ -1,8 +1,8 @@
  <template>
     <Modal :modal-is-open="modalIsOpen" :is-delete="isDelete" @event-close-modal="$emit('event-close-modal')">
-      <template #title>
+      <template #body>
         <div v-if="isDelete">
-          Kas sa soovid oma konto ära kustutada?
+          <p>Kas sa soovid oma konto ära kustutada?</p>
         </div>
       </template>
 

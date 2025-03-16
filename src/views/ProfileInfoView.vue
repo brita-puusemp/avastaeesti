@@ -6,8 +6,8 @@
     />
     <div class="row justify-content-center mt-5">
       <div class="col">
-        <h1 v-if="isUpdate">MUUDA OMA ANDMEID</h1>
-        <h1 v-else>MINU ANDMED</h1>
+        <h3 v-if="isUpdate">MUUDA OMA ANDMEID</h3>
+        <h3 v-else>MINU ANDMED</h3>
         <div v-if="isUpdate" class="row justify-content-center align-items-start">
           <div class="col col-4 text-start">
 
@@ -34,16 +34,17 @@
               <span class="input-group-text">E-mail</span>
               <input v-model="user.email" type="email" class="form-control">
             </div>
+
           </div>
         </div>
         <div v-else>
-          <h5>{{ user.username }}</h5>
-          <h5>{{ user.email }}</h5>
+          <p>{{ user.username }}</p>
+          <p>{{ user.email }}</p>
         </div>
-        <button v-if="!isUpdate" @click="setIsUpdateToTrue" class="btn btn-success mb-5 me-3">Muuda oma andmeid</button>
-        <button v-if="isUpdate" @click="updateUser" type="button" class=" btn btn-success ms-3">Salvesta</button>
-        <button v-if="isUpdate" @click="resetUser" type="button" class=" btn btn-light ms-3">Tagasi</button>
-        <button v-if="isUser && !isUpdate" @click="openDeleteAccountModal" type="button" class="btn btn-dark mb-5">
+        <button v-if="!isUpdate" @click="setIsUpdateToTrue" class="btn btn-success mb-5 me-3 mb-5">Muuda oma andmeid</button>
+        <button v-if="isUpdate" @click="resetUser" type="button" class=" btn btn-light ms-3 allaveel">Tagasi</button>
+        <button v-if="isUpdate" @click="updateUser" type="button" class=" btn btn-success ms-3 alla">Salvesta</button>
+        <button v-if="isUser && !isUpdate" @click="openDeleteAccountModal" type="button" class="btn btn-secondary mb-5">
           Kustuta konto
         </button>
         <div class="row justify-content-center">
@@ -56,12 +57,13 @@
     </div>
     <div v-if="isUser">
       <div class="row justify-content-center mb-3">
-        <div class="col col-12 mb-2">
-          <h1>Minu loodud mängud</h1>
+        <div class="col col-12 mb-2 mt-5">
+
         </div>
       </div>
       <div class="row justify-content-center">
         <div class="col-md-8 col-8">
+          <h3 class="alla">Minu loodud mängud</h3>
           <table class="table">
             <thead>
             <tr>
@@ -285,8 +287,25 @@ export default {
 </script>
 
 <style scoped>
+
+
+
+.btn-secondary {
+  border-color: darkred !important;
+  color: darkred !important;
+}
+
+.alla {
+  margin-top: 50px !important;
+}
+
+.allaveel {
+  margin-top: 70px !important;
+}
+
 .table {
-  background-color: rgba(255, 255, 255, 0.1) !important
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  /*margin-top: 79px !important;*/
 
 }
 
