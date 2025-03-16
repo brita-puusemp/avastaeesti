@@ -47,7 +47,6 @@
 
         <div class="navbar-nav ms-auto">
           <template v-if="isUser">
-            <!--              todo: siin tuleb /favourite route õigeks muuta-->
             <router-link class="nav-link" to="/favourites">
               <font-awesome-icon :icon="['far', 'star']"/>
             </router-link>
@@ -60,7 +59,6 @@
           </template>
 
           <template v-else-if="isAdmin">
-            <!--              todo: siin tuleb /profile-admin route õigeks muuta -->
             <router-link class="nav-link" to="/profile">
               <font-awesome-icon :icon="['far', 'circle-user']"/>
             </router-link>
