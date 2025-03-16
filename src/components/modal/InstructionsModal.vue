@@ -13,7 +13,7 @@
 
       Ei ole kindel? Vajutage nupule „Võta vihje“, et saada vihje.<br><br>
 
-      Leidsid meeldiva asukoha ja tahad hiljem rohkem teada saada? Lisa see nupuga „Lisa lemmikute hulka“ <font-awesome-icon :icon="['far', 'star']" />
+      Leidsid meeldiva asukoha ja tahad hiljem rohkem teada saada? Lisa see nupuga „Lisa lemmikute hulka“ <font-awesome-icon :icon="['far', 'star']" /> <br><br>
 
       Nautige mängu!
 
