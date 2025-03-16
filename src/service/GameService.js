@@ -76,10 +76,10 @@ export default {
         );
     },
 
-    sendGetUserGameOverScoreRequest() {
+    sendGetUserGameOverScoreRequest(userGameId) {
         return axios.get('/user/game/score', {
                 params: {
-                    userGameId: this.userGameId,
+                    userGameId: userGameId,
                 }
             }
         );
@@ -116,6 +116,15 @@ export default {
                 params: {
                     gameId: gameId,
                     userId: userId
+                }
+            }
+        );
+    },
+
+    sendGetTopScoresRequest(userGameId) {
+        return axios.get('/user/game/topscores', {
+                params: {
+                    userGameId: userGameId,
                 }
             }
         );

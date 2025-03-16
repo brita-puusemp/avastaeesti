@@ -2,16 +2,17 @@
   <div class="container text-center">
     <div class="row">
       <div class="col">
-        <font-awesome-icon :icon="['fas', 'trophy']"/>
-        <h3>TOP SKOORID</h3>
-        {{}}
-        <h3>SINU SKOOR</h3>
-        {{score}}
+
+        <TopScores
+        :top-scores="topScores"
+        />
+        <h3>SINU SKOOR: {{score.score}}</h3>
+
         <h3>TULEMUSED</h3>
         <p>Õiged vastused: {{this.gameOverResults.correctCount}}</p>
         <p>Valed vastused: {{this.gameOverResults.inCorrectCount}}</p>
         <p>Aega läks: {{formatTime(this.gameOverResults.totalTime)}}</p>
-        <a @click="createNewRandomGame" href="#/game" class="btn btn-primary">ALUSTA UUT MÄNGU</a>
+        <a  href="#/games" class="btn btn-primary">VAATA KÕIKI MÄNGE</a>
       </div>
     </div>
   </div>
@@ -20,11 +21,18 @@
 <script>
 import {useRoute} from "vue-router";
 import GameService from "@/service/GameService";
+import TopScores from "@/components/game/TopScores.vue";
 
 export default {
   name: 'GameScoreView',
+  components: {TopScores},
   data() {
     return {
+      topScores: [{
+          userName: '',
+          totalScore: 0,
+          timestamp: 0
+        }],
       userId: sessionStorage.getItem('userId'),
       userGameId: Number(useRoute().query.userGameId),
       gameOverResults: {
@@ -36,14 +44,31 @@ export default {
     }},
   methods: {
 
+
+    handleGetTopScoresResponse(response) {
+      return this.topScores = response.data;
+    },
+
+    getTopScores() {
+      GameService.sendGetTopScoresRequest(this.userGameId)
+          .then(response => this.handleGetTopScoresResponse(response))
+          .catch(error => this.someDataBlockErrorResponseObject = error.response.data)
+    },
+
     handleGetGameOverScoreResponse(response) {
-      return this.score = response.data;
+      this.score = response.data;
+      sessionStorage.setItem('gameScore', JSON.stringify(this.score)); // Salvesta skoor sessionStorage-sse
     },
 
     getGameScore() {
-      GameService.sendGetUserGameOverScoreRequest(this.userGameId)
-          .then(response => this.handleGetGameOverScoreResponse(response))
-          .catch(error => this.someDataBlockErrorResponseObject = error.response.data)
+      const savedScore = sessionStorage.getItem('gameScore');
+      if (savedScore) {
+        this.score = JSON.parse(savedScore); // Kasuta salvestatud skoori, kui see on olemas
+      } else {
+        GameService.sendGetUserGameOverScoreRequest(this.userGameId)
+            .then(response => this.handleGetGameOverScoreResponse(response))
+            .catch(error => this.someDataBlockErrorResponseObject = error.response.data)
+      }
     },
 
     handleGetGameOverResultsResponse(response) {
@@ -54,6 +79,7 @@ export default {
           .then(response => this.handleGetGameOverResultsResponse(response))
           .catch(error => this.someDataBlockErrorResponseObject = error.response.data)
     },
+
     formatTime(totalTime) {
       const minutes = Math.floor(totalTime / 60); // Arvuta minutid
       const seconds = totalTime % 60; // Arvuta sekundid
@@ -61,8 +87,14 @@ export default {
     },
   },
   mounted() {
+    this.getTopScores();
     this.getGameResults()
     this.getGameScore()
+  },
+  beforeRouteLeave(to, from, next) {
+    // Kustuta andmed enne lehelt lahkumist
+    sessionStorage.removeItem('gameScore');
+    next(); // Jätka navigeerimist
   }
 }
 </script>
