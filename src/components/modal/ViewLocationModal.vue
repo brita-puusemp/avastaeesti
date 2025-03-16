@@ -18,7 +18,7 @@
     </template>
 
     <template #footer>
-      <button v-if="isDelete" @click="deleteLocation" type="button" class="btn btn-btn-danger">KUSTUTA</button>
+      <button v-if="isDelete" @click="deleteLocation" type="button" class="btn btn btn-danger">KUSTUTA</button>
     </template>
 
   </Modal>

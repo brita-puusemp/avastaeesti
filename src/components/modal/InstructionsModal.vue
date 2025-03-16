@@ -1,7 +1,5 @@
 <template>
-
   <Modal :modal-is-open="modalIsOpen" @event-close-modal="$emit('event-close-modal')" >
-
     <template #title>
       MÄNGU REEGLID
     </template>
@@ -14,9 +12,7 @@
     </template>
 
   </Modal>
-
 </template>
-
 <script>
 
 import Modal from "@/components/modal/Modal.vue";

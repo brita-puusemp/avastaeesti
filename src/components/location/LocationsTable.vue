@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="table-container">
     <table class="table">
       <thead>
       <tr>
@@ -55,7 +55,21 @@ export default {
 </script>
 
 <style scoped>
-.table {
-  background-color: rgba(0, 0, 0, 0.2) !important
+
+.table-container{
+  max-height: 650px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: rgba(255, 255, 255, 0.1)
+}
+
+.table th, .table td {
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3)
 }
 </style>
