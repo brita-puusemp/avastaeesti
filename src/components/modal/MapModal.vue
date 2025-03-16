@@ -14,7 +14,8 @@
       ></div>
     </template>
     <template #footer>
-      <router-link to="/game" @click.native="$emit('event-close-modal')" class="link-dark">Tagasi pildile</router-link>
+      <router-link to="/game"
+                   @click.native="handleBackToGame" class="link-dark">Tagasi pildile</router-link>
       <button @click="executeAnswering" type="submit" class="btn btn-success ms-5">KINNITA</button>
     </template>
   </Modal>
@@ -75,6 +76,28 @@ export default {
     },
   },
   methods: {
+    handleBackToGame(event) {
+      // Takista vaikimisi navigeerimine
+      event.preventDefault();
+
+      // Saada sündmus, et modaal sulguks
+      this.$emit('event-close-modal');
+
+      // Kontrolli, kas kasutada userGameId või randomGameId
+      const userGameId = this.$route.query.userGameId;
+      const randomGameId = this.$route.query.randomGameId;
+
+      // Käsitsi navigeeri tagasi mängu lehele, kasutades õiget ID-d
+      if (userGameId) {
+        this.$router.push({ path: '/game', query: { userGameId } });
+      } else if (randomGameId) {
+        this.$router.push({ path: '/game', query: { randomGameId } });
+      } else {
+        // Kui mõlemad ID-d puuduvad, navigeeri lihtsalt mängu lehele ilma päringuparameetriteta
+        this.$router.push({ path: '/game' });
+      }
+    },
+
     initializeMap() {
       if (this.map) {
         this.map.remove(); // Remove previous map instance if it exists
