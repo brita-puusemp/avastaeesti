@@ -5,70 +5,70 @@
   />
   <nav v-if="isLoggedIn" class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-      <a class="navbar-brand">Avasta Eestimaad</a>
+      <a class="navbar-brand ms-4 mt-2"><h6>Avasta Eestimaad</h6></a>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 
         <div class="navbar-nav">
           <template v-if="isUser">
-            <router-link class="nav-link active" aria-current="page" to="/home">
-              <font-awesome-icon :icon="['fas', 'house']"/>
+            <router-link class="nav-link active ms-4 mt-1" aria-current="page" to="/home">
+              <font-awesome-icon :icon="['fas', 'house']"size="2x"/>
             </router-link>
           </template>
 
           <template v-else-if="isAdmin">
-            <router-link class="nav-link active" aria-current="page" to="/home-admin">
-              <font-awesome-icon :icon="['fas', 'house']"/>
+            <router-link class="nav-link active ms-4 mt-1" aria-current="page" to="/home-admin">
+              <font-awesome-icon :icon="['fas', 'house']"size="2x"/>
             </router-link>
           </template>
 
 
           <template v-if="isUser">
-            <router-link class="nav-link" to="/game-new">
-              <font-awesome-icon :icon="['fas', 'plus']"/>
-              <span> UUS </span>
+            <router-link class="nav-link ms-4 d-flex" to="/game-new">
+              <font-awesome-icon :icon="['fas', 'plus']"size="2x" class=" mt-1"/>
+              <span class="mt-2 ms-1"> <h6>UUS MÄNG</h6> </span>
             </router-link>
           </template>
 
           <template v-if="isAdmin">
-            <router-link class="nav-link" to="/location">
-              <font-awesome-icon :icon="['fas', 'plus']"/>
-              <span> UUS </span>
+            <router-link class="nav-link ms-4 d-flex" to="/location">
+              <font-awesome-icon :icon="['fas', 'plus']"size="2x" class=" mt-1"/>
+              <span class="mt-2 ms-1"> <h6>UUS MÄNG</h6> </span>
             </router-link>
           </template>
 
           <template v-if="isUser">
-            <router-link class="nav-link" to="/games">KÕIK MÄNGUD</router-link>
+            <router-link class="nav-link ms-5 mt-2" to="/games"><h6>KÕIK MÄNGUD</h6></router-link>
           </template>
 
           <template v-if="isAdmin">
-            <router-link class="nav-link" to="/games">KÕIK MÄNGUD</router-link>
+            <router-link class="nav-link ms-4 mt-2" to="/games"><h6>KÕIK MÄNGUD</h6></router-link>
           </template>
         </div>
 
         <div class="navbar-nav ms-auto">
           <template v-if="isUser">
             <router-link class="nav-link" to="/favourites">
-              <font-awesome-icon :icon="['far', 'star']"/>
+              <font-awesome-icon :icon="['far', 'star']" size="2x"/>
             </router-link>
           </template>
 
           <template v-if="isUser">
-            <router-link class="nav-link" to="/profile">
-              <font-awesome-icon :icon="['far', 'circle-user']"/>
+            <router-link class="nav-link ms-3" to="/profile">
+              <font-awesome-icon :icon="['far', 'circle-user']"size="2x"/>
             </router-link>
           </template>
 
           <template v-else-if="isAdmin">
-            <router-link class="nav-link" to="/profile">
-              <font-awesome-icon :icon="['far', 'circle-user']"/>
+            <router-link class="nav-link ms-3" to="/profile">
+              <font-awesome-icon :icon="['far', 'circle-user']"size="2x"/>
             </router-link>
           </template>
 
           <template v-if="isUser">
-            <button @click="openLogOutModal" type="button" class="btn btn-success">Logi välja</button>
+            <button @click="openLogOutModal" type="button" class="btn btn-success ms-5 me-4">Logi välja</button>
           </template>
           <template v-else-if="isLoggedIn">
-            <button @click="openLogOutModal" type="button" class="btn btn-success">Logi välja</button>
+            <button @click="openLogOutModal" type="button" class="btn btn-success ms-5 me-4">Logi välja</button>
           </template>
           <template v-else>
             <router-link to="/"></router-link>
@@ -138,6 +138,7 @@ export default {
 
 .navbar-brand, .nav-link {
   color: #afd1ec !important; /* Valge tekst */
+  font-family: "Jersey 25", sans-serif !important;
 }
 
 .nav-link:hover {
@@ -151,7 +152,7 @@ export default {
 }
 
 .btn-success:hover {
-  background-color: #218838 !important; /* Tumem roheline hover korral */
+  background-color: #47ff70 !important; /* Tumem roheline hover korral */
 }
 
 .nav-link .fa-icon {
@@ -162,4 +163,9 @@ export default {
 .nav-link:hover .fa-icon {
   color: #ffffff !important; /* Hele sinine ikoon hover korral */
 }
+
+h6 {
+  font-size: 1.5rem !important;
+}
+
 </style>

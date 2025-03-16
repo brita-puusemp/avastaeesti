@@ -31,6 +31,7 @@
 
 <script>
 import NavigationService from "@/service/NavigationService";
+import '@/assets/css/table.css'
 
 export default {
   name: 'GamesTable',

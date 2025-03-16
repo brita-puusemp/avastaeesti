@@ -1,4 +1,5 @@
 <template>
+  <div class="full-height-container">
 <result-correct
     v-if="userAnswerResult.locationIsCorrect"
     :locationName="userAnswerResult.locationName"
@@ -11,23 +12,23 @@
 
 
 
-  <div class="container text-center">
-    <div class="row">
-      <div class="col col-8">
+  <div class="container text-center mt-5">
+    <div class="row justify-content-center">
+      <div class="col col-3 justify-content-center">
         <AlertDanger :message="message"/>
-        <span class="d-block mb-3">
-          <font-awesome-icon
-              :icon="isActive ? ['fas', 'star'] : ['far', 'star']"
-              @click="handleStarClick"
-              style="cursor: pointer;"
+        <div class="star-button-container">
+          <font-awesome-icon class="star-icon"
+                             :icon="isActive ? ['fas', 'star'] : ['far', 'star']"
+                             @click="handleStarClick"
+                             style="cursor: pointer;"
           />
-          {{ buttonText }}
-        </span>
+          <span class="button-text mt-3"><p>{{ buttonText }}
+        </p></span></div>
         <button @click="checkWhichGameIsUserPlaying" type="submit" class="btn btn-success mx-2">JÄRGMINE</button>
       </div>
     </div>
   </div>
-
+  </div>
 </template>
 
 <script>
@@ -38,6 +39,7 @@ import ResultWrong from "@/components/results/ResultWrong.vue";
 import NavigationService from "@/service/NavigationService";
 import FavouriteService from "@/service/FavouriteService";
 import AlertDanger from "@/components/alert/AlertDanger.vue";
+import '@/assets/css/ResultView.css'
 
 export default {
   name: 'ResultView',

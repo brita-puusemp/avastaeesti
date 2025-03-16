@@ -23,23 +23,23 @@
     <div class="row justify-content-center">
       <!-- Buttons for the rounds -->
       <div class="col-auto">
-        progress
+
       </div>
     </div>
 
     <div id="timer">00:00</div>
 
     <div class="row mt-3 justify-content-center">
-      <div class="col-auto">
+      <div class="col-auto img-container">
         <img :src="randomLocation.imageData" class="img-fluid w-100 d-block mx-auto" alt="image">
       </div>
     </div>
 
-
-    <div class="text-center mt-3">
+    <div class="row mt-3 justify-content-center">
+    <div class="text-center  button-container">
       <button @click="openHintModal" type="submit" class="btn btn-secondary mx-2">VÕTA VIHJE</button>
       <button @click="openMapModal" type="submit" class="btn btn-success mx-2">AVA KAARDIL</button>
-    </div>
+    </div></div>
   </div>
 </template>
 
@@ -51,6 +51,7 @@ import GameResultModal from "@/components/modal/GameResultModal.vue";
 import {useRoute} from "vue-router";
 import GameService from "@/service/GameService";
 import NavigationService from "@/service/NavigationService";
+import '@/assets/css/GameView.css'
 
 
 export default {

@@ -9,12 +9,12 @@
 
     <template #body>
 
-      <img src="../../assets/images/agree.webp" height="480" width="480" alt=""/>
+      <img src="../../assets/images/agree.webp" height="350" width="350" alt="" class="mt-4"/>
     </template>
 
 
     <template #footer>
-      <button @click="executeLogOut" class="btn btn-outline-success">Logi välja</button>
+      <button @click="executeLogOut" class="btn btn-success">Logi välja</button>
     </template>
 
   </Modal>

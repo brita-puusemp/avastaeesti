@@ -4,17 +4,16 @@
            @event-close-modal="$emit('event-close-modal')" >
 
       <template #title>
-        VIHJE
         <div id="modal-timer">{{ formattedTime }}</div>
       </template>
 
       <template #body>
-        {{ hint }}
+        <p>{{ hint }}</p>
       </template>
 
       <template #footer>
-        <router-link to="/game" @click.native="$emit('event-close-modal')">Tagasi pildile</router-link>
-        <button @click="openMapModal" type="submit" class="btn btn-success ms-5">AVA KAARDI</button>
+        <router-link to="/game" @click.native="$emit('event-close-modal')" class="link-dark">Tagasi pildile</router-link>
+        <button @click="openMapModal" type="submit" class="btn btn-success ms-5">AVA KAARDIL</button>
       </template>
 
     </Modal>

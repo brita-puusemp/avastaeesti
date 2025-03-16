@@ -8,10 +8,10 @@
     margin-bottom: 20px; /* Ruum kaartide vahel */
 }
 
-.card:hover {
-    transform: translateY(-5px); /* Kerge tõstmine hover korral */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Suurem varju hover korral */
-}
+/*.card:hover {
+    transform: translateY(-5px); !* Kerge tõstmine hover korral *!
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); !* Suurem varju hover korral *!
+}*/
 
 /*.row {
     display: flex;
@@ -43,25 +43,28 @@
 
 /* Nuppude stiil */
 .btn-primary {
-    background-color: #1a426e; /* Tumesinine taust */
-    color: #ffffff; /* Valge tekst */
+    background-color: rgb(39, 48, 76) !important; /* Tumesinine taust */
+    color: #afd1ec !important; /* Valge tekst */
     border: none; /* Eemalda piirjoon */
     border-radius: 5px; /* Ümarad nurgad */
     padding: 10px 20px; /* Padding */
-    font-size: 1rem; /* Fondi suurus */
+    font-size: 1.5rem !important; /* Fondi suurus */
     cursor: pointer; /* Kursor muutub pointeriks */
     transition: background-color 0.3s ease; /* Sujuv animatsioon */
+    font-family: "Jersey 25", sans-serif !important;
 }
 
 .btn-primary:hover {
     background-color: #0d6efd; /* Hele sinine hover korral */
+    transform: translateY(3px); /* Kerge tõstmine hover korral */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Suurem varju hover korral */
 }
 
 /* Ridade ja veergude stiil */
 .row {
     display: flex;
     flex-wrap: wrap;
-    margin: -10px; /* Kompenseerib kaartide vahelise ruumi */
+    margin: -50px; /* Kompenseerib kaartide vahelise ruumi */
 }
 
 .col-sm-6 {

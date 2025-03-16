@@ -1,16 +1,20 @@
 <template>
   <Modal :modal-is-open="modalIsOpen" @event-close-modal="$emit('event-close-modal')">
+    <template #title>
+      <div id="modal-timer">{{ formattedTime }}</div>
+
+    </template>
     <template #body>
       <h3>VALI ASUKOHT KAARDIL</h3>
-      <div id="modal-timer">{{ formattedTime }}</div>
+
       <div
           ref="mapContainer"
           class="map-container"
-          :style="{ width: width || '90%', height: height || '400px' }"
+          :style="{ width: width || '100%', height: height || '400px' }"
       ></div>
     </template>
     <template #footer>
-      <router-link to="/game" @click.native="$emit('event-close-modal')">Tagasi pildile</router-link>
+      <router-link to="/game" @click.native="$emit('event-close-modal')" class="link-dark">Tagasi pildile</router-link>
       <button @click="executeAnswering" type="submit" class="btn btn-success ms-5">KINNITA</button>
     </template>
   </Modal>
@@ -19,6 +23,7 @@
 <script>
 import Modal from "@/components/modal/Modal.vue";
 import L from 'leaflet'
+import '@/assets/css/GameView.css'
 
 //marker fixed
 delete L.Icon.Default.prototype._getIconUrl;
@@ -127,4 +132,5 @@ export default {
   width: 100%;
   height: 500px;
 }
+
 </style>

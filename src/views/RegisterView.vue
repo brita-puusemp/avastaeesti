@@ -7,7 +7,7 @@
             <h1>Loo uus kasutaja</h1>
             <AlertDanger :message="errorMessage"/>
             <AlertSuccess :message="successMessage"/>
-            <div class="input-group mb-3">
+            <div class="input-group mb-3 mt-5">
               <span class="input-group-text">E-MAIL</span>
               <input v-model="newUser.email" type="text" class="form-control">
             </div>
@@ -31,9 +31,9 @@
           <font-awesome-icon :icon="['fas', 'eye']"/>
               </span>
             </div>
-            <div class="d-flex justify-content-center mt-3">
-              <button @click="goBack" class="btn btn-light me-3">Tagasi</button>
-              <button @click="createNewUser" type="submit" class="btn btn-success">Loo kasutaja</button>
+            <div class="text-center d-block">
+              <button @click="goBack" class="btn btn-light  mx-auto mt-5">Tagasi</button>
+              <button @click="createNewUser" type="submit" class="btn btn-success ms-5 mx-auto mt-3">Loo kasutaja</button>
             </div>
           </div>
         </div>
@@ -43,6 +43,7 @@
 </template>
 
 <script>
+import '@/assets/css/global.css'
 import UserService from "@/service/UserService";
 import NavigationService from "@/service/NavigationService";
 import BusinessErrors from "@/errors/BusinessErrors";

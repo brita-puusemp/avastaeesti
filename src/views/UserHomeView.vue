@@ -14,7 +14,7 @@
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">Sirvi teiste loodud mänge</h5>
-          <p class="card-text"> vaata parimaid tulemusi! Võta vastu väljakutse, ületa teiste skoorid ja tõesta, et oled tõeline Eestimaa asjade tundja.</p>
+          <p class="card-text"> Vaata parimaid tulemusi! Võta vastu väljakutse, ületa teiste skoorid ja tõesta, et oled tõeline Eestimaa asjade tundja.</p>
           <a href="#/games" class="btn btn-primary">VAATA KÕIKI MÄNGE</a>
         </div>
       </div>
