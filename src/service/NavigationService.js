@@ -75,11 +75,26 @@ export default {
         router.push({
             name: 'gameResultsRoute',
             query: {
+                locationId: userAnswerResult.locationId,
                 locationName: userAnswerResult.locationName,
                 locationIsCorrect: userAnswerResult.locationIsCorrect,
                 totalQuestions: userAnswerResult.totalQuestions,
                 questionsAnswered: userAnswerResult.questionsAnswered,
                 randomGameId: randomGameId,
+
+            }
+        })
+    },
+    navigateToUserGameResultView(userAnswerResult, userGameId) {
+        router.push({
+            name: 'gameResultsRoute',
+            query: {
+                locationId: userAnswerResult.locationId,
+                locationName: userAnswerResult.locationName,
+                locationIsCorrect: userAnswerResult.locationIsCorrect,
+                totalQuestions: userAnswerResult.totalQuestions,
+                questionsAnswered: userAnswerResult.questionsAnswered,
+                userGameId: userGameId,
 
             }
         })

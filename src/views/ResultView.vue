@@ -14,12 +14,12 @@
         <span class="d-block mb-3">
           <font-awesome-icon
               :icon="isActive ? ['fas', 'star'] : ['far', 'star']"
-              @click="toggleIcon"
+              @click="toggleIcon; addToFavorites"
               style="cursor: pointer;"
           />
           {{ buttonText }}
         </span>
-        <button @click="checkIfGameIsCompleteOrGoToNextQuestion" type="submit" class="btn btn-success mx-2">JÄRGMINE</button>
+        <button @click="checkWhichGameIsUserPlaying" type="submit" class="btn btn-success mx-2">JÄRGMINE</button>
       </div>
     </div>
   </div>
@@ -32,6 +32,7 @@ import {isFlat} from "leaflet/src/geometry/LineUtil";
 import ResultCorrect from "@/components/results/ResultCorrect.vue";
 import ResultWrong from "@/components/results/ResultWrong.vue";
 import NavigationService from "@/service/NavigationService";
+import FavouriteService from "@/service/FavouriteService";
 
 export default {
   name: 'ResultView',
@@ -47,13 +48,20 @@ export default {
         totalQuestions: this.$route.query.totalQuestions,
         questionsAnswered: this.$route.query.questionsAnswered,
       },
-      randomGameId: this.$route.query.randomGameId,
-      userGameId: this.$route.query.userGameId,
+      randomGameId: Number(useRoute().query.randomGameId),
+      userGameId: Number(useRoute().query.userGameId),
+      userId: sessionStorage.getItem('userId')
 
 
     }
   },
   methods: {
+
+    addToFavorites() {
+      FavouriteService.sendPostUserFavoritesRequest(this.userId, this.userAnswerResult.locationId)
+          .then(response => this.someDataBlockResponseObject = response.data)
+          .catch(error => this.someDataBlockErrorResponseObject = error.response.data)
+    },
 
     toggleIcon() {
       this.isActive = true;

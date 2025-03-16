@@ -67,6 +67,23 @@ export default {
             }
         );
     },
+    sendGetUserGameOverResultsRequest(userGameId) {
+        return axios.get('/user/game/gameover', {
+                params: {
+                    userGameId: userGameId,
+                }
+            }
+        );
+    },
+
+    sendGetUserGameOverScoreRequest() {
+        return axios.get('/user/game/score', {
+                params: {
+                    userGameId: this.userGameId,
+                }
+            }
+        );
+    },
 
     sendPostNewLocationToUserGame(gameId, selectedLocationId) {
         return axios.post('/game-location', null, {

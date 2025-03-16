@@ -6,7 +6,7 @@
               :minutes="minutes"
               :seconds="seconds"
               @event-close-modal="closeMapModal"
-              @event-execute-answering="handleUserAnswer"
+              @event-execute-answering="checkWhichGameIsPlaying"
   />
 
   <GetHintModal :hint-modal-is-open="hintModalIsOpen"
@@ -97,10 +97,43 @@ export default {
 
   methods: {
 
+    checkWhichGameIsPlaying(clickedLocation, endTimeMilliseconds) {
+      if (this.randomGameId) {
+        this.handleUserAnswer(clickedLocation, endTimeMilliseconds);
+      } else {
+        this.handleUserGameAnswer(clickedLocation, endTimeMilliseconds);
+      }
+    },
+
+    handleUserGameAnswer(clickedLocation, endTimeMilliseconds) {
+      const userAnswer = {
+        randomGameId: this.userGameId,
+        locationId: this.randomLocation.locationId,
+        clickedLocation: clickedLocation,
+        startTimeMilliseconds: this.startTimeMilliseconds,
+        endTimeMilliseconds: endTimeMilliseconds
+      };
+
+      console.log(userAnswer)
+
+      // Tühista timeout, kui kasutaja esitab vastuse enne ühe minuti möödumist
+      if (this.timeoutId) {
+        clearTimeout(this.timeoutId);
+        this.timeoutId = null;
+      }
+
+
+      this.sendUserGameUserAnswer(userAnswer)
+
+      // Peata timer
+      this.stopTimer();
+
+    },
+
     handleUserAnswer(clickedLocation, endTimeMilliseconds) {
 
       const userAnswer = {
-        randomGameId: this.randomGameId ? this.randomGameId : this.userGameId,
+        randomGameId: this.randomGameId,
         locationId: this.randomLocation.locationId,
         clickedLocation: clickedLocation,
         startTimeMilliseconds: this.startTimeMilliseconds,
@@ -115,13 +148,7 @@ export default {
           this.timeoutId = null;
         }
 
-      if (this.randomGameId) {
         this.sendUserAnswer(userAnswer);
-      } else {
-        this.sendUserGameUserAnswer(userAnswer)
-      }
-
-
 
         // Peata timer
         this.stopTimer();
@@ -134,6 +161,12 @@ export default {
 
     },
 
+    handleUserGameAnswerResponse(response) {
+      const userAnswerResult = response.data;
+      NavigationService.navigateToUserGameResultView(userAnswerResult, this.userGameId)
+
+    },
+
     sendUserAnswer(userAnswer) {
       GameService.sendPostUserAnswerRequest(userAnswer)
           .then(response => this.handleUserAnswerResponse(response))
@@ -142,7 +175,7 @@ export default {
 
     sendUserGameUserAnswer(userAnswer) {
       GameService.sendPostUserGameUserAnswerRequest(userAnswer)
-          .then(response => this.handleUserAnswerResponse(response))
+          .then(response => this.handleUserGameAnswerResponse(response))
           .catch(error => this.someDataBlockErrorResponseObject = error.response.data)
     },
 
@@ -249,16 +282,46 @@ export default {
 
       // Käivita ühe minuti pärast suunamine ResultView-i
       this.timeoutId = setTimeout(() => {
-        this.handleTimeout();
+        this.checkWhichGame();
       }, 20000); // 60000 ms = 1 minut; 10000 ms = 10 sek
     },
+
+    checkWhichGame() {
+      if (this.randomGameId) {
+        this.handleTimeout();
+      } else {
+        this.handleUserGameTimeout();
+      }
+    },
+
+    handleUserGameTimeout() {
+      this.clickedLocation = { lat: 0, lng: 0 }
+      this.endTimeMilliseconds = Date.now();
+      console.log(this.clickedLocation, this.endTimeMilliseconds)
+      // Loo vale vastus
+      const userAnswer = {
+        randomGameId: this.userGameId,
+        locationId: this.randomLocation.locationId,
+        clickedLocation: this.clickedLocation,
+        startTimeMilliseconds: this.startTimeMilliseconds,
+        endTimeMilliseconds: this.endTimeMilliseconds
+      };
+      console.log(userAnswer)
+
+      // Saada vastus serverisse
+      this.sendUserGameUserAnswer(userAnswer);
+
+      // Peata timer
+      this.stopTimer();
+    },
+
     handleTimeout() {
       this.clickedLocation = { lat: 0, lng: 0 }
       this.endTimeMilliseconds = Date.now();
       console.log(this.clickedLocation, this.endTimeMilliseconds)
       // Loo vale vastus
       const userAnswer = {
-        randomGameId: this.randomGameId ? this.randomGameId : this.userGameId,
+        randomGameId: this.randomGameId,
         locationId: this.randomLocation.locationId,
         clickedLocation: this.clickedLocation,
         startTimeMilliseconds: this.startTimeMilliseconds,

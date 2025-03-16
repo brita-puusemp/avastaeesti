@@ -8,4 +8,14 @@ export default {
             },
         });
     },
+
+    sendPostUserFavoritesRequest(userId, locationId) {
+        return axios.post('/add-favorites', null, {
+                params: {
+                    userId: userId,
+                    locationId: locationId
+                }
+            }
+        );
+    },
 };
