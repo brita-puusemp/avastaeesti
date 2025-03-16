@@ -85,11 +85,14 @@ export default {
       const seconds = totalTime % 60; // Arvuta sekundid
       return `${minutes} min ja ${seconds} sek`;
     },
+
   },
   mounted() {
-    this.getTopScores();
+
     this.getGameResults()
     this.getGameScore()
+    this.getTopScores()
+
   },
   beforeRouteLeave(to, from, next) {
     // Kustuta andmed enne lehelt lahkumist
