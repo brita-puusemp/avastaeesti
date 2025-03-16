@@ -3,20 +3,19 @@
   <Modal :modal-is-open="modalIsOpen" @event-close-modal="$emit('event-close-modal')" >
 
     <template #title>
-      SIIN ON VIHJE
+      MÄNGU REEGLID
     </template>
 
     <template #body>
 <!--todo: Mängu juhend uuesti kirjutada. -->
-      Iga mänguga on sul võimalus arvata, kus asuvad need 5 ilusat paika Eestimaal. Iga pildi arvamiseks on sul 2 minutit.
 
+      Iga mänguga on sul võimalus arvata, kus asuvad need 5 ilusat paika Eestimaal. Iga pildi arvamiseks on sul 2 minutit.
       Saad salvestada asukohti ka oma lemmikutesse.
     </template>
 
   </Modal>
 
 </template>
-
 
 <script>
 
@@ -28,13 +27,7 @@ export default {
   props: {
     modalIsOpen: Boolean
   }
-
-
-
 }
-
-
-
 </script>
 
 

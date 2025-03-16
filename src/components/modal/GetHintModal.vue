@@ -1,6 +1,5 @@
 <template>
 
-
     <Modal :hint-modal-is-open="hintModalIsOpen"
            @event-close-modal="$emit('event-close-modal')" >
 
@@ -20,7 +19,6 @@
 
     </Modal>
 
-
 </template>
 
 <script>
@@ -37,7 +35,7 @@ export default {
 
   },
   computed: {
-    // Vorminda minutid ja sekundid kahekohaliseks (nt 05:09)
+    //meetod Vormindab minutid ja sekundid kahekohaliseks (nt 05:09)
     formattedTime() {
       const formattedMinutes = String(this.minutes).padStart(2, '0');
       const formattedSeconds = String(this.seconds).padStart(2, '0');
@@ -51,8 +49,6 @@ export default {
   }
 }
 </script>
-
-
 
 <style scoped>
 

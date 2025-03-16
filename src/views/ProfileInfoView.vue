@@ -1,8 +1,8 @@
 <template>
   <div class="row justify-content-center mt-5">
     <div class="col">
-      <h1 v-if="isUpdate">Muuda oma andmeid</h1>
-      <h1 v-else>Minu andmed</h1>
+      <h1 v-if="isUpdate">MUUDA OMA ANDMEID</h1>
+      <h1 v-else>MINU ANDMED</h1>
       <div v-if="isUpdate" class="row justify-content-center align-items-start">
         <div class="col col-4 text-start">
 
@@ -16,12 +16,11 @@
             <span class="input-group-text" @click="initiateShowPassword" style="cursor: pointer;">
              <font-awesome-icon :icon="['fas', 'eye']"/>
             </span>
-
           </div>
           <div class="input-group mb-3">
             <span class="input-group-text">Korda parooli</span>
-            <input v-model="user.passwordRepeate" :type="showPasswordRepeat ? 'text' : 'password'" class="form-control">
-            <span class="input-group-text" @click="initiatePasswordRepeate" style="cursor: pointer;">
+            <input v-model="user.passwordRepeat" :type="showPasswordRepeat ? 'text' : 'password'" class="form-control">
+            <span class="input-group-text" @click="initiatePasswordRepeat" style="cursor: pointer;">
             <font-awesome-icon :icon="['fas', 'eye']"/>
           </span>
           </div>
@@ -35,12 +34,12 @@
         <h5>{{ user.username }}</h5>
         <h5>{{ user.email }}</h5>
       </div>
-      <button v-if="!isUpdate" @click="setIsUpdateToTrue" class="btn btn-secondary ms-5">Muuda oma andmeid</button>
-      <button v-if="isUpdate" @click="updateUser" type="button" class=" btn btn-success ms-5">Salvesta</button>
-      <button v-if="isUpdate" @click="resetUser" type="button" class=" btn btn-light ms-5">Tagasi</button>
-      <button v-if="isUser && !isUpdate" @click="deleteUserInfo" type="button" class="btn btn-dark ms-5">Kustuta konto</button>
+      <button v-if="!isUpdate" @click="setIsUpdateToTrue" class="btn btn-success mb-5 me-3">Muuda oma andmeid</button>
+      <button v-if="isUpdate" @click="updateUser" type="button" class=" btn btn-success ms-3">Salvesta</button>
+      <button v-if="isUpdate" @click="resetUser" type="button" class=" btn btn-light ms-3">Tagasi</button>
+      <button v-if="isUser && !isUpdate" @click="deleteUserInfo" type="button" class="btn btn-dark mb-5">Kustuta konto</button>
       <div class="row justify-content-center">
-        <div class="col col-6 mb-4">
+        <div class="col col-4 mb-4">
           <AlertDanger :message="errorMessage"/>
           <AlertSuccess :message="successMessage"/>
         </div>
@@ -50,18 +49,17 @@
   <div v-if="isUser">
     <div class="row justify-content-center mb-3">
       <div class="col col-12 mb-2">
-        <h3>Minu loodud mängud</h3>
+        <h1>Minu loodud mängud</h1>
       </div>
     </div>
     <div class="row justify-content-center">
-      <div class="col-md-8 col-lg-10">
+      <div class="col-md-8 col-8">
         <table class="table">
           <thead>
           <tr>
             <th scope="col">Mängu nimi</th>
             <th scope="col">Kirjeldus</th>
             <th scope="col">Kustuta</th>
-            <th scope="col">Muuda</th>
           </tr>
           </thead>
           <tbody>
@@ -69,12 +67,8 @@
             <td>{{ newGame.gameName }}</td>
             <td>{{ newGame.gameDescription }}</td>
             <td>
-<!--              todo -SIIA TEENUS-->
-<!--              <font-awesome-icon icon="pen-to-square" @click="navigateToLocationView(location.locationId)"-->
-<!--                                 class="cursor-pointer me-3"/>-->
               <font-awesome-icon icon="trash" @click="removeUserGame(newGame.gameId)"
                                  class="cursor-pointer"/>
-
             </td>
           </tr>
           </tbody>
@@ -104,7 +98,7 @@ export default {
       user: {
         username: '',
         password: '',
-        passwordRepeate: '',
+        passwordRepeat: '',
         email: '',
       },
       userId: Number(sessionStorage.getItem("userId")),
@@ -131,7 +125,7 @@ export default {
       setTimeout(() => this.showPassword = false, 2000)
     },
 
-    initiatePasswordRepeate() {
+    initiatePasswordRepeat() {
       this.showPasswordRepeat = true
       setTimeout(() => this.showPasswordRepeat = false, 2000)
     },
@@ -165,7 +159,7 @@ export default {
     },
 
     handleUserInfoErrorResponse(error) {
-      this.errorResponse = error.response.data;
+      this.errorResponse = error.response.data
       if (this.isIncorrectUsername() || this.isIncorrectEmail()) {
         this.handleIncorrectCredentials();
       } else {
@@ -182,18 +176,14 @@ export default {
     },
 
     handleIncorrectCredentials() {
-      this.message = this.errorResponse.message;
-      setTimeout(this.resetAlertMessage, 2000);
-    },
-
-    resetAlertMessage() {
-      this.message = ''
+      this.errorMessage = 'Sellise e-maili või kasutajanimega on juba registreeritud'
+      setTimeout(this.resetAllMessages, 2000);
     },
 
     deleteUserInfo() {
-      UserService.sendDeleteUserInfoRequest(this.userId)
-          .then(response => this.handleDeleteUserInfoRequest(response))
-          .catch(() => NavigationService.navigateToErrorView())
+        UserService.sendDeleteUserInfoRequest(this.userId)
+            .then(response => this.handleDeleteUserInfoRequest(response))
+            .catch(() => NavigationService.navigateToErrorView())
     },
 
     handleDeleteUserInfoRequest(response) {
@@ -206,8 +196,13 @@ export default {
 
     allFieldsCorrect() {
       return this.user.username.length > 0
-          && this.user.password.length > 0 && this.user.passwordRepeate === this.user.password
+          && this.user.password.length > 0 && this.user.passwordRepeat === this.user.password
           && this.user.email.length > 0
+          && this.isValidEmail(this.user.email)
+    },
+
+    isValidEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
     },
 
     alertMissingFields() {
