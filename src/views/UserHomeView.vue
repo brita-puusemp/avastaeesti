@@ -5,7 +5,7 @@
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">Mängi arvuti genereeritud mängu</h5>
-          <p class="card-text">Sinu ülesandeks on ära tunda 5 erinevat paika Eestimaal. Iga koha ära arvamiseks on sul 1 minut.</p>
+          <p class="card-text">Sinu ülesandeks on ära tunda 5 erinevat paika Eestimaal. Iga koha ära arvamiseks on sul 30 sekundit.</p>
           <a @click="createNewRandomGame" href="#/game" class="btn btn-primary">ALUSTA UUT MÄNGU</a>
         </div>
       </div>

@@ -284,7 +284,7 @@ export default {
       // Käivita ühe minuti pärast suunamine ResultView-i
       this.timeoutId = setTimeout(() => {
         this.checkWhichGame();
-      }, 60000); // 60000 ms = 1 minut; 10000 ms = 10 sek
+      }, 30000); // 60000 ms = 1 minut; 10000 ms = 10 sek
     },
 
     checkWhichGame() {
