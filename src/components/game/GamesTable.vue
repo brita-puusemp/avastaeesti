@@ -7,8 +7,10 @@
       <th scope="col">Järjekorranumber</th>
       <th scope="col">Mängu nimi</th>
       <th scope="col">Mängu kirjeldus</th>
+      <th scope="col">Parim mängija</th>
       <th scope="col">Top skoor</th>
       <th scope="col">Mängima</th>
+
     </tr>
     </thead>
     <tbody>
@@ -16,7 +18,9 @@
       <td>{{ index + 1 }}</td>
       <td>{{ allGames.gameName }}</td>
       <td>{{ allGames.gameDescription }}</td>
+      <td>{{ allGames.username }}</td>
       <td>{{ allGames.totalTopScore }}</td>
+
       <td>
         <font-awesome-icon
             @click="createNewUserGame(allGames.gameId)"

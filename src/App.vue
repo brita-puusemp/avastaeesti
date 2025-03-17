@@ -32,7 +32,7 @@
           <template v-if="isAdmin">
             <router-link class="nav-link ms-4 d-flex" to="/location">
               <font-awesome-icon :icon="['fas', 'plus']"size="2x" class=" mt-1"/>
-              <span class="mt-2 ms-1"> <h6>UUS MÄNG</h6> </span>
+              <span class="mt-2 ms-1"> <h6>UUS KOHT</h6> </span>
             </router-link>
           </template>
 

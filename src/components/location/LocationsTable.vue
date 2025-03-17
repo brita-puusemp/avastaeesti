@@ -57,7 +57,7 @@ export default {
 <style scoped>
 
 .table-container{
-  max-height: 650px;
+  max-height: 500px;
   overflow-y: auto;
   border: 1px solid #ccc;
 }
@@ -70,6 +70,6 @@ table {
 
 .table th, .table td {
   background-color: rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.3)
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 </style>

@@ -58,6 +58,8 @@ export default {
     handleGetGameOverScoreResponse(response) {
       this.score = response.data;
       sessionStorage.setItem('gameScore', JSON.stringify(this.score)); // Salvesta skoor sessionStorage-sse
+      this.getTopScores()
+
     },
 
     getGameScore() {
@@ -85,14 +87,11 @@ export default {
       const seconds = totalTime % 60; // Arvuta sekundid
       return `${minutes} min ja ${seconds} sek`;
     },
-
   },
   mounted() {
-
     this.getGameResults()
     this.getGameScore()
     this.getTopScores()
-
   },
   beforeRouteLeave(to, from, next) {
     // Kustuta andmed enne lehelt lahkumist
